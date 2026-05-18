@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# Data and outputs
+data/
+datasets/
+checkpoints/
+weights/
+outputs/results/*.json
+outputs/predictions/*
+outputs/visualizations/*
+
+# Logs
+*.log
+wandb/
+runs/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
