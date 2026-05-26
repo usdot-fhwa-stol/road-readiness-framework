@@ -26,3 +26,7 @@ runs/
 
 # OS
 .DS_Store
+
+outputs/*
+
+Dockerfile
