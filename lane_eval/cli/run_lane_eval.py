@@ -139,6 +139,11 @@ def _extract_lane_mask(
 # ── dataset builder from flat CLI args ──────────────────────────────────────
 
 def _build_adapter(args):
+    # Manifest mode: read the universal manifest instead of a native dataset.
+    if args.manifest:
+        from lane_eval.manifest import ManifestDataset  # noqa: E402
+        return ManifestDataset(args.manifest)
+
     from lane_eval.datasets import build_dataset_adapter  # noqa: E402
 
     name = args.dataset
@@ -214,6 +219,9 @@ def run(args) -> dict:
     ll_metric = SegmentationMetric(2)
 
     adapter = _build_adapter(args)
+    # In manifest mode the dataset name comes from the manifest metadata.
+    if not args.dataset:
+        args.dataset = getattr(adapter, "name", "manifest")
     total = min(len(adapter), args.max_samples) if args.max_samples else len(adapter)
 
     dataset = _EvalDataset(adapter, total, args.img_size, args.yolopx_repo)
@@ -233,9 +241,16 @@ def run(args) -> dict:
         saver = PredictionSaver(args.save_pred_dir, args.model_name, args.dataset, total,
                                 overlay_sample=args.overlay_sample)
 
+    pred_writer = None
+    if args.pred_manifest:
+        from lane_eval.manifest import PredictionManifestWriter
+        pred_writer = PredictionManifestWriter(args.pred_manifest, args.model_name, args.dataset)
+
     def _record(pred_mask, gt_mask, image_id, image_path):
         if saver is not None:
             saver.save(image_id, image_path, pred_mask, gt_mask)
+        if pred_writer is not None:
+            pred_writer.add(image_id, image_path, pred_mask)
         if not collect_per_image:
             return
         from evaluation.per_image_metrics import per_image_scores
@@ -329,6 +344,12 @@ def run(args) -> dict:
         results["pred_overlays_saved"] = saver.n_overlay
         print(f"  Saved {saver.n_mask} pred masks + {saver.n_overlay} overlays -> {saver.mask_dir.parent}")
 
+    if pred_writer is not None:
+        out = pred_writer.write()
+        results["pred_manifest"] = str(out)
+        results["pred_manifest_count"] = len(pred_writer.samples)
+        print(f"  Saved prediction manifest ({len(pred_writer.samples)} samples) -> {out}")
+
     return results
 
 
@@ -348,9 +369,13 @@ def parse_args():
     p.add_argument("--num-workers", type=int, default=4,
                    help="DataLoader worker processes for parallel image loading")
 
-    # dataset (shared)
-    p.add_argument("--dataset",  required=True,
+    # dataset (shared) — --dataset is optional when --manifest is given, since
+    # the manifest carries the dataset name in its metadata.
+    p.add_argument("--dataset",  default=None,
                    choices=["bdd100k_lane", "curvelanes", "culane", "tusimple"])
+    p.add_argument("--manifest", default=None,
+                   help="Universal manifest JSON to use as the input source "
+                        "(replaces the native --dataset/--root/--image-root args)")
     p.add_argument("--split",    default="val")
     p.add_argument("--max-samples", type=int, default=None,
                    help="Stop after N samples (useful for quick debugging)")
@@ -376,8 +401,14 @@ def parse_args():
                    help="If set, save predicted lane-mask PNG per image under DIR/<model>/<dataset>/masks/")
     p.add_argument("--overlay-sample", type=int, default=100,
                    help="Number of pred-vs-GT overlay JPGs to save per dataset (0 = none)")
+    p.add_argument("--pred-manifest", default=None,
+                   help="If set, write predictions (mask PNG + derived lane_json) to this "
+                        "universal-format JSON; masks go in a masks/ dir beside it")
 
-    return p.parse_args()
+    args = p.parse_args()
+    if not args.manifest and not args.dataset:
+        p.error("either --manifest or --dataset must be provided")
+    return args
 
 
 if __name__ == "__main__":
