@@ -1,0 +1,5 @@
+dataset: tusimple
+split: val
+root: /shared/data/tusimple
+mask_thickness: 16
+# NOTE: TuSimple data must be downloaded first (see /shared/data/tusimple/download_tusimple.sh)

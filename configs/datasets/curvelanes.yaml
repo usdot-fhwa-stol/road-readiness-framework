@@ -1,0 +1,4 @@
+dataset: curvelanes
+split: valid
+root: /shared/data/Curvelanes
+mask_thickness: 16

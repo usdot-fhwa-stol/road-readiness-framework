@@ -1,0 +1,4 @@
+dataset: bdd100k_lane
+split: val
+image_root: /shared/data/bdd100k/images/val
+lane_mask_root: /shared/data/bdd100k/ll_seg_annotations/val

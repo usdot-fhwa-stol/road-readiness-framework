@@ -6,11 +6,12 @@ __pycache__/
 venv/
 .env
 
-# Data and outputs
-data/
-datasets/
-checkpoints/
-weights/
+# Data and outputs (anchored to repo root so they don't match source dirs
+# like lane_eval/datasets/ or configs/datasets/)
+/data/
+/datasets/
+/checkpoints/
+/weights/
 outputs/results/*.json
 outputs/predictions/*
 outputs/visualizations/*
@@ -46,3 +47,9 @@ outputs/**
 
 # Local Claude Code settings (never commit)
 .claude/
+
+# Manifests: track manifest json, ignore generated mask images
+manifests/**/masks/
+
+# build logs
+*.log
