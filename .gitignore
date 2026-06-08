@@ -43,3 +43,6 @@ outputs/**
 !outputs/**/
 !outputs/**/*.json
 !outputs/**/*.md
+
+# Local Claude Code settings (never commit)
+.claude/
