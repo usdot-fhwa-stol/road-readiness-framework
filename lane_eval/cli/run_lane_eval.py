@@ -184,7 +184,7 @@ class _EvalDataset(Dataset):
         if gt_mask is None:
             return None
         img_t, shapes = _preprocess(img_bgr, self.img_size, self.yolopx_repo)
-        return img_t, shapes, gt_mask
+        return img_t, shapes, gt_mask, sample.image_id, sample.image_path
 
 
 def _collate(batch):
@@ -193,12 +193,12 @@ def _collate(batch):
     n_skipped = len(batch) - len(valid)
     if not valid:
         return None, n_skipped
-    imgs, shapes, masks = zip(*valid)
+    imgs, shapes, masks, ids, paths = zip(*valid)
     try:
         imgs_t = torch.stack(imgs)          # works when all letterbox sizes match
     except RuntimeError:
         imgs_t = list(imgs)                 # variable-size fallback (CurveLanes)
-    return (imgs_t, list(shapes), list(masks)), n_skipped
+    return (imgs_t, list(shapes), list(masks), list(ids), list(paths)), n_skipped
 
 
 # ── main eval loop ───────────────────────────────────────────────────────────
@@ -225,6 +225,25 @@ def run(args) -> dict:
         collate_fn=_collate,
     )
 
+    collect_per_image = bool(args.per_image or args.per_image_json or args.per_image_csv)
+    per_records: list[dict] = []
+    saver = None
+    if args.save_pred_dir:
+        from evaluation.save_predictions import PredictionSaver
+        saver = PredictionSaver(args.save_pred_dir, args.model_name, args.dataset, total,
+                                overlay_sample=args.overlay_sample)
+
+    def _record(pred_mask, gt_mask, image_id, image_path):
+        if saver is not None:
+            saver.save(image_id, image_path, pred_mask, gt_mask)
+        if not collect_per_image:
+            return
+        from evaluation.per_image_metrics import per_image_scores
+        rec = {"model": args.model_name, "dataset": args.dataset, "split": args.split,
+               "image_id": image_id, "image_path": image_path}
+        rec.update(per_image_scores(pred_mask, gt_mask))
+        per_records.append(rec)
+
     skipped = 0
     processed = 0
     for batch_data, n_skipped in tqdm(loader, desc=f"Evaluating {args.dataset}"):
@@ -232,7 +251,7 @@ def run(args) -> dict:
         if batch_data is None:
             continue
 
-        imgs, shapes_list, gt_masks = batch_data
+        imgs, shapes_list, gt_masks, image_ids, image_paths = batch_data
 
         if isinstance(imgs, torch.Tensor):
             # Batched path: all images had the same letterbox size
@@ -248,10 +267,11 @@ def run(args) -> dict:
                     gt_mask = cv2.resize(gt_mask, (pred_mask.shape[1], pred_mask.shape[0]),
                                          interpolation=cv2.INTER_NEAREST)
                 ll_metric.addBatch(pred_mask.astype(np.int64), gt_mask.astype(np.int64))
+                _record(pred_mask, gt_mask, image_ids[i], image_paths[i])
                 processed += 1
         else:
             # Fallback: variable-size images (e.g. CurveLanes) — still uses num_workers
-            for img_t, shapes, gt_mask in zip(imgs, shapes_list, gt_masks):
+            for img_t, shapes, gt_mask, image_id, image_path in zip(imgs, shapes_list, gt_masks, image_ids, image_paths):
                 img_t = img_t.unsqueeze(0).to(device)
                 if use_half:
                     img_t = img_t.half()
@@ -262,10 +282,19 @@ def run(args) -> dict:
                     gt_mask = cv2.resize(gt_mask, (pred_mask.shape[1], pred_mask.shape[0]),
                                          interpolation=cv2.INTER_NEAREST)
                 ll_metric.addBatch(pred_mask.astype(np.int64), gt_mask.astype(np.int64))
+                _record(pred_mask, gt_mask, image_id, image_path)
                 processed += 1
 
+    # All four headline metrics come from YOLOPX's own SegmentationMetric
+    # confusion matrix — no new metric math is introduced:
+    #   recall    = lineAccuracy()          = TP / (TP + FN)
+    #   precision = classPixelAccuracy()[1] = TP / (TP + FP)
+    #   F1        = harmonic mean of precision and recall
+    recall    = float(ll_metric.lineAccuracy())
+    precision = float(ll_metric.classPixelAccuracy()[1])
+    f1        = float(2 * precision * recall / (precision + recall + 1e-12))
     results = {
-        "model": "yolopx",
+        "model": args.model_name,
         "dataset": args.dataset,
         "task": "lane",
         "split": args.split,
@@ -274,12 +303,32 @@ def run(args) -> dict:
         "threshold": "argmax",
         "img_size": args.img_size,
         "metrics": {
-            "lane_accuracy": float(ll_metric.lineAccuracy()),
-            "lane_iou":      float(ll_metric.IntersectionOverUnion()),
-            "lane_miou":     float(ll_metric.meanIntersectionOverUnion()),
+            "lane_iou":       float(ll_metric.IntersectionOverUnion()),
+            "lane_f1":        f1,
+            "lane_precision": precision,
+            "lane_recall":    recall,
+            "lane_accuracy":  recall,    # alias: YOLOPX "Acc" == lane-class recall
+            "lane_miou":      float(ll_metric.meanIntersectionOverUnion()),
             "pixel_accuracy": float(ll_metric.pixelAccuracy()),
         },
     }
+
+    if collect_per_image:
+        from evaluation.per_image_metrics import per_image_paths, write_per_image
+        dj, dc = per_image_paths(args.output)
+        pj = args.per_image_json or dj
+        pc = args.per_image_csv or dc
+        write_per_image(per_records, pj, pc)
+        results["per_image_json"] = pj
+        results["per_image_csv"] = pc
+        results["per_image_count"] = len(per_records)
+        print(f"  Saved per-image metrics -> {pj} (+ .csv), {len(per_records)} rows")
+
+    if saver is not None:
+        results["pred_masks_saved"] = saver.n_mask
+        results["pred_overlays_saved"] = saver.n_overlay
+        print(f"  Saved {saver.n_mask} pred masks + {saver.n_overlay} overlays -> {saver.mask_dir.parent}")
+
     return results
 
 
@@ -291,6 +340,7 @@ def parse_args():
     # model
     p.add_argument("--yolopx-repo", required=True, help="Path to YOLOPX repo root")
     p.add_argument("--weights",     required=True, help="Path to YOLOPX .pth checkpoint")
+    p.add_argument("--model-name",  default="yolopx", help="Label for this model in the output JSON")
     p.add_argument("--device",      default="cuda:0")
     p.add_argument("--img-size",    type=int, default=640)
     p.add_argument("--batch-size",  type=int, default=8,
@@ -317,6 +367,15 @@ def parse_args():
 
     # output
     p.add_argument("--output", default="outputs/results/lane_eval.json")
+    p.add_argument("--per-image", action="store_true",
+                   help="Also save per-image IoU/F1/Precision/Recall as JSON + CSV "
+                        "(in a per_image/ subdir next to --output)")
+    p.add_argument("--per-image-json", default=None, help="Explicit per-image JSON path")
+    p.add_argument("--per-image-csv", default=None, help="Explicit per-image CSV path")
+    p.add_argument("--save-pred-dir", default=None,
+                   help="If set, save predicted lane-mask PNG per image under DIR/<model>/<dataset>/masks/")
+    p.add_argument("--overlay-sample", type=int, default=100,
+                   help="Number of pred-vs-GT overlay JPGs to save per dataset (0 = none)")
 
     return p.parse_args()
 
@@ -331,11 +390,14 @@ if __name__ == "__main__":
         json.dump(results, f, indent=2)
 
     print("\n=== Lane Evaluation Results ===")
+    print(f"  model        : {results['model']}")
     print(f"  dataset      : {results['dataset']} ({results['split']})")
     print(f"  images       : {results['num_images']}  (skipped: {results['skipped']})")
     m = results["metrics"]
-    print(f"  lane_accuracy: {m['lane_accuracy']:.4f}")
-    print(f"  lane_iou     : {m['lane_iou']:.4f}")
-    print(f"  lane_miou    : {m['lane_miou']:.4f}")
-    print(f"  pixel_acc    : {m['pixel_accuracy']:.4f}")
+    print(f"  lane_iou      : {m['lane_iou']:.4f}")
+    print(f"  lane_f1       : {m['lane_f1']:.4f}")
+    print(f"  lane_precision: {m['lane_precision']:.4f}")
+    print(f"  lane_recall   : {m['lane_recall']:.4f}")
+    print(f"  lane_miou     : {m['lane_miou']:.4f}")
+    print(f"  pixel_acc     : {m['pixel_accuracy']:.4f}")
     print(f"\nSaved to: {out_path}")
