@@ -48,8 +48,8 @@ outputs/**
 # Local Claude Code settings (never commit)
 .claude/
 
-# Manifests: track manifest json, ignore generated mask images
-manifests/**/masks/
+# Generated manifests + masks (regenerable via scripts/build_manifests.sh)
+manifests/
 
 # build logs
 *.log
