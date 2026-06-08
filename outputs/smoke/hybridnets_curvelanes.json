@@ -1,0 +1,22 @@
+{
+  "model": "hybridnets",
+  "dataset": "curvelanes",
+  "task": "lane",
+  "split": "valid",
+  "num_images": 8,
+  "skipped": 0,
+  "threshold": "argmax",
+  "img_size": [
+    384,
+    640
+  ],
+  "metrics": {
+    "lane_iou": 0.3328175094190578,
+    "lane_f1": 0.4994194735088716,
+    "lane_precision": 0.6108886497507929,
+    "lane_recall": 0.422352574933774,
+    "lane_accuracy": 0.422352574933774,
+    "lane_miou": 0.6573902874950462,
+    "pixel_accuracy": 0.9821239066091241
+  }
+}

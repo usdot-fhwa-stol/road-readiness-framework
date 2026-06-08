@@ -37,3 +37,9 @@ outputs_temp/
 
 # Editor swap files
 *.swp
+
+# Under outputs/, track ONLY json and md (results); keep ignoring images/large artifacts
+outputs/**
+!outputs/**/
+!outputs/**/*.json
+!outputs/**/*.md

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(touch .gitignore)",
+      "Bash(printf '\\\\n# Output artifacts \\(large, not for version control\\)\\\\noutputs-may26/\\\\noutputs_temp/\\\\n\\\\n# Editor swap files\\\\n*.swp\\\\n')",
+      "Bash(du -sh outputs outputs-may26 outputs_temp)",
+      "Bash(du -sh outputs-may26/*)",
+      "Bash(du -sh outputs_temp/*)",
+      "Bash(awk '{printf \"%.1f KB\\\\t%s\\\\n\", $1/1024, $2}')"
+    ]
+  }
+}

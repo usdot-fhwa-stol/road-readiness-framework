@@ -1,0 +1,27 @@
+{
+  "model": "hybridnets",
+  "dataset": "culane",
+  "task": "lane",
+  "split": "test",
+  "num_images": 34680,
+  "skipped": 0,
+  "threshold": "argmax",
+  "img_size": [
+    384,
+    640
+  ],
+  "metrics": {
+    "lane_iou": 0.19824561668645346,
+    "lane_f1": 0.33089312228727924,
+    "lane_precision": 0.5971853831902065,
+    "lane_recall": 0.22884730992195804,
+    "lane_accuracy": 0.22884730992195804,
+    "lane_miou": 0.583983241306733,
+    "pixel_accuracy": 0.969945880018958
+  },
+  "per_image_json": "outputs/results/per_image/hybridnets_culane_per_image.json",
+  "per_image_csv": "outputs/results/per_image/hybridnets_culane_per_image.csv",
+  "per_image_count": 34680,
+  "pred_masks_saved": 34680,
+  "pred_overlays_saved": 100
+}

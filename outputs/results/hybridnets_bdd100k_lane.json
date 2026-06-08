@@ -1,0 +1,27 @@
+{
+  "model": "hybridnets",
+  "dataset": "bdd100k_lane",
+  "task": "lane",
+  "split": "val",
+  "num_images": 10000,
+  "skipped": 0,
+  "threshold": "argmax",
+  "img_size": [
+    384,
+    640
+  ],
+  "metrics": {
+    "lane_iou": 0.22906256942192812,
+    "lane_f1": 0.3727435447479812,
+    "lane_precision": 0.2496226828938411,
+    "lane_recall": 0.7355249347953913,
+    "lane_accuracy": 0.7355249347953913,
+    "lane_miou": 0.6069932772057343,
+    "pixel_accuracy": 0.9849912156032986
+  },
+  "per_image_json": "outputs/results/per_image/hybridnets_bdd100k_lane_per_image.json",
+  "per_image_csv": "outputs/results/per_image/hybridnets_bdd100k_lane_per_image.csv",
+  "per_image_count": 10000,
+  "pred_masks_saved": 10000,
+  "pred_overlays_saved": 100
+}
