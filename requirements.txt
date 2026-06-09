@@ -1,0 +1,8 @@
+numpy
+opencv-python
+torch>=1.12
+torchvision>=0.13
+tqdm
+pyyaml
+pytest
+scipy

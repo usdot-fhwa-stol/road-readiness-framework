@@ -1,0 +1,24 @@
+{
+  "model": "yolopx",
+  "dataset": "culane",
+  "task": "lane",
+  "split": "test",
+  "num_images": 34680,
+  "skipped": 0,
+  "threshold": "argmax",
+  "img_size": 640,
+  "metrics": {
+    "lane_iou": 0.26257075479230796,
+    "lane_f1": 0.4159303608060969,
+    "lane_precision": 0.46155846672585993,
+    "lane_recall": 0.37851195191822967,
+    "lane_accuracy": 0.37851195191822967,
+    "lane_miou": 0.6138104568606715,
+    "pixel_accuracy": 0.9654797401196696
+  },
+  "per_image_json": "outputs/results/per_image/yolopx_culane_per_image.json",
+  "per_image_csv": "outputs/results/per_image/yolopx_culane_per_image.csv",
+  "per_image_count": 34680,
+  "pred_masks_saved": 34680,
+  "pred_overlays_saved": 100
+}

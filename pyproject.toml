@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "lane-eval"
+version = "0.1.0"
+description = "Lane evaluation framework for YOLOPX across multiple datasets"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "opencv-python",
+    "torch",
+    "torchvision",
+    "tqdm",
+    "pyyaml",
+    "scipy",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["lane_eval*"]

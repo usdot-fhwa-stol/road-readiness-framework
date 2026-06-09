@@ -1,0 +1,6 @@
+dataset: culane
+split: val
+root: /shared/data/culane
+mask_thickness: 16
+# NOTE: CULane frames must be extracted from the MP4 source files before
+# image paths in list/val.txt are resolvable.

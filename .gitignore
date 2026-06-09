@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+
+# Data and outputs (anchored to repo root so they don't match source dirs
+# like lane_eval/datasets/ or configs/datasets/)
+/data/
+/datasets/
+/checkpoints/
+/weights/
+outputs/results/*.json
+outputs/predictions/*
+outputs/visualizations/*
+
+# Logs
+*.log
+wandb/
+runs/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+outputs/*
+
+Dockerfile
+
+# Output artifacts (large, not for version control)
+outputs-may26/
+outputs_temp/
+
+# Editor swap files
+*.swp
+
+# Under outputs/, track ONLY json and md (results); keep ignoring images/large artifacts
+outputs/**
+!outputs/**/
+!outputs/**/*.json
+!outputs/**/*.md
+
+# Local Claude Code settings (never commit)
+.claude/
+
+# Generated manifests + masks (regenerable via scripts/build_manifests.sh)
+manifests/
+
+# build logs
+*.log
