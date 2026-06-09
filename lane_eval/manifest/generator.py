@@ -113,7 +113,9 @@ def build_manifest(
     Writes `out_dir/<dataset>/manifest_<dataset>.json` and, when masks must be
     rasterised, `out_dir/<dataset>/masks/*.png`. Returns (manifest_path, count).
     """
-    out_dir = Path(out_dir)
+    # Resolve to an absolute path so the mask_path values written into the
+    # manifest are CWD-independent (the manifest can then be read from anywhere).
+    out_dir = Path(out_dir).resolve()
     dataset_dir = out_dir / dataset_name
     mask_dir = dataset_dir / "masks"
 

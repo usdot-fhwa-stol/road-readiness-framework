@@ -43,10 +43,18 @@ class ManifestDataset:
 
         mask = None
         mask_path = gt.get("mask_path")
-        if mask_path and Path(mask_path).exists():
-            m = cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
-            if m is not None:
-                mask = (m > 0).astype(np.uint8)
+        # Resolve relative mask paths against the manifest's own directory so the
+        # manifest can be read from any working directory. (Generated manifests
+        # now store absolute paths, so this is a no-op for them — but it keeps
+        # any relative-path manifest robust.)
+        resolved_mask_path = None
+        if mask_path:
+            p = Path(mask_path)
+            resolved_mask_path = p if p.is_absolute() else (self.manifest_path.parent / p)
+            if resolved_mask_path.exists():
+                m = cv2.imread(str(resolved_mask_path), cv2.IMREAD_GRAYSCALE)
+                if m is not None:
+                    mask = (m > 0).astype(np.uint8)
 
         return LaneSample(
             image_id=s["sample_id"],
@@ -55,7 +63,7 @@ class ManifestDataset:
             height=s["height"],
             target=LaneTarget(
                 mask=mask,
-                mask_path=mask_path,
+                mask_path=str(resolved_mask_path) if resolved_mask_path else mask_path,
                 meta={"lane_json": gt.get("lane_json"), "natural_gt": gt.get("natural_gt")},
             ),
             meta=s.get("meta", {}),
