@@ -1,15 +1,21 @@
 """Tests for LaneSegmentationEvaluator (wraps YOLOPX SegmentationMetric)."""
+from __future__ import annotations
+
+import os
+from pathlib import Path
+
 import numpy as np
 import pytest
 
-YOLOPX_REPO = "/home/gauravb/Projects/road_readiness_t3/YOLOPX"
+YOLOPX_REPO = os.environ.get("YOLOPX_REPO", "")
 
 
 @pytest.fixture
 def evaluator():
+    if not YOLOPX_REPO or not (Path(YOLOPX_REPO) / "lib" / "core" / "evaluate.py").exists():
+        pytest.skip("YOLOPX repo not available; set YOLOPX_REPO to run these tests")
     from lane_eval.evaluators.lane_segmentation import LaneSegmentationEvaluator
     return LaneSegmentationEvaluator(yolopx_repo=YOLOPX_REPO)
-
 
 def test_perfect_prediction(evaluator):
     gt = np.array([[0, 1, 1], [0, 0, 1]], dtype=np.uint8)
