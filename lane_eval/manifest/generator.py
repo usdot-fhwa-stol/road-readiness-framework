@@ -61,15 +61,15 @@ def sample_to_entry(
     """
     target = sample.target
 
-    if target.lanes:
+    if target.lanes is not None:
         natural_gt = "lanes"
         lane_json = polylines_to_lane_json(target.lanes, sample.height, sample.width, step)
-    elif target.mask is not None:
-        natural_gt = "mask"
-        lane_json = mask_to_lane_json(target.mask, step)
     else:
-        natural_gt = "none"
-        lane_json = {"h_samples": make_h_samples(sample.height, step), "lanes": []}
+        natural_gt = "mask"
+        if target.mask is not None:
+            lane_json = mask_to_lane_json(target.mask, step)
+        else:
+            lane_json = {"h_samples": make_h_samples(sample.height, step), "lanes": []}
 
     # Resolve the mask link.
     if target.mask_path:
