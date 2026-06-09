@@ -1,2 +1,212 @@
 # road-readiness-framework
-This is a public repository that contains lane detection networks and a framework to test and analyze them against one another and across different datasets.
+
+A framework to test and analyze lane-detection networks against one another and
+across multiple datasets. It converts every supported dataset into a single
+**universal manifest format**, runs each model's inference off that manifest,
+and scores all models with the **same** metric code — so comparisons are
+apples-to-apples and only the model's inference differs, never the evaluation.
+
+Currently supported models: **YOLOPX** and **HybridNets**.
+Currently supported datasets: **TuSimple**, **CULane**, **CurveLanes**, **BDD100K**.
+
+## Pipeline
+
+```
+ROAD-READINESS LANE PIPELINE  —  datasets ─ manifest ─ adapter ─ model ─ prediction ─ metrics
+==================================================================================================
+
+ NATIVE DATASETS                MANIFEST                 ADAPTER            MODEL
+ (raw, per-format)         (universal format)         (input side)      (inference)
+─────────────────         ──────────────────         ────────────      ─────────────
+
+ TuSimple ──────┐          build_manifest.py
+ (JSON lines)   │          + dataset adapters
+                │          + converters
+ CULane ────────┤   ──►    ─────────────────   ──►   ManifestDataset
+ (.lines.txt /  │          manifests/<ds>/            (lane_eval/        ┌─► YOLOPX
+  laneseg PNG)  │          manifest_<ds>.json          manifest/         │   (run_lane_eval
+                │            • image_path               dataset.py)      │    --manifest)
+ CurveLanes ────┤   ──►      • width / height   ──►    reads manifest ───┤
+ (.lines.json)  │            • ground_truth:           → LaneSample      │
+                │              - mask_path              (img + GT)        └─► HybridNets
+ BDD100K ───────┘              - lane_json                                    (run_hybridnets
+ (lane mask PNG)               - natural_gt                                    --manifest)
+
+
+ MODEL              PREDICTION                       METRICS
+ (inference)        (output side)                    (scoring)
+ ───────────        ─────────────                    ─────────
+
+ YOLOPX ────┐       PredictionManifestWriter         ┌─ SEGMENTATION (mask IoU/F1)
+            │       (lane_eval/manifest/             │   lane_segmentation.py
+            ├─ ──►   prediction_writer.py)    ──►     │   (YOLOPX SegmentationMetric)
+            │         • pred mask PNG                 │
+ HybridNets ┘         • pred lane_json        ──►     └─ NATIVE (lane points)
+                      (mask → lanes)                     eval_manifest.py
+                                                          ├─ TuSimple: accuracy / FP / FN
+                                                          └─ CULane:   precision / recall / F1
+
+
+PER-DATASET METRIC ROUTING
+──────────────────────────
+ TuSimple    ─ manifest ─ adapter ─ {YOLOPX, HybridNets} ─ prediction ─ segmentation + TuSimple-native
+ CULane      ─ manifest ─ adapter ─ {YOLOPX, HybridNets} ─ prediction ─ segmentation + CULane-native
+ CurveLanes  ─ manifest ─ adapter ─ {YOLOPX, HybridNets} ─ prediction ─ segmentation + CULane-native*
+ BDD100K     ─ manifest ─ adapter ─ {YOLOPX, HybridNets} ─ prediction ─ segmentation (mask-only GT)
+
+ * CurveLanes uses the CULane-style line-IoU F1 evaluator.
+   Note: CULane / BDD100K manifest GT lane_json is mask-derived (natural_gt=mask),
+   so their native lane-point F1 is approximate; TuSimple/CurveLanes GT is native polylines.
+```
+
+The **manifest is the convergence point**: all four native formats collapse into
+one schema, so everything downstream (adapter, models, metrics) is
+dataset-agnostic. One adapter (`ManifestDataset`) feeds both models identically
+via the `--manifest` flag.
+
+## The universal manifest format
+
+`build_manifest` converts each dataset into `manifests/<dataset>/manifest_<dataset>.json`:
+
+```json
+{
+  "metadata": { "dataset": "tusimple", "num_samples": 2782, "h_sample_step": 10 },
+  "samples": [
+    {
+      "sample_id": "clips_0530_1492626760788443246_0_20",
+      "image_path": "/shared/data/TUSimple/test_set/clips/0530/.../20.jpg",
+      "width": 1280,
+      "height": 720,
+      "ground_truth": {
+        "mask_path": "manifests/tusimple/masks/<sample_id>.png",
+        "natural_gt": "lanes",
+        "lane_json": {
+          "h_samples": [10, 20, 30, "...", 710],
+          "lanes": [[-2, -2, "...", 632, 625, "..."], "..."]
+        }
+      }
+    }
+  ]
+}
+```
+
+- `lane_json` is the TuSimple-style representation: `h_samples` are row coordinates
+  (every 10px, skipping 0 and the image height); `lanes` are x-positions per row,
+  with `-2` marking a missing point.
+- `natural_gt` indicates which ground-truth representation is native to the dataset
+  (`lanes` for polyline datasets, `mask` for mask-only datasets).
+- Every sample carries **both** a `mask_path` and a `lane_json`, so any evaluator
+  (mask-based or lane-point-based) can be used.
+
+## Datasets
+
+| Dataset | Native GT | `natural_gt` | Samples | Split |
+|---|---|---|--:|---|
+| TuSimple | polyline JSON-lines | `lanes` | 2,782 | test |
+| CULane | `laneseg` PNG masks (+ `.lines.txt`) | `mask` | 34,680 | test |
+| CurveLanes | `.lines.json` polylines | `lanes` | 20,000 | valid |
+| BDD100K | lane-mask PNGs | `mask` | 10,000 | val |
+
+## Quickstart
+
+### 1. Build the manifests
+```bash
+bash scripts/build_manifests.sh          # all four datasets (~15 min)
+# or one dataset:
+python -m lane_eval.cli.build_manifest \
+    --dataset tusimple \
+    --root /shared/data/TUSimple/test_set \
+    --annotation-file /shared/data/TUSimple/test_label.json \
+    --split test
+```
+Output goes to `manifests/<dataset>/` (gitignored — regenerable artifacts).
+
+### 2. Run a model off the manifest
+```bash
+# YOLOPX (all datasets)
+bash scripts/run_yolopx_manifest.sh
+
+# HybridNets (runs under its own venv)
+bash scripts/run_hybridnets_manifest.sh
+
+# or a single run:
+python -m lane_eval.cli.run_lane_eval \
+    --yolopx-repo /path/to/YOLOPX \
+    --weights /path/to/epoch-195.pth \
+    --manifest manifests/tusimple/manifest_tusimple.json \
+    --pred-manifest outputs/pred/yolopx_tusimple_pred.json \
+    --output outputs/results/yolopx_tusimple.json --per-image
+```
+Results are written to `outputs/results/<model>_<dataset>.json`.
+
+### 3. Score with native lane-point metrics
+```bash
+python -m lane_eval.cli.eval_manifest \
+    --gt-manifest   manifests/tusimple/manifest_tusimple.json \
+    --pred-manifest outputs/pred/yolopx_tusimple_pred.json
+```
+
+## Results
+
+Both models, scored by the **shared** `SegmentationMetric` (mask IoU / F1 /
+precision / recall) on every dataset:
+
+| Model | Dataset | Split | Images | IoU | F1 | Precision | Recall |
+|---|---|---|--:|--:|--:|--:|--:|
+| yolopx | tusimple | test | 2,782 | 0.4960 | 0.6631 | 0.6340 | 0.6950 |
+| yolopx | culane | test | 34,680 | 0.2626 | 0.4159 | 0.4616 | 0.3785 |
+| yolopx | curvelanes | valid | 20,000 | 0.3845 | 0.5554 | 0.5292 | 0.5844 |
+| yolopx | bdd100k_lane | val | 10,000 | 0.2006 | 0.3342 | 0.2058 | 0.8893 |
+| hybridnets | tusimple | test | 2,782 | 0.4721 | 0.6414 | 0.7763 | 0.5464 |
+| hybridnets | culane | test | 34,680 | 0.1982 | 0.3309 | 0.5972 | 0.2288 |
+| hybridnets | curvelanes | valid | 20,000 | 0.3267 | 0.4925 | 0.5950 | 0.4201 |
+| hybridnets | bdd100k_lane | val | 10,000 | 0.2291 | 0.3727 | 0.2496 | 0.7355 |
+
+### Preliminary model comparison (mean across datasets)
+
+| Model | Mean IoU | Mean F1 | Mean Precision | Mean Recall | Cross-Dataset Consistency |
+|---|--:|--:|--:|--:|--:|
+| yolopx | 0.3359 | 0.4922 | 0.4576 | 0.6368 | 0.7430 |
+| hybridnets | 0.3065 | 0.4594 | 0.5545 | 0.4827 | 0.7373 |
+
+_Cross-Dataset Consistency = 1 − (std/mean) of F1 across datasets (1.0 = identical
+across domains)._ The comparison table is auto-generated by
+`evaluation/build_model_table.py` into `outputs/results/model_comparison.md`.
+
+> **Manifest path is validated.** Running both models through the manifest +
+> adapter path reproduces the original native-adapter metrics **exactly** (max
+> metric difference `0.00e+00` across all 8 model×dataset runs, with identical
+> image counts).
+
+## Repository layout
+
+```
+lane_eval/
+  datasets/      native dataset adapters (tusimple, culane, curvelanes, bdd100k) → LaneSample
+  converters/    lanes↔mask, lanes↔tusimple lane_json (universal conversions)
+  manifest/      build_manifest (generator), ManifestDataset (reader),
+                 PredictionManifestWriter (prediction output)
+  evaluators/    lane_segmentation (mask IoU/F1), tusimple_native, culane_native
+  cli/           build_manifest, run_lane_eval (YOLOPX), eval_manifest
+  schema/        LaneSample / LaneTarget / LanePrediction
+evaluation/      run_hybridnets, per_image_metrics, build_model_table, save_predictions
+scripts/         build_manifests.sh, run_{yolopx,hybridnets}_manifest.sh
+configs/         dataset + model + eval configs
+manifests/       generated manifests + masks (gitignored, regenerable)
+outputs/         results JSON, per-image metrics, comparison table
+```
+
+## Design notes
+
+- **One metric for all models.** Mask scoring uses YOLOPX's own
+  `SegmentationMetric` for every model — no model uses its own native eval, so the
+  comparison is fair.
+- **Models are inference-only.** Each model contributes only its weights and
+  preprocessing; ground truth, manifest, and scoring are shared.
+- **HybridNets runs in its own venv** (`/shared/src/HybridNets/hybridnets/bin/python`)
+  because of its timm/efficientnet dependencies; it still imports this repo's
+  `lane_eval` adapters and the shared metric.
+- **Caveat:** CULane and BDD100K provide ground truth as masks, so their manifest
+  `lane_json` is approximated from the mask (connected components). Native
+  lane-point F1 for these is therefore approximate; TuSimple and CurveLanes use
+  native polyline ground truth.
