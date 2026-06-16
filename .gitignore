@@ -53,3 +53,13 @@ manifests/
 
 # build logs
 *.log
+
+# CLRerNet generated outputs
+outputs/clrernet/
+
+# CLRerNet generated artifacts
+outputs/clrernet_full/
+outputs/clrernet_overlay_direct/
+outputs/clrernet_overlay_test/
+outputs/results/clrernet_*.json
+outputs/results/model_comparison_with_clrernet.md
