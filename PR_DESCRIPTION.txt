@@ -1,0 +1,74 @@
+## Summary
+
+Introduces a **universal manifest format** that standardizes all supported lane
+datasets into one schema, and wires both models (YOLOPX, HybridNets) to run
+inference and be scored off that manifest. This makes dataset/model comparison
+apples-to-apples: only the model's inference differs, never the ground truth or
+the metric.
+
+Pipeline: `datasets - manifest - adapter - model - prediction - metrics`
+(see the diagram + full docs in the rewritten `README.md`).
+
+## What's included
+
+**Universal manifest**
+- `lane_eval/manifest/generator.py` + `cli/build_manifest.py` — convert any
+  registered dataset into `manifest_<dataset>.json` (image path, dims, GT
+  `mask_path` + TuSimple-style `lane_json` + `natural_gt` indicator).
+- `scripts/build_manifests.sh` — build all four datasets.
+- Converters: `lanes_to_tusimple.py` (polyline -> lane_json) and
+  `mask_to_lanes.py` (mask -> approximate lane_json via connected components).
+
+**Model adapters (read manifest, write predictions)**
+- `lane_eval/manifest/dataset.py` `ManifestDataset` — manifest as the eval input
+  source (model-agnostic).
+- `lane_eval/manifest/prediction_writer.py` `PredictionManifestWriter` —
+  predictions in universal form (pred mask PNG + derived lane_json).
+- `--manifest` / `--pred-manifest` wired into **both** `run_lane_eval` (YOLOPX)
+  and `evaluation/run_hybridnets.py` (HybridNets); `--dataset` now optional.
+- `scripts/run_{yolopx,hybridnets}_manifest.sh`.
+
+**Native lane-point evaluators**
+- `evaluators/tusimple_native.py` — official TuSimple accuracy / FP / FN.
+- `evaluators/culane_native.py` — CULane line-IoU F1 (precision/recall/F1).
+- `cli/eval_manifest.py` — pair a prediction manifest with a GT manifest by id
+  and run the dataset-appropriate native metric.
+
+**Supporting**
+- `.gitignore` fix: un-anchored `datasets/`/`data/` rules were excluding
+  `lane_eval/datasets/` and `configs/datasets/` — **the dataset adapters and
+  configs had never been committed**; anchored the rules and added the source.
+- Tests for adapters, converters, metrics, and the native evaluators.
+- Core-metrics result JSONs + per-image outputs under `outputs/`.
+
+## Validation
+
+Running both models through the manifest + adapter path reproduces the original
+native-adapter core metrics **exactly** — max metric diff `0.00e+00` across all
+8 model x dataset runs, with identical image counts (TuSimple 2,782 / CULane
+34,680 / CurveLanes 20,000 / BDD100K 10,000).
+
+| Model | Mean IoU | Mean F1 | Mean Precision | Mean Recall |
+|---|--:|--:|--:|--:|
+| yolopx | 0.3359 | 0.4922 | 0.4576 | 0.6368 |
+| hybridnets | 0.3065 | 0.4594 | 0.5545 | 0.4827 |
+
+## Notes for reviewers
+
+- **Large diff is expected** — `develop` is near the initial commit, and this
+  brings in the full `lane_eval` framework (including the previously-untracked
+  adapters rescued by the `.gitignore` fix).
+- **Mask-derived GT caveat:** CULane and BDD100K provide GT as masks, so their
+  manifest `lane_json` is *approximated* from the mask. Their native lane-point
+  F1 is therefore approximate; TuSimple/CurveLanes use native polyline GT.
+- **Generated manifests are gitignored** (`manifests/` — ~140 MB JSON + masks),
+  regenerable via `scripts/build_manifests.sh`.
+- HybridNets runs under its own venv (timm/efficientnet) but imports this repo's
+  `lane_eval` adapters and the shared `SegmentationMetric`.
+
+## Test plan
+
+- [x] `pytest` — 38 passing (adapters, converters, metrics, native evaluators)
+- [x] Manifests generated for all 4 datasets
+- [x] YOLOPX + HybridNets end-to-end off manifest; native eval via `eval_manifest`
+- [x] Manifest metrics confirmed bit-identical to native-adapter baseline

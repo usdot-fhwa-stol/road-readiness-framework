@@ -1,6 +1,7 @@
 """Write model predictions in the universal manifest format.
 
-This is the output side of the YOLOPX adapter. For each processed image it
+This is the output side of the shared, model-agnostic manifest adapter (used by
+both YOLOPX and HybridNets). For each processed image it
 records both prediction representations the manifest spec asks for: a predicted
 lane-mask PNG link and a predicted lane_json (derived from the mask via the
 existing mask_to_lanes converter — no new geometry).

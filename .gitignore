@@ -53,3 +53,5 @@ manifests/
 
 # build logs
 *.log
+CODE_SUMMARY_FOR_CHATGPT.md
+outputs_*/*
