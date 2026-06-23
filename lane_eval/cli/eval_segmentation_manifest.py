@@ -18,6 +18,23 @@ def _load_binary_mask(path: str):
     return (mask > 0).astype(np.uint8)
 
 
+def _scores(tp: int, fp: int, fn: int, tn: int) -> dict:
+    precision = tp / (tp + fp + 1e-12)
+    recall = tp / (tp + fn + 1e-12)
+    f1 = 2 * precision * recall / (precision + recall + 1e-12)
+    lane_iou = tp / (tp + fp + fn + 1e-12)
+    bg_iou = tn / (tn + fp + fn + 1e-12)
+    return {
+        "lane_iou": float(lane_iou),
+        "lane_f1": float(f1),
+        "lane_precision": float(precision),
+        "lane_recall": float(recall),
+        "lane_accuracy": float(recall),
+        "lane_miou": float((lane_iou + bg_iou) / 2),
+        "pixel_accuracy": float((tp + tn) / (tp + fp + fn + tn + 1e-12)),
+    }
+
+
 def parse_args():
     p = argparse.ArgumentParser(
         description="Score prediction manifest masks against GT manifest masks."
@@ -29,6 +46,11 @@ def parse_args():
     p.add_argument("--model-name", default="clrernet")
     p.add_argument("--dataset", default=None)
     p.add_argument("--split", default="test")
+    p.add_argument(
+        "--no-per-image",
+        action="store_true",
+        help="Do not include per-image metrics in the output JSON",
+    )
     return p.parse_args()
 
 
@@ -41,12 +63,17 @@ def main():
     gt_by_id = {s["sample_id"]: s for s in gt_data["samples"]}
     pred_samples = pred_data["samples"]
 
-    dataset = args.dataset or pred_data.get("metadata", {}).get("dataset") or gt_data.get("metadata", {}).get("dataset")
+    dataset = (
+        args.dataset
+        or pred_data.get("metadata", {}).get("dataset")
+        or gt_data.get("metadata", {}).get("dataset")
+    )
     model = args.model_name or pred_data.get("metadata", {}).get("model", "model")
 
-    tp = fp = fn = tn = 0
+    total_tp = total_fp = total_fn = total_tn = 0
     skipped = 0
     processed = 0
+    per_image = []
 
     for pred_sample in tqdm(pred_samples, desc=f"Scoring {model} on {dataset}"):
         sample_id = pred_sample["sample_id"]
@@ -75,20 +102,30 @@ def main():
         pred = pred_mask > 0
         gt = gt_mask > 0
 
-        tp += int(np.logical_and(pred, gt).sum())
-        fp += int(np.logical_and(pred, ~gt).sum())
-        fn += int(np.logical_and(~pred, gt).sum())
-        tn += int(np.logical_and(~pred, ~gt).sum())
+        tp = int(np.logical_and(pred, gt).sum())
+        fp = int(np.logical_and(pred, ~gt).sum())
+        fn = int(np.logical_and(~pred, gt).sum())
+        tn = int(np.logical_and(~pred, ~gt).sum())
+
+        total_tp += tp
+        total_fp += fp
+        total_fn += fn
+        total_tn += tn
         processed += 1
 
-    precision = tp / (tp + fp + 1e-12)
-    recall = tp / (tp + fn + 1e-12)
-    f1 = 2 * precision * recall / (precision + recall + 1e-12)
-    lane_iou = tp / (tp + fp + fn + 1e-12)
-
-    bg_iou = tn / (tn + fp + fn + 1e-12)
-    lane_miou = (lane_iou + bg_iou) / 2
-    pixel_accuracy = (tp + tn) / (tp + fp + fn + tn + 1e-12)
+        if not args.no_per_image:
+            rec = {
+                "sample_id": sample_id,
+                "image_path": pred_sample.get("image_path") or gt_sample.get("image_path"),
+                "gt_mask_path": gt_mask_path,
+                "pred_mask_path": pred_mask_path,
+                "tp_pixels": tp,
+                "fp_pixels": fp,
+                "fn_pixels": fn,
+                "tn_pixels": tn,
+            }
+            rec.update(_scores(tp, fp, fn, tn))
+            per_image.append(rec)
 
     results = {
         "model": model,
@@ -98,21 +135,23 @@ def main():
         "num_images": processed,
         "skipped": skipped,
         "threshold": "mask",
-        "metrics": {
-            "lane_iou": float(lane_iou),
-            "lane_f1": float(f1),
-            "lane_precision": float(precision),
-            "lane_recall": float(recall),
-            "lane_accuracy": float(recall),
-            "lane_miou": float(lane_miou),
-            "pixel_accuracy": float(pixel_accuracy),
+        "metrics": _scores(total_tp, total_fp, total_fn, total_tn),
+        "pixel_counts": {
+            "tp_pixels": total_tp,
+            "fp_pixels": total_fp,
+            "fn_pixels": total_fn,
+            "tn_pixels": total_tn,
         },
     }
+
+    if not args.no_per_image:
+        results["per_image_count"] = len(per_image)
+        results["per_image"] = per_image
 
     out = Path(args.output)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(results, indent=2))
-    print(json.dumps(results, indent=2))
+    print(json.dumps({k: v for k, v in results.items() if k != "per_image"}, indent=2))
     print(f"Saved -> {out}")
 
 
