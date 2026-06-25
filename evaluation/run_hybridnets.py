@@ -86,7 +86,11 @@ def _load_model(hybridnets_repo: str, weights: str, params, requested_device):
     from backbone import HybridNetsBackbone
     from utils.constants import BINARY_MODE, MULTICLASS_MODE, MULTILABEL_MODE
 
-    sd = torch.load(weights, map_location="cpu", weights_only=True)
+    try:
+        sd = torch.load(weights, map_location="cpu", weights_only=True)
+    except TypeError:
+        # weights_only kwarg not available on older PyTorch (< 1.13)
+        sd = torch.load(weights, map_location="cpu")
     w = sd["segmentation_head.0.weight"]
     if w.size(0) == 1:
         seg_mode = BINARY_MODE

@@ -17,6 +17,19 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 OUT_DIR="${OUT_DIR:-manifests}"
+
+# Dataset locations — override via env for other machines (defaults match the
+# verified layout on the project host).
+TUSIMPLE_ROOT="${TUSIMPLE_ROOT:-/shared/data/TUSimple/test_set}"
+TUSIMPLE_ANNO="${TUSIMPLE_ANNO:-/shared/data/TUSimple/test_label.json}"
+CULANE_ROOT="${CULANE_ROOT:-/shared/data/culane}"
+CULANE_SPLIT="${CULANE_SPLIT:-test}"
+CURVELANES_ROOT="${CURVELANES_ROOT:-/shared/data/Curvelanes}"
+CURVELANES_SPLIT="${CURVELANES_SPLIT:-valid}"
+BDD_IMAGES="${BDD_IMAGES:-/shared/data/bdd100k/images/val}"
+BDD_MASKS="${BDD_MASKS:-/shared/data/bdd100k/ll_seg_annotations/val}"
+BDD_DET="${BDD_DET:-/shared/data/bdd100k/det_annotations/val}"
+
 EXTRA=""
 if [[ -n "${MAX:-}" ]]; then
   EXTRA="--max-samples ${MAX}"
@@ -25,25 +38,25 @@ fi
 run() { echo "+ python -m lane_eval.cli.build_manifest $*"; python -m lane_eval.cli.build_manifest "$@" $EXTRA; }
 
 run --dataset tusimple \
-    --root /shared/data/TUSimple/test_set \
-    --annotation-file /shared/data/TUSimple/test_label.json \
+    --root "$TUSIMPLE_ROOT" \
+    --annotation-file "$TUSIMPLE_ANNO" \
     --split test \
     --out-dir "$OUT_DIR"
 
 run --dataset culane \
-    --root /shared/data/culane \
-    --split test \
+    --root "$CULANE_ROOT" \
+    --split "$CULANE_SPLIT" \
     --out-dir "$OUT_DIR"
 
 run --dataset curvelanes \
-    --root /shared/data/Curvelanes \
-    --split valid \
+    --root "$CURVELANES_ROOT" \
+    --split "$CURVELANES_SPLIT" \
     --out-dir "$OUT_DIR"
 
 run --dataset bdd100k_lane \
-    --image-root /shared/data/bdd100k/images/val \
-    --lane-mask-root /shared/data/bdd100k/ll_seg_annotations/val \
-    --det-annotations-root /shared/data/bdd100k/det_annotations/val \
+    --image-root "$BDD_IMAGES" \
+    --lane-mask-root "$BDD_MASKS" \
+    --det-annotations-root "$BDD_DET" \
     --out-dir "$OUT_DIR"
 
 echo "Done. Manifests under: $OUT_DIR/"

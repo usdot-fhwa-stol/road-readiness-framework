@@ -73,7 +73,7 @@ def sample_to_entry(
 
     # Resolve the mask link.
     if target.mask_path:
-        mask_path: Optional[str] = target.mask_path
+        mask_path: Optional[str] = str(Path(target.mask_path).expanduser().resolve())
     elif save_masks and target.mask is not None:
         mask_dir.mkdir(parents=True, exist_ok=True)
         out_mask = mask_dir / f"{sample.image_id}.png"

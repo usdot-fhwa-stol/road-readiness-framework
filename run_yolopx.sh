@@ -20,7 +20,8 @@ cd "$(dirname "$0")"
 
 # ---- config (override via env) ----------------------------------------------
 PY="${PYTHON:-python}"
-YOLOPX_REPO="${YOLOPX_REPO:-/home/gauravb/Projects/road_readiness_t3/YOLOPX}"
+YOLOPX_REPO="${YOLOPX_REPO:-}"
+: "${YOLOPX_REPO:?YOLOPX_REPO must point to the YOLOPX repo root}"
 WEIGHTS="${WEIGHTS:-$YOLOPX_REPO/weights/epoch-195.pth}"
 MODEL_NAME="${MODEL_NAME:-yolopx}"
 DEVICE="${DEVICE:-cuda:0}"

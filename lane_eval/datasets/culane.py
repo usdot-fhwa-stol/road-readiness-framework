@@ -134,16 +134,18 @@ class CULaneAdapter(LaneDatasetAdapter):
             # Fallback: rasterise from polyline annotations
             annot = Path(annot_path)
             if annot.exists():
-                try:
-                    with open(annot) as f:
-                        for line in f:
-                            vals = line.strip().split()
-                            if len(vals) >= 4:
-                                coords = list(map(float, vals))
-                                pts = np.array(coords, dtype=np.float32).reshape(-1, 2)
-                                lanes.append(pts)
-                except Exception:
-                    pass
+                with open(annot) as f:
+                    for line in f:
+                        vals = line.strip().split()
+                        if len(vals) < 4:
+                            continue
+                        # Skip a single malformed line without aborting the rest.
+                        try:
+                            coords = list(map(float, vals))
+                            pts = np.array(coords, dtype=np.float32).reshape(-1, 2)
+                            lanes.append(pts)
+                        except (ValueError, TypeError):
+                            continue
             elif self.strict:
                 raise FileNotFoundError(f"Annotation missing: {annot_path}")
             mask = lanes_to_mask(lanes, h, w, thickness=self.mask_thickness) if lanes else np.zeros((h, w), np.uint8)

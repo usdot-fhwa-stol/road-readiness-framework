@@ -10,8 +10,10 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 PY="${HYBRIDNETS_PY:-/shared/src/HybridNets/hybridnets/bin/python}"
-HN_REPO="${HYBRIDNETS_REPO:-/home/gauravb/Projects/road_readiness_t3/HybridNets}"
-YOLOPX_REPO="${YOLOPX_REPO:-/home/gauravb/Projects/road_readiness_t3/YOLOPX}"
+HN_REPO="${HYBRIDNETS_REPO:-}"
+YOLOPX_REPO="${YOLOPX_REPO:-}"
+: "${HN_REPO:?HYBRIDNETS_REPO must point to the HybridNets repo root}"
+: "${YOLOPX_REPO:?YOLOPX_REPO must point to the YOLOPX repo root}"
 WEIGHTS="${WEIGHTS:-$HN_REPO/weights/hybridnets.pth}"
 MODEL_NAME="${MODEL_NAME:-hybridnets}"
 PROJECT="${PROJECT:-bdd100k}"

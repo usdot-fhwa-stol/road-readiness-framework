@@ -1,5 +1,5 @@
 model: yolopx
-repo: /home/gauravb/Projects/road_readiness_t3/YOLOPX
-weights: /home/gauravb/Projects/road_readiness_t3/YOLOPX/weights/epoch-195.pth
+repo: /path/to/YOLOPX
+weights: /path/to/YOLOPX/weights/epoch-195.pth
 img_size: 640
 device: cuda:0

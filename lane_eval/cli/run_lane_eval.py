@@ -73,7 +73,10 @@ def _load_model(yolopx_repo: str, weights: str, requested_device: torch.device):
 
     # Load weights to CPU first so we can test device placement safely
     model = get_net(cfg=None)
-    ckpt = torch.load(weights, map_location="cpu")
+    try:
+        ckpt = torch.load(weights, map_location="cpu", weights_only=True)
+    except TypeError:
+        ckpt = torch.load(weights, map_location="cpu")
     model.load_state_dict(ckpt["state_dict"])
     model.eval()
 
