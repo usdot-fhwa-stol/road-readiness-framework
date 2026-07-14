@@ -1,0 +1,351 @@
+================================================================================
+CHAPTER 3 — REVISIONS, ROUND 2
+Reference Image Processor Identification and Assessment
+================================================================================
+
+WHAT THIS FILE COVERS
+  PART A — Round-1 fixes that were NOT applied (or only partly applied). Still open.
+  PART B — NEW contradictions created when revised paragraphs were pasted in but
+           the old, opposite sentences were left in place. THESE ARE THE MOST
+           IMPORTANT — the chapter currently contradicts itself.
+  PART C — Figure placement, in-text reference sentences, and captions.
+
+SOURCE-OF-TRUTH NUMBERS (Table 12; CLRerNet leads on IoU, F1, Precision; YOLOPX
+leads only on Recall):
+  Model        Mean IoU   Mean F1   Mean Precision   Mean Recall
+  SCNN          0.3170    0.4470      0.4249           0.4746
+  CLRerNet      0.4532    0.6083      0.7081           0.5394
+  YOLOPX        0.3359    0.4922      0.4576           0.6368
+  HybridNets    0.3065    0.4594      0.5545           0.4827
+
+
+================================================================================
+PART B — SELF-CONTRADICTIONS TO FIX FIRST (highest priority)
+================================================================================
+You added the corrected paragraphs but did not remove the sentences they were
+meant to replace. The result is direct contradiction. Delete/replace each below.
+
+--------------------------------------------------------------------------------
+B-NEW-1. "YOLOPX has the highest IoU and F1" — FALSE, contradicts the paragraph
+above it.
+--------------------------------------------------------------------------------
+CURRENT TEXT (delete the bolded claim):
+  "These results should be interpreted together with the intended role of each
+  processor in the pilot workflow. YOLOPX provides the strongest coverage-
+  oriented reference processor because it has the highest IoU, F1 Score, and mean
+  recall among the evaluated models."
+
+REPLACE WITH:
+  "These results should be interpreted together with the intended role of each
+  processor in the pilot workflow. YOLOPX provides the strongest coverage-
+  oriented reference processor because it has the highest mean recall among the
+  evaluated models; CLRerNet, by contrast, achieves the highest mean IoU, F1
+  Score, and precision."
+
+RATIONALE:
+  CLRerNet (IoU 0.4532, F1 0.6083) leads YOLOPX (0.3359, 0.4922). The sentence as
+  written contradicts your own B1 paragraph two lines earlier.
+
+--------------------------------------------------------------------------------
+B-NEW-2. "HybridNets ... stronger IoU/F1 Score than CLRerNet" — FALSE.
+--------------------------------------------------------------------------------
+CURRENT TEXT:
+  "HybridNets remains an informative quantitative comparator because it achieved
+  higher mean precision than YOLOPX and stronger IoU/F1 Score than CLRerNet, but
+  it is less distinct from YOLOPX in analytical role because both are multitask
+  driving-perception models with lane-related outputs."
+
+REPLACE WITH:
+  "HybridNets remains an informative quantitative comparator: it achieved higher
+  mean precision than YOLOPX (0.5545 vs 0.4576) but the lowest mean IoU (0.3065)
+  and a mean F1 Score (0.4594) below both CLRerNet and YOLOPX. It is also less
+  distinct from YOLOPX in analytical role, since both are multitask driving-
+  perception models with lane-related outputs."
+
+RATIONALE:
+  CLRerNet's IoU/F1 (0.4532/0.6083) are the highest of any model; HybridNets'
+  (0.3065/0.4594) are not "stronger than CLRerNet." Only the precision-vs-YOLOPX
+  claim is correct.
+
+--------------------------------------------------------------------------------
+B-NEW-3. The CLRerNet "supplemental" paragraph still says its IoU/F1/recall were
+"lower." Contradicts B1/B2.
+--------------------------------------------------------------------------------
+CURRENT TEXT:
+  "CLRerNet was retained as a supplemental lane-focused processor for the Chapter
+  5 pilot analysis. Although its IoU, F1 Score, and recall were lower under the
+  mask-based evaluation, its high precision on several datasets suggests that it
+  may provide conservative, high-confidence lane-line outputs. This makes CLRerNet
+  useful for testing whether pilot-analysis conclusions are sensitive to the
+  choice of reference processor. In particular, comparison between YOLOPX and
+  CLRerNet can help distinguish findings that are robust across processor types
+  from findings that depend on a broader-coverage versus conservative lane-line
+  detection behavior."
+
+REPLACE WITH:
+  "CLRerNet was retained as a supplemental lane-focused processor for the Chapter
+  5 pilot analysis. Although it achieved the highest mean IoU, F1 Score, and
+  precision in the comparison, it was not selected as the primary processor
+  because its advantage is concentrated on its in-domain CULane split, its recall
+  falls on out-of-domain imagery (BDD100K), and its mask-based scores depend on
+  the rasterization settings. Its high-precision, structured lane-line outputs
+  nonetheless make CLRerNet valuable for testing whether pilot-analysis
+  conclusions are sensitive to the choice of reference processor. In particular,
+  comparison between YOLOPX and CLRerNet helps distinguish findings that are
+  robust across processor types from those that depend on a broader-coverage
+  versus a higher-precision lane-line detector."
+
+RATIONALE:
+  "IoU, F1 Score, and recall were lower" is false and undercuts the whole chapter.
+  The honest reason CLRerNet is supplemental rather than primary is the in-domain
+  / out-of-domain / tolerance-sensitivity argument, not weak metrics. Also drops
+  the loaded word "conservative," which you already replaced elsewhere.
+
+--------------------------------------------------------------------------------
+B-NEW-4. Summary section — leftover contradiction + duplication.
+--------------------------------------------------------------------------------
+CURRENT TEXT (the tail of the summary paragraph):
+  "...the two processors are used together to test the robustness of pilot
+  findings to processor choice. CLRerNet was retained as a supplemental lane-
+  focused processor because it provides structured lane-line outputs and offers a
+  useful comparison to YOLOPX's broader-coverage behavior. Although CLRerNet
+  showed lower recall under the current mask-based evaluation, this behavior is
+  interpreted as conservative or sparse lane-line coverage under the standardized
+  evaluation workflow rather than as a basis for excluding it from supplemental
+  analysis."
+
+REPLACE WITH:
+  "...the two processors are used together to test the robustness of pilot
+  findings to processor choice. CLRerNet contributes structured, high-precision
+  lane-line outputs that complement YOLOPX's broader-coverage behavior; its
+  reduced recall is confined to out-of-domain imagery (BDD100K) and does not
+  affect its suitability for supplemental analysis."
+
+RATIONALE:
+  The two sentences "CLRerNet was retained as a supplemental..." appear twice
+  (once in the B11 text, once here). The "lower recall / conservative or sparse"
+  claim again contradicts the corrected results. This consolidates to one
+  accurate sentence.
+
+--------------------------------------------------------------------------------
+B-NEW-5. Cross-dataset consistency paragraph — duplicated trailing sentences.
+--------------------------------------------------------------------------------
+CURRENT TEXT (note the repetition at the end):
+  "...This avoids arbitrary categorical thresholds and supports direct comparison
+  among candidate processors. Higher values indicate more stable performance
+  across TuSimple, CULane, CurveLanes, and BDD100K-Lane, while lower values
+  indicate greater variation in performance across datasets. This approach avoids
+  assigning arbitrary categorical thresholds and supports direct comparison among
+  candidate processors."
+
+FIX:
+  Delete the second and third sentences shown above (everything after the first
+  "...among candidate processors."). They repeat what the new definition already
+  states.
+
+RATIONALE:
+  The "higher values / lower values / avoids categorical thresholds" idea is now
+  stated twice in the same paragraph.
+
+--------------------------------------------------------------------------------
+B-NEW-6. Practical-usability paragraph — minor redundant recall sentence.
+--------------------------------------------------------------------------------
+CURRENT TEXT (inside the YOLOPX usability paragraph):
+  "...YOLOPX provides more uniform coverage across the four datasets for a
+  coverage-oriented screening task. Its high mean recall makes it suitable for
+  coverage-oriented analysis of lane-line detectability across the public roadway
+  imagery. However, YOLOPX also showed a precision-recall imbalance, especially
+  on BDD100K-Lane, where high recall was paired with low precision..."
+
+FIX:
+  Delete "Its high mean recall makes it suitable for coverage-oriented analysis of
+  lane-line detectability across the public roadway imagery." (the preceding
+  sentence already makes the coverage point), and keep the precision-recall
+  imbalance sentence, which is useful.
+
+RATIONALE:
+  "coverage-oriented" / "high recall" is stated three times in two sentences.
+
+
+================================================================================
+PART A — ROUND-1 ITEMS STILL OPEN
+================================================================================
+
+--------------------------------------------------------------------------------
+A2 (STILL OPEN). SCNN TuSimple <-> BDD100K row swap in Table 14.
+--------------------------------------------------------------------------------
+Table 14 still shows SCNN TuSimple = 0.0629/0.1183 (failing) and SCNN BDD100K =
+0.5396/0.7010 (strong). Your figures show the opposite, and SCNN is trained on
+TuSimple, so it should be strong in-domain on TuSimple. Either swap the two SCNN
+rows in Table 14 to match the figures:
+  SCNN  TuSimple  test  2,782   IoU 0.5396  F1 0.7010  P 0.6529  R 0.7567
+  SCNN  BDD100K   valid 10,000  IoU 0.0629  F1 0.1183  P 0.0953  R 0.1560
+or regenerate Table 14 and confirm which is correct. Right now the table and the
+figures disagree, and a reader will see it.
+
+--------------------------------------------------------------------------------
+A3 (STILL OPEN). The methodology never defines the rasterization width / tolerance.
+--------------------------------------------------------------------------------
+Your results prose now says "the rasterization width and tolerance defined in the
+evaluation methodology" (B1) and "applying a consistent rasterization width and
+tolerance across all models" (B4) — but the Methodology section never actually
+defines them, so these are forward references to text that does not exist.
+
+ADD this to the end of the "Core Evaluation Metrics" subsection (replace W and T
+with your real values, e.g. width 16 px, tolerance 8 px):
+  "Because lane-line detectors such as CLRerNet output structured polylines rather
+  than dense masks, each model's lane output is rendered to a binary lane mask at
+  a fixed stroke width of W px, and a stroke-width tolerance of T px is applied
+  symmetrically to both the predicted and reference masks before pixel-level true
+  positives, false positives, and false negatives are counted. The same rendering
+  width and tolerance are applied identically to all four models, so that thin-
+  line and dense-mask outputs are compared on geometric agreement rather than on
+  raster width."
+
+CONFIRM in your pipeline that the tolerance was applied to ALL models, not only
+CLRerNet. If only CLRerNet received it, the comparison is not fair and the numbers
+must be regenerated.
+
+--------------------------------------------------------------------------------
+A4 (STILL OPEN). Table captions and numbering.
+--------------------------------------------------------------------------------
+  - Table 12 caption still reads "...for YOLOPX and HybridNets" but lists all four
+    models. Change to: "Cross-dataset summary statistics (mean IoU / F1 /
+    Precision / Recall and cross-dataset consistency) for SCNN, CLRerNet, YOLOPX,
+    and HybridNets."
+  - Table 14 caption: change "for YOLOPX, HybridNets, SCNN and CLRerNet" ordering
+    is fine, but fix the typo "lane mask as other three models" ->
+    "a lane mask as the other three models do."
+  - Numbering still jumps 12 -> 14 with no Table 13. Renumber so tables are
+    sequential and appear in citation order (Table 12 is cited after Table 14 in
+    the text; either reorder the citations or renumber the tables).
+
+--------------------------------------------------------------------------------
+A5 (PARTIAL). Consistency definition added, but SCNN value still "[Place holder]".
+--------------------------------------------------------------------------------
+Compute and fill the SCNN cross-dataset consistency value in Table 12 using the
+same formula you applied to the others (one minus the coefficient of variation of
+the per-dataset primary score). Do not ship a table with a placeholder.
+
+--------------------------------------------------------------------------------
+B7 (STILL OPEN). Table 10 — CLRerNet training dataset.
+--------------------------------------------------------------------------------
+Table 10 still lists CLRerNet "Reported Training Dataset(s)" as "CULane /
+CurveLanes". You ran only the CULane-trained DLA-34 checkpoint. Change to:
+  "CULane (DLA-34 checkpoint used in this study)".
+
+--------------------------------------------------------------------------------
+B9 (PARTIAL). Remaining typos.
+--------------------------------------------------------------------------------
+  - "structed output approaches"            -> "structured-output approaches"
+  - "driven area segmentation" (YOLOPX para)-> "drivable-area segmentation"
+  - "...long, thin lane structures (Pan et al., 2018).. CLRNet..."  (double period)
+        -> single period: "...(Pan et al., 2018). CLRNet..."
+  - "Segmentation based approaches predict lanes marking pixels"
+        -> "Segmentation-based approaches predict lane-marking pixels"
+  - Verify "Zhan et al., 2024" (YOLOPX) spelling/lead author in your references.
+
+--------------------------------------------------------------------------------
+B10 (STILL OPEN). ADS/ADAS disclaimer repeated.
+--------------------------------------------------------------------------------
+It appears in the Overview and again, in full, in the Summary. Keep the full
+statement in the introduction/overview and reduce the Summary instance to:
+  "As noted earlier, the selected processors are analytical tools and do not
+  represent ADS or ADAS perception-stack performance."
+
+--------------------------------------------------------------------------------
+A1 (CHECK). Figures vs Table 14.
+--------------------------------------------------------------------------------
+Before submitting, confirm the four figures were regenerated from the SAME run as
+Table 14 (earlier they disagreed, e.g. CLRerNet CULane IoU ~0.58 in the figure vs
+0.6393 in the table). Numbers quoted in the prose, the table, and the figures must
+all match.
+
+
+================================================================================
+PART C — FIGURES: PLACEMENT, IN-TEXT REFERENCES, AND CAPTIONS
+================================================================================
+
+GENERAL RULE FOR REFERENCING FIGURES
+  - Every figure must be cited in the text BEFORE it appears ("Figure 1 shows...").
+  - Place the figure immediately AFTER the paragraph that first cites it (or at
+    the top/bottom of the next page if it does not fit).
+  - Each figure gets one short interpretive sentence or two in the body — do not
+    leave a figure uncited, and do not just restate the caption.
+  - You have four figures; the chapter currently has only two placeholders, so add
+    two more. Renumber to match your report's global figure scheme (shown here as
+    Figure 1-4 for the chapter).
+
+You have four PNGs:
+  fig3_radar.png            -> overall mean profile (one shape per model)
+  fig1_grouped_bars.png     -> per-dataset bars for all four metrics
+  fig2_boxplots.png         -> per-image F1 distribution (spread/variance)
+  fig4_precision_recall.png -> precision-recall trade-off scatter
+
+RECOMMENDED ORDER AND PLACEMENT
+
+Figure 1 = fig3_radar.png  (OVERALL SUMMARY)
+  PLACE: immediately after the B1 paragraph ("Under the standardized stroke-width
+  evaluation, CLRerNet achieved the highest dataset-normalized mean IoU...").
+  IN-TEXT SENTENCE to add at the end of that paragraph:
+    "Figure 1 summarizes these dataset-normalized metric profiles; CLRerNet
+    encloses the largest area on the IoU, F1, and precision axes, while YOLOPX
+    extends furthest on the recall axis."
+  CAPTION:
+    "Figure 1. Mean metric profile (IoU, F1 Score, Precision, and Recall) for each
+    candidate model, averaged across the four datasets (dataset-normalized). A
+    larger enclosed area indicates stronger overall performance."
+
+Figure 2 = fig1_grouped_bars.png  (PER-DATASET DETAIL)
+  PLACE: immediately after the paragraph beginning "These results should be
+  interpreted together with the intended role of each processor..." (the per-
+  dataset error-profile paragraph, after B-NEW-1 is applied).
+  IN-TEXT SENTENCE to add at the end of that paragraph:
+    "Figure 2 breaks these results down by dataset and metric. It shows that each
+    model performs best on its training domain - SCNN and CLRerNet on CULane,
+    CLRerNet on its in-domain split, and YOLOPX and HybridNets achieving their
+    highest recall on BDD100K - and that CLRerNet's precision advantage is
+    consistent across TuSimple, CULane, and CurveLanes."
+  CAPTION:
+    "Figure 2. Per-dataset comparison of IoU, F1 Score, Precision, and Recall for
+    each candidate model across BDD100K-Lane, CULane, CurveLanes, and TuSimple.
+    Error bars denote per-image standard deviation."
+
+Figure 3 = fig2_boxplots.png  (SPREAD / CONSISTENCY)
+  PLACE: after Figure 2, in the discussion of cross-dataset consistency (you can
+  add a short sentence in the same per-dataset paragraph or just before the
+  practical-usability paragraph).
+  IN-TEXT SENTENCE to add:
+    "Figure 3 shows the per-image F1 distributions and indicates that, beyond mean
+    values, CLRerNet maintains higher median F1 with comparable spread on CULane
+    and CurveLanes, whereas SCNN exhibits the widest variation across datasets,
+    consistent with its lower cross-dataset consistency score."
+  CAPTION:
+    "Figure 3. Distribution of per-image F1 scores by model and dataset (box =
+    interquartile range, center line = median, diamond = mean; outliers hidden)."
+
+Figure 4 = fig4_precision_recall.png  (ERROR-PROFILE TRADE-OFF)
+  PLACE: immediately after the practical-usability paragraph that discusses the
+  YOLOPX precision-recall imbalance ("...high recall was paired with low
+  precision...").
+  IN-TEXT SENTENCE to add at the end of that paragraph:
+    "Figure 4 plots each model and dataset in precision-recall space against
+    constant-F1 contours. CLRerNet's points sit toward the high-precision region,
+    YOLOPX's BDD100K point sits at high recall but low precision, and points
+    nearest the upper right (highest joint precision and recall) correspond to the
+    in-domain splits."
+  CAPTION:
+    "Figure 4. Precision-recall trade-off by model and dataset; dotted contours
+    indicate constant-F1 (iso-F1) lines. Points toward the upper right indicate
+    better joint precision and recall."
+
+NOTE ON THE TWO EXISTING PLACEHOLDERS
+  - "[Placeholder ... Dataset-normalized IoU and F1 Score by candidate model.]"
+    -> replace with Figure 1 (radar) or Figure 2 (bars); recommend Figure 1 here.
+  - "[Placeholder ... Precision-recall comparison by candidate model.]"
+    -> replace with Figure 4.
+  Add new placeholders for Figure 2 and Figure 3 at the positions above.
+
+================================================================================
+END OF ROUND-2 REVISIONS
+================================================================================

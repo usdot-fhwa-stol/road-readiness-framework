@@ -1,0 +1,396 @@
+================================================================================
+CHAPTER 3 — REVISIONS, ROUND 4  (review of task3draft1_report_2.pdf, clean/no-markup)
+Reference Image Processor Identification and Assessment
+Supersedes chapter3_revision_3.txt. Each item gives CHAPTER > SUBSECTION >
+PARAGRAPH (identified by its opening words) so you can jump straight to it.
+================================================================================
+
+ALREADY FIXED IN THIS VERSION (no action needed)
+  - Tables: now exactly Table 12 (per-dataset) and Table 13 (summary means); the
+    three stale/duplicate tables are gone.
+  - All numbers in Table 12, Table 13, and the prose match the figures. Verified
+    cell by cell (CLRerNet CULane IoU 0.5778; SCNN TuSimple strong / BDD weak;
+    summary means YOLOPX 0.3262 / HybridNets 0.2940 / CLRerNet 0.4357 / SCNN
+    0.2986).
+  - Removed: the duplicate "mathematically related" IoU/F1 sentence, the old
+    High/Moderate/Low consistency scheme, the "outputs.e[Placeholder]" fragment,
+    all the "[Placeholder ...]" stubs, and the "Section 3.4the following" stub.
+  - Table numbering (9-13) and figure numbering (3-6) are now sequential and the
+    in-text callouts match the captions.
+
+WHAT REMAINS = 10 items below (typos, missing definitions/formulas, repetition,
+clarity) + decisions. Grouped in document order. Equations are given in $$ LaTeX
+so that, in Word, selecting the text and using Insert > Equation (LaTeX input)
+converts them to formatted equations.
+
+
+================================================================================
+ITEM 1  (typo)
+LOCATION: Chapter 3 > Candidate Image Processing Models > paragraph beginning
+          "YOLOPX and HybridNets were included because they are deep learning..."
+--------------------------------------------------------------------------------
+ISSUE: "YOLOPX jointly supports traffic-object detection, driven area
+  segmentation, and lane detection..."  — "driven area" is wrong.
+ACTION: change "driven area segmentation" -> "drivable-area segmentation".
+RATIONALE: correct term; matches the HybridNets sentence in the same paragraph,
+  which already says "drivable-area segmentation."
+
+
+================================================================================
+ITEM 2  (typo / formula formatting)
+LOCATION: Chapter 3 > Model Evaluation Approach > Core Evaluation Metrics >
+          paragraph beginning "The initial model assessment is based primarily on
+          the F1 Score and IoU..."
+--------------------------------------------------------------------------------
+ISSUE A (formatting): the inline formula renders as "(F1 = 2 IOU/ (1 + IOU)) and
+  herefore carry the same ranking information" — malformed symbol, inconsistent
+  "IOU" casing, and "herefore".
+ISSUE B (substance): the equation F1 = 2 x IoU / (1 + IoU) is CORRECT and is the
+  standard Dice-Jaccard identity (F1 = Dice, IoU = Jaccard), but it is exact only
+  PER IMAGE (same TP/FP/FN). The values you report are macro (per-image) AVERAGES,
+  and averaging breaks the identity: mean(F1) is not 2*mean(IoU)/(1+mean(IoU)).
+  Plugging your reported mean IoU into the formula gives ~0.607 / 0.492 / 0.454 /
+  0.460 for CLRerNet / YOLOPX / HybridNets / SCNN, whereas your reported mean F1 is
+  0.5564 / 0.4663 / 0.4275 / 0.4035 (the formula over-predicts, by Jensen's
+  inequality). A reviewer who checks the formula against your means will see a
+  mismatch.
+ACTION (pick one):
+  Option A - keep the formula but scope it to per-image and add a one-clause
+    caveat (equation in $$ LaTeX for Word):
+      "For a given image, F1 and IoU computed from the same pixels are
+      monotonically related,
+      $$F1 = \frac{2\,IoU}{1 + IoU}, \qquad IoU = \frac{F1}{2 - F1},$$
+      and therefore carry the same ranking information; they are reported together
+      for comparability with prior work rather than as independent confirmations.
+      The dataset-level values reported here are per-image averages and so satisfy
+      this relation only approximately."
+  Option B - drop the explicit equation:
+      "F1 and IoU computed from the same masks are monotonically related and carry
+      largely the same ranking information; they are reported together for
+      comparability with prior work but are not independent confirmations of one
+      another."
+  Either way also fix the "herefore" -> "therefore" and use "IoU" casing.
+RATIONALE: the equation is mathematically and conventionally correct, but stated
+  unqualified next to macro-averaged means it invites a false "the numbers don't
+  satisfy your own formula" objection. Option A keeps the rigor and pre-empts that;
+  Option B is simpler. The substantive point (F1/IoU are redundant; lean on
+  precision/recall) holds under both.
+
+
+================================================================================
+ITEM 3  (missing methodology — carried over C-2)
+LOCATION: Chapter 3 > Model Evaluation Approach > Evaluation Subset and Output
+          Standardization > paragraph beginning "Because the datasets differ in
+          image format, annotation structure..."
+--------------------------------------------------------------------------------
+ISSUE: Later results prose says CLRerNet's scores depend on "the rasterization
+  width and tolerance defined in the evaluation methodology," but the methodology
+  never defines them. (Your earlier GB40 comment flagged the same gap.)
+
+ACTUAL VALUES FROM YOUR CODE (run_clrernet.sh):
+   - W = MASK_THICKNESS = 16 px  (width used to rasterize CLRerNet polylines)
+   - T = MASK_TOLERANCE = 8 px   (symmetric dilation of BOTH pred and GT masks)
+   Confirmed: CLRerNet summary JSONs record tolerance_px = 8; the figure/table run
+   uses these defaults. There is no separate "H" parameter (1640x590 is CLRerNet's
+   internal inference letterbox, not a mask setting).
+
+CRITICAL - the tolerance was applied to CLRerNet ONLY:
+   - YOLOPX  summary JSON: tolerance_px = None (threshold = argmax) -> NO tolerance
+   - HybridNets summary JSON: tolerance_px = None                   -> NO tolerance
+   - SCNN: scored by a separate pixel-count eval                    -> NO tolerance
+   Corroboration: on the SAME CULane GT, CLRerNet mean gt_px ~ 61,000 vs
+   YOLOPX/HybridNets ~ 31,000 (CLRerNet's reference was fattened by T=8; theirs was
+   not). Because dilating both pred and GT raises IoU/F1/recall, this asymmetry
+   INFLATES CLRerNet relative to the mask models and directly affects the headline
+   claim that CLRerNet has the highest IoU/F1. Do NOT write "applied identically to
+   all four models" - that is currently false.
+
+ACTION - pick one:
+  OPTION 1 (recommended) - make it actually uniform, then the clean sentence is
+    true. Re-score YOLOPX/HybridNets/SCNN through the same
+    eval_segmentation_manifest --tolerance-px 8 path (it dilates both pred and GT),
+    regenerate Table 12/13 + the figures, and verify whether CLRerNet still leads.
+    Then append to the "Because the datasets differ..." paragraph:
+      "Because lane-line detectors such as CLRerNet output structured polylines
+      rather than dense masks, each model's lane output is first rendered to a
+      binary lane mask at a fixed stroke width of 16 px. For all models, a
+      stroke-width tolerance of 8 px is then applied symmetrically to both the
+      predicted and reference masks before pixel-level true positives, false
+      positives, and false negatives are counted, so thin-line and dense-mask
+      outputs are compared on geometric agreement within 8 px rather than on raster
+      width. Even so, a thin-line detector may score somewhat lower on pixel IoU/F1
+      than a dense-mask model, which is why per-dataset precision and recall are
+      also reported."
+
+  OPTION 2 - if you do NOT re-score, describe the asymmetry honestly instead:
+      "CLRerNet outputs structured polylines, which are rendered to a binary lane
+      mask at a 16 px stroke width and scored with an 8 px stroke-width tolerance
+      applied symmetrically to the predicted and reference masks. The mask-based
+      models (YOLOPX, HybridNets, SCNN) are scored on their native output masks
+      without this tolerance. Because the tolerance relaxes the matching, CLRerNet's
+      pixel IoU/F1 are not directly comparable to the mask-based models and should
+      be read together with the per-dataset precision and recall."
+    NOTE: Option 2 weakens (and arguably invalidates) the "CLRerNet highest IoU/F1"
+    conclusion, so Option 1 is strongly preferred.
+
+RATIONALE: a reviewer's first question is whether the tolerance was applied to
+  every model; right now it was not. Either equalize it (Option 1) or disclose it
+  (Option 2) - but the comparison cannot be presented as uniform when it is not.
+
+
+================================================================================
+ITEM 4  (omit the "output usability" and "preliminary assessment" ratings)
+LOCATION: Chapter 3 > Preliminary Model Comparison and Reference Processor
+          Selection > the three paragraphs beginning
+          "In addition to the four core metrics, the comparison includes cross-
+          dataset consistency, output usability, and preliminary assessment
+          fields..."  /  "Output usability is rated based on..."  /
+          "Preliminary assessment summarizes the overall suitability..."
+--------------------------------------------------------------------------------
+ISSUE: "Output usability" and "preliminary assessment" are NOT things you can
+  calculate from your results — there is no quantity in the per-image data that
+  produces them. They are subjective High/Moderate/Low (and strong/supplemental/
+  limited) labels with no defined thresholds, and they appear in no table (Table 13
+  has only the cross-dataset consistency column, which IS computed). Keeping them
+  reads as an arbitrary rating scheme a reviewer will question, and it duplicates
+  points already made in prose. By contrast, cross-dataset consistency stays — it
+  has a formula and a real value in the table.
+
+WHAT TO KEEP / WHAT TO OMIT, AND WHY:
+  KEEP:
+   - The "Cross-dataset consistency is rated based on..." paragraph. WHY: it is a
+     computed metric (1 - CV of the per-dataset primary score) and maps to a real
+     Table 13 column.
+   - ONE concrete usability sentence, because the underlying distinction is real
+     and substantive (it is the only usability difference grounded in your work):
+     YOLOPX/HybridNets/SCNN emit dense masks that map directly to the evaluation
+     format, whereas CLRerNet emits polylines needing an extra rasterization +
+     stroke-width-tolerance step. Add this to the existing practical-usability
+     review paragraph (the one beginning "The practical usability review
+     considered whether each processor produced interpretable lane-related
+     outputs..."):
+       "In terms of output usability, YOLOPX, HybridNets, and SCNN produce dense
+       lane masks that map directly to the common evaluation format, whereas
+       CLRerNet outputs polylines that require an additional rasterization step
+       with a stroke-width tolerance - a modest but real post-processing
+       difference relevant to pilot deployment."
+
+  OMIT:
+   - The standalone "Output usability is rated based on..." paragraph (the High/
+     Moderate/Low definition). WHY: not computable, no thresholds, not in any
+     table; the substantive content is captured by the one sentence above.
+   - The standalone "Preliminary assessment summarizes the overall suitability..."
+     paragraph (strong/supplemental/limited). WHY: it is a summary judgment, not a
+     metric, and your selection narrative (YOLOPX primary / CLRerNet supplemental)
+     already delivers it.
+
+  REWORD the lead-in sentence so it no longer promises fields you dropped. Change
+   "In addition to the four core metrics, the comparison includes cross-dataset
+   consistency, output usability, and preliminary assessment fields to support
+   interpretation of each model's suitability for the pilot workflow."
+  to:
+   "In addition to the four core metrics, the comparison reports cross-dataset
+   consistency and a brief qualitative note on each model's output usability for
+   the pilot workflow."
+
+RATIONALE: report only what you can compute or concretely justify. You keep the
+  one usability fact that has substance (mask vs polyline conversion overhead,
+  which also quietly supports choosing YOLOPX on practical grounds) and drop two
+  subjective rating scales that add no information and invite reviewer pushback.
+
+
+================================================================================
+ITEM 5  (caption grammar — carried over C-3)
+LOCATION: Chapter 3 > Preliminary Model Comparison > footnote under Table 12
+          ("* indicates IOU is generated from a rasterized mask from the
+          polylines, since CLRerNet does not produce lane mask as other three
+          models.")
+--------------------------------------------------------------------------------
+ACTION: replace with: "* IoU is generated from a mask rasterized from CLRerNet's
+  predicted polylines, because CLRerNet does not produce a lane mask as the other
+  three models do."
+RATIONALE: grammar; consistent "IoU" casing.
+
+
+================================================================================
+ITEM 6  (repeated ranking — carried over D-4)
+LOCATION: Chapter 3 > Preliminary Model Comparison > paragraph (just after the
+          Figure 3 caption) beginning "The model results should be interpreted
+          together with the intended role of each processor..."
+--------------------------------------------------------------------------------
+ISSUE: its first two sentences restate the mean ranking already given in the
+  preceding "As shown in Table 13..." paragraph (YOLOPX highest recall; CLRerNet
+  highest IoU/F1/precision).
+ACTION: delete the two sentences
+     "The model results should be interpreted together with the intended role of
+     each processor in the pilot workflow. YOLOPX provides the strongest coverage-
+     oriented reference processor because it has the highest mean recall among the
+     evaluated models; CLRerNet, by contrast, achieves the highest mean IoU, F1
+     Score, and precision."
+  and begin the paragraph at "CLRerNet shows a precision-oriented profile:".
+RATIONALE: removes a verbatim restatement so the paragraph adds per-dataset detail
+  instead of repeating the means.
+
+
+================================================================================
+ITEM 7  (factual error — carried over C-1)
+LOCATION: Chapter 3 > Preliminary Model Comparison > paragraph beginning
+          "Figure 4 breaks these results down by dataset and metric..."
+--------------------------------------------------------------------------------
+ISSUE: "each model performs best on its training domain - SCNN and CLRerNet on
+  CULane, CLRerNet on its in-domain split, and YOLOPX and HybridNets achieving
+  their highest recall on BDD100K". SCNN's best dataset is TuSimple (F1 0.7019),
+  not CULane (F1 0.5457); and "CLRerNet on CULane, CLRerNet on its in-domain split"
+  says the same thing twice.
+ACTION: replace with: "...each model performs best on its training domain - SCNN
+  on TuSimple, CLRerNet on CULane, and YOLOPX and HybridNets reaching their
+  highest recall on BDD100K - and CLRerNet's precision advantage is consistent
+  across TuSimple, CULane, and CurveLanes."
+RATIONALE: matches Table 12; removes the redundant clause.
+
+
+================================================================================
+ITEM 8  (NEW — repeated explanation; "metric-artifact / detector-is-sound")
+LOCATION: Chapter 3 > Preliminary Model Comparison >
+          (a) paragraph "CLRerNet shows a precision-oriented profile..." (after the
+              Item-6 trim), and
+          (b) paragraph "These output-standardization settings were reviewed for
+              CLRerNet..."
+--------------------------------------------------------------------------------
+ISSUE: the same point is made twice: that CLRerNet's low pixel-overlap scores were
+  a thin-line-vs-thick-label artifact, not a model weakness, and that this was
+  verified.
+   - (a) says: "Earlier raw-mask scoring substantially understated CLRerNet
+     because a thin predicted lane line ... produces low pixel overlap ... To
+     confirm the detector itself is sound ... native lane-level F1 protocol on
+     CULane, yielding results consistent with the published model."
+   - (b) says: "This review confirmed that the initially low pixel-overlap scores
+     were driven primarily by the mismatch between thin predicted lane lines and
+     thicker reference labels rather than by the underlying detector..."
+ACTION: keep the explanation in ONE place. Recommended: keep it in paragraph (a)
+  (the natural spot to interpret CLRerNet's numbers) and reduce paragraph (b) to
+  the unique facts that are NOT in (a):
+     "The CLRerNet output-standardization settings - image-coordinate scaling, the
+     number of retained lane instances, and the line width and tolerance used to
+     convert polylines to masks - were reviewed and applied consistently across
+     all models."
+  Delete (b)'s "This review confirmed that the initially low pixel-overlap
+  scores..." sentence, since (a) already states the cause.
+RATIONALE: removes a near-verbatim repetition while preserving the one new detail
+  (what specifically was checked).
+
+
+================================================================================
+ITEM 9  (carried over D-3 — HybridNets discussed twice)
+LOCATION: Chapter 3 > Preliminary Model Comparison > paragraph "These output-
+          standardization settings were reviewed for CLRerNet..." (same paragraph
+          as Item 8b)
+--------------------------------------------------------------------------------
+ISSUE: HybridNets already has its own paragraph ("HybridNets remains an
+  informative quantitative comparator: ... 0.5450 vs 0.4645 ..."). This paragraph
+  repeats it: "HybridNets was not selected for the main pilot workflow, but it
+  remains a useful benchmark comparator. It achieved slightly lower IoU and F1
+  Score than YOLOPX but higher mean precision, indicating more conservative
+  behavior. If resources allow, HybridNets may be retained for sensitivity
+  analysis;".
+ACTION: delete those HybridNets sentences here. Keep only the clause that names
+  the planned pair, e.g.: "The primary planned processor pair for the pilot
+  analysis is YOLOPX and CLRerNet, which provide complementary output modes:
+  YOLOPX as a coverage-oriented multitask processor and CLRerNet as a lane-focused,
+  high-precision structured detector."
+  Then keep the "Figure 6 plots each model and dataset in precision-recall
+  space..." sentence as its own callout for the precision-recall figure.
+RATIONALE: HybridNets' comparator role is stated once; this paragraph stays about
+  CLRerNet + the final pair.
+
+
+================================================================================
+ITEM 10  (define every reported metric/value with a formula)
+LOCATIONS: Chapter 3 > Model Evaluation Approach (Core Evaluation Metrics +
+           Aggregation and Selection Considerations) and Preliminary Model
+           Comparison (the cross-dataset consistency paragraph).
+--------------------------------------------------------------------------------
+DEFINITION AUDIT (what is vs is not currently defined):
+  DEFINED (keep as is):
+   - TP, FP, FN: stated under Table 11 ("true/false positives, false negatives,"
+     defined at the pixel level). Good.
+   - IoU, F1, Precision, Recall: given as formulas in Table 11. Good. If you want
+     them as real equations rather than table text, the LaTeX is:
+       $$IoU = \frac{TP}{TP + FP + FN}$$
+       $$F1 = \frac{2\,TP}{2\,TP + FP + FN}$$
+       $$Precision = \frac{TP}{TP + FP}$$
+       $$Recall = \frac{TP}{TP + FN}$$
+  NOT DEFINED (add formulas):
+   - "dataset-normalized" mean, "per-dataset primary score," "coefficient of
+     variation," and "cross-dataset consistency" are all used and reported as
+     numbers but only described in words. Add the equations below.
+
+ADD 1 - to "Aggregation and Selection Considerations," in/after the paragraph
+  beginning "To avoid selecting a model that performs well only on one dataset...":
+     "For each metric m (IoU, F1, Precision, or Recall), the dataset-level value is
+     the per-image (macro) average over the N_d images in dataset d, and the
+     overall dataset-normalized value is the unweighted mean of the four dataset-
+     level values, so each dataset contributes equally regardless of its image
+     count:
+     $$m_d = \frac{1}{N_d}\sum_{i=1}^{N_d} m_{d,i}, \qquad
+       \bar{m} = \frac{1}{D}\sum_{d=1}^{D} m_d,$$
+     where D = 4 datasets."
+  WHY: defines both "per-image average" and "dataset-normalized," and makes
+  explicit that the normalization is an equal weight per dataset (the stated point
+  that one dataset must not dominate).
+
+ADD 2 - in the "Cross-dataset consistency is rated based on..." paragraph, replace
+  the verbal definition with the explicit formulas:
+     "For each dataset d, a primary score is the average of that dataset's F1 and
+     IoU:
+     $$S_d = \frac{F1_d + IoU_d}{2}.$$
+     Cross-dataset consistency is one minus the coefficient of variation of the
+     primary score across the four datasets:
+     $$\text{Consistency} = 1 - \frac{\sigma_S}{\mu_S}, \qquad
+       \mu_S = \frac{1}{D}\sum_{d=1}^{D} S_d, \qquad
+       \sigma_S = \sqrt{\frac{1}{D}\sum_{d=1}^{D}\left(S_d - \mu_S\right)^2},$$
+     with D = 4. Higher values indicate more stable performance across datasets;
+     lower values indicate greater variation."
+  NOTE: sigma here is the POPULATION standard deviation (divide by D, not D-1) -
+  that is what reproduces the reported values (CLRerNet 0.6900, YOLOPX 0.6657,
+  HybridNets 0.6347, SCNN 0.3730). If you used the sample std (D-1) anywhere, state
+  that instead, but keep it consistent with the printed numbers.
+  WHY: the consistency column is the one non-obvious computed value in Table 13;
+  without the formula it is not reproducible, and "coefficient of variation" should
+  be defined where first used.
+
+RATIONALE: every number a reader sees in Chapter 3 should trace to a stated
+  definition. After this, all four core metrics, the per-image and dataset-
+  normalized means, the primary score, the coefficient of variation, and the
+  consistency value are each defined by an equation.
+
+
+================================================================================
+DECISIONS (small, your call)
+--------------------------------------------------------------------------------
+Q1. Native-CULane-F1 sentence in the "CLRerNet shows a precision-oriented
+    profile..." paragraph ("CLRerNet was also scored with its native lane-level F1
+    protocol on CULane, yielding results consistent with the published model").
+    Keep ONLY if that native run exists in your pipeline/appendix; otherwise delete
+    rather than assert it.
+Q2. ADS/ADAS disclaimer appears in the Overview and again in the Summary. Two is
+    acceptable; if you want it once, shorten the Summary instance to a back-
+    reference ("As noted earlier, the selected processors are analytical tools and
+    do not represent ADS or ADAS perception").
+Q3. Closing paragraph "The final selection is based on the combination of
+    quantitative performance and practical usability..." is generic and largely
+    restates criteria already applied. Optional: trim to one sentence or remove,
+    since the selection (YOLOPX primary, CLRerNet supplemental) is already stated.
+
+================================================================================
+FLOW CHECK (after Items 1-10)
+  The Preliminary-Comparison openers then read as a clean arc:
+  setup -> three questions -> method -> evaluation subset -> consistency
+  definition -> Table 12 -> Table 13 -> means result (+Fig 3) -> per-dataset
+  detail (+Fig 4) -> HybridNets comparator -> usability/selection (+Fig 5) ->
+  CLRerNet supplemental + settings reviewed (+Fig 6) -> close. No remaining sudden
+  jumps once the orphaned rating paragraphs (Item 4) and the repeats (Items 6, 8,
+  9) are removed.
+================================================================================
+END OF ROUND-4 REVISIONS
+================================================================================
