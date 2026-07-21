@@ -1,0 +1,2216 @@
+{
+  "metadata": {
+    "dataset": "bdd100k",
+    "source_xlsx": "TO_25-203_All_Datasets_Categorized.xlsx",
+    "source_sheet": "BDD100K",
+    "num_samples": 50,
+    "num_image_found": 50,
+    "num_gt_found": 0,
+    "num_image_missing": 0,
+    "num_gt_missing": 50,
+    "summary_dimensions": [
+      "Operational Scenario",
+      "Roadway Context & Facility Type",
+      "Roadway Surface Type",
+      "Pavement Marking Type & Configuration",
+      "Observed Marking Visibility",
+      "Lighting & Weather"
+    ],
+    "tag_vocabulary": [
+      "Intersections",
+      "Roundabouts",
+      "Ramps / Merges",
+      "At-Grade Rail Crossings",
+      "Tolling Stations",
+      "Work Zones",
+      "Managed Lanes",
+      "General Roadway Segments",
+      "Freeway/Expressway",
+      "Arterial Roadway",
+      "Collector Roadway",
+      "Local Street / Road",
+      "Urban",
+      "Rural",
+      "Paved - bituminous / asphalt",
+      "Paved - non-bituminous / concrete",
+      "Unpaved",
+      "Undetermined",
+      "Solid Line",
+      "Dashed Line",
+      "Double Line",
+      "Edge Line",
+      "Curved Line",
+      "Gore Markings",
+      "Crosswalks",
+      "Arrows",
+      "Unmarked Pavement",
+      "Clearly Visible",
+      "Faded / Worn / Not Visible",
+      "Low Contrast",
+      "Partially Missing",
+      "Occluded",
+      "Not Applicable",
+      "Daylight",
+      "Nighttime",
+      "Dusk / Dawn",
+      "Shadow",
+      "Glare",
+      "Rain",
+      "Fog",
+      "Snow",
+      "Wet Pavement",
+      "Icy Road"
+    ],
+    "tagger": {
+      "backend": "siglip",
+      "model": "google/siglip2-base-patch16-224",
+      "num_tagged": 20,
+      "num_skipped": 0
+    }
+  },
+  "samples": [
+    {
+      "sample_id": "bdd100k_1",
+      "file_name": "cabc30fc-e7726578.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Faded / Worn / Not Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabc30fc-e7726578.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Glare"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Local Street / Road",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Glare"
+        ],
+        "scores": {
+          "Intersections": 0.128,
+          "Roundabouts": 0.1138,
+          "Ramps / Merges": 0.1194,
+          "At-Grade Rail Crossings": 0.1128,
+          "Tolling Stations": 0.1132,
+          "Work Zones": 0.1151,
+          "Managed Lanes": 0.1595,
+          "General Roadway Segments": 0.1381,
+          "Freeway/Expressway": 0.1513,
+          "Arterial Roadway": 0.1618,
+          "Collector Roadway": 0.1739,
+          "Local Street / Road": 0.2041,
+          "Urban": 0.164,
+          "Rural": 0.1449,
+          "Paved - bituminous / asphalt": 0.2463,
+          "Paved - non-bituminous / concrete": 0.2406,
+          "Unpaved": 0.2352,
+          "Undetermined": 0.278,
+          "Solid Line": 0.108,
+          "Dashed Line": 0.1101,
+          "Double Line": 0.1081,
+          "Edge Line": 0.112,
+          "Curved Line": 0.1065,
+          "Gore Markings": 0.1109,
+          "Crosswalks": 0.1046,
+          "Arrows": 0.1099,
+          "Unmarked Pavement": 0.13,
+          "Clearly Visible": 0.1495,
+          "Faded / Worn / Not Visible": 0.2419,
+          "Low Contrast": 0.1671,
+          "Partially Missing": 0.1345,
+          "Occluded": 0.1557,
+          "Not Applicable": 0.1514,
+          "Daylight": 0.1433,
+          "Nighttime": 0.0797,
+          "Dusk / Dawn": 0.1033,
+          "Shadow": 0.0966,
+          "Glare": 0.1754,
+          "Rain": 0.0792,
+          "Fog": 0.0833,
+          "Snow": 0.079,
+          "Wet Pavement": 0.0811,
+          "Icy Road": 0.079
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_2",
+      "file_name": "cabc30fc-eb673c5a.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Edge Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Double Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabc30fc-eb673c5a.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Freeway/Expressway",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1233,
+          "Roundabouts": 0.1216,
+          "Ramps / Merges": 0.1265,
+          "At-Grade Rail Crossings": 0.1215,
+          "Tolling Stations": 0.1239,
+          "Work Zones": 0.1217,
+          "Managed Lanes": 0.1326,
+          "General Roadway Segments": 0.1289,
+          "Freeway/Expressway": 0.1734,
+          "Arterial Roadway": 0.1719,
+          "Collector Roadway": 0.1664,
+          "Local Street / Road": 0.1628,
+          "Urban": 0.1627,
+          "Rural": 0.1627,
+          "Paved - bituminous / asphalt": 0.246,
+          "Paved - non-bituminous / concrete": 0.2468,
+          "Unpaved": 0.2457,
+          "Undetermined": 0.2615,
+          "Solid Line": 0.1109,
+          "Dashed Line": 0.1108,
+          "Double Line": 0.1107,
+          "Edge Line": 0.1114,
+          "Curved Line": 0.1107,
+          "Gore Markings": 0.1131,
+          "Crosswalks": 0.1104,
+          "Arrows": 0.1106,
+          "Unmarked Pavement": 0.1115,
+          "Clearly Visible": 0.1658,
+          "Faded / Worn / Not Visible": 0.1734,
+          "Low Contrast": 0.1646,
+          "Partially Missing": 0.1655,
+          "Occluded": 0.1682,
+          "Not Applicable": 0.1626,
+          "Daylight": 0.1162,
+          "Nighttime": 0.097,
+          "Dusk / Dawn": 0.0978,
+          "Shadow": 0.0982,
+          "Glare": 0.1037,
+          "Rain": 0.097,
+          "Fog": 0.0991,
+          "Snow": 0.097,
+          "Wet Pavement": 0.097,
+          "Icy Road": 0.097
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_3",
+      "file_name": "cabc9045-1b8282ba.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabc9045-1b8282ba.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Local Street / Road",
+          "Paved - bituminous / asphalt",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1403,
+          "Roundabouts": 0.1155,
+          "Ramps / Merges": 0.1279,
+          "At-Grade Rail Crossings": 0.111,
+          "Tolling Stations": 0.1126,
+          "Work Zones": 0.119,
+          "Managed Lanes": 0.1486,
+          "General Roadway Segments": 0.125,
+          "Freeway/Expressway": 0.1517,
+          "Arterial Roadway": 0.163,
+          "Collector Roadway": 0.1724,
+          "Local Street / Road": 0.1994,
+          "Urban": 0.1646,
+          "Rural": 0.1488,
+          "Paved - bituminous / asphalt": 0.3105,
+          "Paved - non-bituminous / concrete": 0.2282,
+          "Unpaved": 0.2182,
+          "Undetermined": 0.2432,
+          "Solid Line": 0.1057,
+          "Dashed Line": 0.1082,
+          "Double Line": 0.1082,
+          "Edge Line": 0.1082,
+          "Curved Line": 0.0986,
+          "Gore Markings": 0.1241,
+          "Crosswalks": 0.111,
+          "Arrows": 0.1069,
+          "Unmarked Pavement": 0.1291,
+          "Clearly Visible": 0.1804,
+          "Faded / Worn / Not Visible": 0.2236,
+          "Low Contrast": 0.1559,
+          "Partially Missing": 0.1395,
+          "Occluded": 0.1471,
+          "Not Applicable": 0.1535,
+          "Daylight": 0.097,
+          "Nighttime": 0.1671,
+          "Dusk / Dawn": 0.1583,
+          "Shadow": 0.0724,
+          "Glare": 0.1138,
+          "Rain": 0.0736,
+          "Fog": 0.0751,
+          "Snow": 0.071,
+          "Wet Pavement": 0.0991,
+          "Icy Road": 0.0725
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_4",
+      "file_name": "cabc9045-581f64de.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Edge Line; Curved Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Nighttime; Shadow; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Edge Line",
+          "Curved Line",
+          "Faded / Worn / Not Visible",
+          "Nighttime",
+          "Shadow",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabc9045-581f64de.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Intersections"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Intersections",
+          "Local Street / Road",
+          "Paved - bituminous / asphalt",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1393,
+          "Roundabouts": 0.1265,
+          "Ramps / Merges": 0.1235,
+          "At-Grade Rail Crossings": 0.1143,
+          "Tolling Stations": 0.117,
+          "Work Zones": 0.1172,
+          "Managed Lanes": 0.1332,
+          "General Roadway Segments": 0.1289,
+          "Freeway/Expressway": 0.1589,
+          "Arterial Roadway": 0.1675,
+          "Collector Roadway": 0.1727,
+          "Local Street / Road": 0.1846,
+          "Urban": 0.1584,
+          "Rural": 0.1579,
+          "Paved - bituminous / asphalt": 0.2763,
+          "Paved - non-bituminous / concrete": 0.2319,
+          "Unpaved": 0.226,
+          "Undetermined": 0.2658,
+          "Solid Line": 0.0972,
+          "Dashed Line": 0.0983,
+          "Double Line": 0.1005,
+          "Edge Line": 0.0999,
+          "Curved Line": 0.097,
+          "Gore Markings": 0.1379,
+          "Crosswalks": 0.123,
+          "Arrows": 0.1335,
+          "Unmarked Pavement": 0.1127,
+          "Clearly Visible": 0.1819,
+          "Faded / Worn / Not Visible": 0.2,
+          "Low Contrast": 0.1471,
+          "Partially Missing": 0.1606,
+          "Occluded": 0.1418,
+          "Not Applicable": 0.1686,
+          "Daylight": 0.1002,
+          "Nighttime": 0.1619,
+          "Dusk / Dawn": 0.1556,
+          "Shadow": 0.0783,
+          "Glare": 0.1196,
+          "Rain": 0.0736,
+          "Fog": 0.0721,
+          "Snow": 0.067,
+          "Wet Pavement": 0.1044,
+          "Icy Road": 0.0674
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_5",
+      "file_name": "cabc9045-b3349548.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections; Ramps / Merges; Managed Lanes",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Shadow"
+        },
+        "labels": [
+          "Intersections",
+          "Ramps / Merges",
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabc9045-b3349548.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Local Street / Road",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1257,
+          "Roundabouts": 0.1209,
+          "Ramps / Merges": 0.1229,
+          "At-Grade Rail Crossings": 0.1187,
+          "Tolling Stations": 0.1186,
+          "Work Zones": 0.1245,
+          "Managed Lanes": 0.1421,
+          "General Roadway Segments": 0.1265,
+          "Freeway/Expressway": 0.1645,
+          "Arterial Roadway": 0.1713,
+          "Collector Roadway": 0.1656,
+          "Local Street / Road": 0.1716,
+          "Urban": 0.1638,
+          "Rural": 0.1632,
+          "Paved - bituminous / asphalt": 0.2464,
+          "Paved - non-bituminous / concrete": 0.2257,
+          "Unpaved": 0.2242,
+          "Undetermined": 0.3037,
+          "Solid Line": 0.1103,
+          "Dashed Line": 0.11,
+          "Double Line": 0.1076,
+          "Edge Line": 0.1099,
+          "Curved Line": 0.1078,
+          "Gore Markings": 0.1227,
+          "Crosswalks": 0.1046,
+          "Arrows": 0.1104,
+          "Unmarked Pavement": 0.1168,
+          "Clearly Visible": 0.1989,
+          "Faded / Worn / Not Visible": 0.2061,
+          "Low Contrast": 0.1747,
+          "Partially Missing": 0.1353,
+          "Occluded": 0.1435,
+          "Not Applicable": 0.1415,
+          "Daylight": 0.0998,
+          "Nighttime": 0.179,
+          "Dusk / Dawn": 0.1564,
+          "Shadow": 0.0778,
+          "Glare": 0.1014,
+          "Rain": 0.0821,
+          "Fog": 0.0751,
+          "Snow": 0.0723,
+          "Wet Pavement": 0.0827,
+          "Icy Road": 0.0734
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_6",
+      "file_name": "cabddb96-ca0ac856.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Double Line",
+          "Clearly Visible",
+          "Daylight",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabddb96-ca0ac856.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Glare"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Local Street / Road",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Glare"
+        ],
+        "scores": {
+          "Intersections": 0.132,
+          "Roundabouts": 0.1017,
+          "Ramps / Merges": 0.1255,
+          "At-Grade Rail Crossings": 0.0999,
+          "Tolling Stations": 0.1007,
+          "Work Zones": 0.1095,
+          "Managed Lanes": 0.1882,
+          "General Roadway Segments": 0.1425,
+          "Freeway/Expressway": 0.1255,
+          "Arterial Roadway": 0.1445,
+          "Collector Roadway": 0.1795,
+          "Local Street / Road": 0.2421,
+          "Urban": 0.1877,
+          "Rural": 0.1207,
+          "Paved - bituminous / asphalt": 0.2509,
+          "Paved - non-bituminous / concrete": 0.2259,
+          "Unpaved": 0.212,
+          "Undetermined": 0.3113,
+          "Solid Line": 0.1031,
+          "Dashed Line": 0.1085,
+          "Double Line": 0.1026,
+          "Edge Line": 0.1174,
+          "Curved Line": 0.1013,
+          "Gore Markings": 0.1136,
+          "Crosswalks": 0.11,
+          "Arrows": 0.108,
+          "Unmarked Pavement": 0.1355,
+          "Clearly Visible": 0.1461,
+          "Faded / Worn / Not Visible": 0.2213,
+          "Low Contrast": 0.1638,
+          "Partially Missing": 0.1421,
+          "Occluded": 0.1681,
+          "Not Applicable": 0.1586,
+          "Daylight": 0.158,
+          "Nighttime": 0.0675,
+          "Dusk / Dawn": 0.0819,
+          "Shadow": 0.1221,
+          "Glare": 0.1659,
+          "Rain": 0.073,
+          "Fog": 0.0977,
+          "Snow": 0.0672,
+          "Wet Pavement": 0.0985,
+          "Icy Road": 0.0682
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_7",
+      "file_name": "cabe1040-5f02711e.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Local Street / Road; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Daylight; Wet Pavement"
+        },
+        "labels": [
+          "Intersections",
+          "Local Street / Road",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Faded / Worn / Not Visible",
+          "Daylight",
+          "Wet Pavement"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabe1040-5f02711e.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Snow"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Local Street / Road",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Snow"
+        ],
+        "scores": {
+          "Intersections": 0.1275,
+          "Roundabouts": 0.1242,
+          "Ramps / Merges": 0.1241,
+          "At-Grade Rail Crossings": 0.1237,
+          "Tolling Stations": 0.1234,
+          "Work Zones": 0.1241,
+          "Managed Lanes": 0.1281,
+          "General Roadway Segments": 0.1249,
+          "Freeway/Expressway": 0.1525,
+          "Arterial Roadway": 0.1535,
+          "Collector Roadway": 0.1631,
+          "Local Street / Road": 0.2257,
+          "Urban": 0.1527,
+          "Rural": 0.1525,
+          "Paved - bituminous / asphalt": 0.2497,
+          "Paved - non-bituminous / concrete": 0.2499,
+          "Unpaved": 0.2493,
+          "Undetermined": 0.2511,
+          "Solid Line": 0.1108,
+          "Dashed Line": 0.111,
+          "Double Line": 0.1107,
+          "Edge Line": 0.1108,
+          "Curved Line": 0.1107,
+          "Gore Markings": 0.1116,
+          "Crosswalks": 0.1109,
+          "Arrows": 0.1113,
+          "Unmarked Pavement": 0.112,
+          "Clearly Visible": 0.1646,
+          "Faded / Worn / Not Visible": 0.1725,
+          "Low Contrast": 0.1646,
+          "Partially Missing": 0.1655,
+          "Occluded": 0.1664,
+          "Not Applicable": 0.1664,
+          "Daylight": 0.0947,
+          "Nighttime": 0.0899,
+          "Dusk / Dawn": 0.0928,
+          "Shadow": 0.0899,
+          "Glare": 0.0918,
+          "Rain": 0.0928,
+          "Fog": 0.091,
+          "Snow": 0.1394,
+          "Wet Pavement": 0.0908,
+          "Icy Road": 0.1268
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_8",
+      "file_name": "cabe1040-c59cb390.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Daylight; Wet Pavement"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Faded / Worn / Not Visible",
+          "Daylight",
+          "Wet Pavement"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabe1040-c59cb390.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - non-bituminous / concrete"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Fog"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Paved - non-bituminous / concrete",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Fog"
+        ],
+        "scores": {
+          "Intersections": 0.1355,
+          "Roundabouts": 0.1013,
+          "Ramps / Merges": 0.1488,
+          "At-Grade Rail Crossings": 0.0933,
+          "Tolling Stations": 0.1242,
+          "Work Zones": 0.1108,
+          "Managed Lanes": 0.1534,
+          "General Roadway Segments": 0.1327,
+          "Freeway/Expressway": 0.1637,
+          "Arterial Roadway": 0.2039,
+          "Collector Roadway": 0.1988,
+          "Local Street / Road": 0.1561,
+          "Urban": 0.1443,
+          "Rural": 0.1331,
+          "Paved - bituminous / asphalt": 0.2538,
+          "Paved - non-bituminous / concrete": 0.2585,
+          "Unpaved": 0.2325,
+          "Undetermined": 0.2552,
+          "Solid Line": 0.1043,
+          "Dashed Line": 0.1116,
+          "Double Line": 0.1029,
+          "Edge Line": 0.1072,
+          "Curved Line": 0.1108,
+          "Gore Markings": 0.1134,
+          "Crosswalks": 0.1008,
+          "Arrows": 0.1102,
+          "Unmarked Pavement": 0.1388,
+          "Clearly Visible": 0.1473,
+          "Faded / Worn / Not Visible": 0.2395,
+          "Low Contrast": 0.1504,
+          "Partially Missing": 0.1534,
+          "Occluded": 0.1528,
+          "Not Applicable": 0.1566,
+          "Daylight": 0.105,
+          "Nighttime": 0.0784,
+          "Dusk / Dawn": 0.1066,
+          "Shadow": 0.0778,
+          "Glare": 0.0942,
+          "Rain": 0.1187,
+          "Fog": 0.1433,
+          "Snow": 0.0976,
+          "Wet Pavement": 0.092,
+          "Icy Road": 0.0864
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_9",
+      "file_name": "cabf7be1-36a39a28.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections; Managed Lanes",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Double Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabf7be1-36a39a28.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Intersections"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Intersections",
+          "Local Street / Road",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1858,
+          "Roundabouts": 0.1131,
+          "Ramps / Merges": 0.1144,
+          "At-Grade Rail Crossings": 0.1098,
+          "Tolling Stations": 0.1081,
+          "Work Zones": 0.1087,
+          "Managed Lanes": 0.1338,
+          "General Roadway Segments": 0.1264,
+          "Freeway/Expressway": 0.1544,
+          "Arterial Roadway": 0.1754,
+          "Collector Roadway": 0.1789,
+          "Local Street / Road": 0.1831,
+          "Urban": 0.1549,
+          "Rural": 0.1533,
+          "Paved - bituminous / asphalt": 0.2497,
+          "Paved - non-bituminous / concrete": 0.2473,
+          "Unpaved": 0.2455,
+          "Undetermined": 0.2574,
+          "Solid Line": 0.1069,
+          "Dashed Line": 0.1055,
+          "Double Line": 0.1086,
+          "Edge Line": 0.1091,
+          "Curved Line": 0.1043,
+          "Gore Markings": 0.1257,
+          "Crosswalks": 0.1112,
+          "Arrows": 0.1114,
+          "Unmarked Pavement": 0.1173,
+          "Clearly Visible": 0.1592,
+          "Faded / Worn / Not Visible": 0.1817,
+          "Low Contrast": 0.1549,
+          "Partially Missing": 0.1636,
+          "Occluded": 0.1664,
+          "Not Applicable": 0.174,
+          "Daylight": 0.1392,
+          "Nighttime": 0.0912,
+          "Dusk / Dawn": 0.0975,
+          "Shadow": 0.0956,
+          "Glare": 0.1191,
+          "Rain": 0.0914,
+          "Fog": 0.0915,
+          "Snow": 0.0912,
+          "Wet Pavement": 0.092,
+          "Icy Road": 0.0912
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_10",
+      "file_name": "cabf7be1-f1a7e00d.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Local Street / Road; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Double Line; Arrows",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Local Street / Road",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Double Line",
+          "Arrows",
+          "Clearly Visible",
+          "Daylight",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabf7be1-f1a7e00d.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Partially Missing"
+          ],
+          "Lighting & Weather": [
+            "Glare"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Collector Roadway",
+          "Paved - bituminous / asphalt",
+          "Gore Markings",
+          "Partially Missing",
+          "Glare"
+        ],
+        "scores": {
+          "Intersections": 0.1475,
+          "Roundabouts": 0.1007,
+          "Ramps / Merges": 0.1346,
+          "At-Grade Rail Crossings": 0.0821,
+          "Tolling Stations": 0.0858,
+          "Work Zones": 0.0843,
+          "Managed Lanes": 0.1968,
+          "General Roadway Segments": 0.1682,
+          "Freeway/Expressway": 0.1298,
+          "Arterial Roadway": 0.2114,
+          "Collector Roadway": 0.2296,
+          "Local Street / Road": 0.2105,
+          "Urban": 0.1109,
+          "Rural": 0.1078,
+          "Paved - bituminous / asphalt": 0.2906,
+          "Paved - non-bituminous / concrete": 0.2275,
+          "Unpaved": 0.1961,
+          "Undetermined": 0.2859,
+          "Solid Line": 0.1019,
+          "Dashed Line": 0.0965,
+          "Double Line": 0.1149,
+          "Edge Line": 0.1187,
+          "Curved Line": 0.0955,
+          "Gore Markings": 0.1311,
+          "Crosswalks": 0.105,
+          "Arrows": 0.1141,
+          "Unmarked Pavement": 0.1222,
+          "Clearly Visible": 0.1659,
+          "Faded / Worn / Not Visible": 0.1682,
+          "Low Contrast": 0.1644,
+          "Partially Missing": 0.1694,
+          "Occluded": 0.1631,
+          "Not Applicable": 0.1691,
+          "Daylight": 0.1607,
+          "Nighttime": 0.0697,
+          "Dusk / Dawn": 0.0857,
+          "Shadow": 0.1428,
+          "Glare": 0.1668,
+          "Rain": 0.0704,
+          "Fog": 0.0787,
+          "Snow": 0.0695,
+          "Wet Pavement": 0.0857,
+          "Icy Road": 0.07
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_11",
+      "file_name": "cabf9f3c-d58a6760.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabf9f3c-d58a6760.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1254,
+          "Roundabouts": 0.1244,
+          "Ramps / Merges": 0.1247,
+          "At-Grade Rail Crossings": 0.1243,
+          "Tolling Stations": 0.1244,
+          "Work Zones": 0.1244,
+          "Managed Lanes": 0.1278,
+          "General Roadway Segments": 0.1246,
+          "Freeway/Expressway": 0.1666,
+          "Arterial Roadway": 0.1676,
+          "Collector Roadway": 0.1664,
+          "Local Street / Road": 0.1664,
+          "Urban": 0.1668,
+          "Rural": 0.1662,
+          "Paved - bituminous / asphalt": 0.2496,
+          "Paved - non-bituminous / concrete": 0.2495,
+          "Unpaved": 0.2495,
+          "Undetermined": 0.2514,
+          "Solid Line": 0.1111,
+          "Dashed Line": 0.1109,
+          "Double Line": 0.111,
+          "Edge Line": 0.1113,
+          "Curved Line": 0.1109,
+          "Gore Markings": 0.1116,
+          "Crosswalks": 0.1109,
+          "Arrows": 0.111,
+          "Unmarked Pavement": 0.1115,
+          "Clearly Visible": 0.1645,
+          "Faded / Worn / Not Visible": 0.1753,
+          "Low Contrast": 0.1668,
+          "Partially Missing": 0.1649,
+          "Occluded": 0.1652,
+          "Not Applicable": 0.1633,
+          "Daylight": 0.1019,
+          "Nighttime": 0.0995,
+          "Dusk / Dawn": 0.0996,
+          "Shadow": 0.0998,
+          "Glare": 0.1014,
+          "Rain": 0.0996,
+          "Fog": 0.0996,
+          "Snow": 0.0995,
+          "Wet Pavement": 0.0996,
+          "Icy Road": 0.0995
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_12",
+      "file_name": "cac07407-0396e053.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Work Zones",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "Work Zones",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Double Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cac07407-0396e053.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Local Street / Road",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1282,
+          "Roundabouts": 0.0924,
+          "Ramps / Merges": 0.1178,
+          "At-Grade Rail Crossings": 0.1028,
+          "Tolling Stations": 0.0931,
+          "Work Zones": 0.1252,
+          "Managed Lanes": 0.1953,
+          "General Roadway Segments": 0.1453,
+          "Freeway/Expressway": 0.1247,
+          "Arterial Roadway": 0.1604,
+          "Collector Roadway": 0.2332,
+          "Local Street / Road": 0.2465,
+          "Urban": 0.1197,
+          "Rural": 0.1155,
+          "Paved - bituminous / asphalt": 0.2495,
+          "Paved - non-bituminous / concrete": 0.2424,
+          "Unpaved": 0.2253,
+          "Undetermined": 0.2828,
+          "Solid Line": 0.0984,
+          "Dashed Line": 0.1087,
+          "Double Line": 0.0977,
+          "Edge Line": 0.1032,
+          "Curved Line": 0.1047,
+          "Gore Markings": 0.1541,
+          "Crosswalks": 0.091,
+          "Arrows": 0.1054,
+          "Unmarked Pavement": 0.1368,
+          "Clearly Visible": 0.1563,
+          "Faded / Worn / Not Visible": 0.1798,
+          "Low Contrast": 0.1589,
+          "Partially Missing": 0.1714,
+          "Occluded": 0.1727,
+          "Not Applicable": 0.161,
+          "Daylight": 0.1777,
+          "Nighttime": 0.0746,
+          "Dusk / Dawn": 0.0998,
+          "Shadow": 0.1268,
+          "Glare": 0.1371,
+          "Rain": 0.0751,
+          "Fog": 0.0844,
+          "Snow": 0.0741,
+          "Wet Pavement": 0.0763,
+          "Icy Road": 0.0742
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_13",
+      "file_name": "cac07407-0eb1c8bf.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Double Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cac07407-0eb1c8bf.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Local Street / Road",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1253,
+          "Roundabouts": 0.1182,
+          "Ramps / Merges": 0.1205,
+          "At-Grade Rail Crossings": 0.1179,
+          "Tolling Stations": 0.1181,
+          "Work Zones": 0.1193,
+          "Managed Lanes": 0.1506,
+          "General Roadway Segments": 0.13,
+          "Freeway/Expressway": 0.127,
+          "Arterial Roadway": 0.1325,
+          "Collector Roadway": 0.1605,
+          "Local Street / Road": 0.2536,
+          "Urban": 0.2003,
+          "Rural": 0.1262,
+          "Paved - bituminous / asphalt": 0.2498,
+          "Paved - non-bituminous / concrete": 0.2483,
+          "Unpaved": 0.2419,
+          "Undetermined": 0.2601,
+          "Solid Line": 0.1061,
+          "Dashed Line": 0.1068,
+          "Double Line": 0.106,
+          "Edge Line": 0.1153,
+          "Curved Line": 0.1046,
+          "Gore Markings": 0.1184,
+          "Crosswalks": 0.1137,
+          "Arrows": 0.108,
+          "Unmarked Pavement": 0.121,
+          "Clearly Visible": 0.1419,
+          "Faded / Worn / Not Visible": 0.2174,
+          "Low Contrast": 0.1602,
+          "Partially Missing": 0.1544,
+          "Occluded": 0.1707,
+          "Not Applicable": 0.1553,
+          "Daylight": 0.1638,
+          "Nighttime": 0.0836,
+          "Dusk / Dawn": 0.0935,
+          "Shadow": 0.0995,
+          "Glare": 0.1389,
+          "Rain": 0.0836,
+          "Fog": 0.0846,
+          "Snow": 0.0834,
+          "Wet Pavement": 0.0857,
+          "Icy Road": 0.0834
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_14",
+      "file_name": "cac07407-196cd6f8.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cac07407-196cd6f8.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Freeway/Expressway",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.0956,
+          "Roundabouts": 0.0895,
+          "Ramps / Merges": 0.1759,
+          "At-Grade Rail Crossings": 0.0889,
+          "Tolling Stations": 0.0919,
+          "Work Zones": 0.0935,
+          "Managed Lanes": 0.1988,
+          "General Roadway Segments": 0.1659,
+          "Freeway/Expressway": 0.2361,
+          "Arterial Roadway": 0.2016,
+          "Collector Roadway": 0.1512,
+          "Local Street / Road": 0.1383,
+          "Urban": 0.1361,
+          "Rural": 0.1367,
+          "Paved - bituminous / asphalt": 0.2427,
+          "Paved - non-bituminous / concrete": 0.2407,
+          "Unpaved": 0.2285,
+          "Undetermined": 0.288,
+          "Solid Line": 0.0991,
+          "Dashed Line": 0.1144,
+          "Double Line": 0.0998,
+          "Edge Line": 0.1101,
+          "Curved Line": 0.1055,
+          "Gore Markings": 0.1468,
+          "Crosswalks": 0.086,
+          "Arrows": 0.0985,
+          "Unmarked Pavement": 0.1398,
+          "Clearly Visible": 0.1632,
+          "Faded / Worn / Not Visible": 0.1851,
+          "Low Contrast": 0.1553,
+          "Partially Missing": 0.1674,
+          "Occluded": 0.1635,
+          "Not Applicable": 0.1655,
+          "Daylight": 0.1631,
+          "Nighttime": 0.081,
+          "Dusk / Dawn": 0.0859,
+          "Shadow": 0.1106,
+          "Glare": 0.1261,
+          "Rain": 0.0811,
+          "Fog": 0.1076,
+          "Snow": 0.081,
+          "Wet Pavement": 0.0827,
+          "Icy Road": 0.081
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_15",
+      "file_name": "cac07407-bc0b048a.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Faded / Worn / Not Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cac07407-bc0b048a.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Shadow"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Local Street / Road",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Shadow"
+        ],
+        "scores": {
+          "Intersections": 0.1335,
+          "Roundabouts": 0.1063,
+          "Ramps / Merges": 0.1148,
+          "At-Grade Rail Crossings": 0.1068,
+          "Tolling Stations": 0.1075,
+          "Work Zones": 0.1093,
+          "Managed Lanes": 0.1519,
+          "General Roadway Segments": 0.17,
+          "Freeway/Expressway": 0.1311,
+          "Arterial Roadway": 0.1469,
+          "Collector Roadway": 0.2263,
+          "Local Street / Road": 0.2296,
+          "Urban": 0.1375,
+          "Rural": 0.1286,
+          "Paved - bituminous / asphalt": 0.2602,
+          "Paved - non-bituminous / concrete": 0.248,
+          "Unpaved": 0.2254,
+          "Undetermined": 0.2664,
+          "Solid Line": 0.0963,
+          "Dashed Line": 0.0997,
+          "Double Line": 0.1042,
+          "Edge Line": 0.1192,
+          "Curved Line": 0.094,
+          "Gore Markings": 0.1343,
+          "Crosswalks": 0.1034,
+          "Arrows": 0.1172,
+          "Unmarked Pavement": 0.1319,
+          "Clearly Visible": 0.1496,
+          "Faded / Worn / Not Visible": 0.1998,
+          "Low Contrast": 0.155,
+          "Partially Missing": 0.1708,
+          "Occluded": 0.1563,
+          "Not Applicable": 0.1685,
+          "Daylight": 0.1625,
+          "Nighttime": 0.0726,
+          "Dusk / Dawn": 0.0894,
+          "Shadow": 0.1731,
+          "Glare": 0.1312,
+          "Rain": 0.0722,
+          "Fog": 0.0792,
+          "Snow": 0.0721,
+          "Wet Pavement": 0.0755,
+          "Icy Road": 0.0722
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_16",
+      "file_name": "cac07407-fe32e494.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cac07407-fe32e494.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Tolling Stations"
+          ],
+          "Roadway Context & Facility Type": [
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Partially Missing"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Tolling Stations",
+          "Collector Roadway",
+          "Undetermined",
+          "Gore Markings",
+          "Partially Missing",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1036,
+          "Roundabouts": 0.0946,
+          "Ramps / Merges": 0.1298,
+          "At-Grade Rail Crossings": 0.0964,
+          "Tolling Stations": 0.1845,
+          "Work Zones": 0.0963,
+          "Managed Lanes": 0.1625,
+          "General Roadway Segments": 0.1323,
+          "Freeway/Expressway": 0.1626,
+          "Arterial Roadway": 0.1859,
+          "Collector Roadway": 0.2236,
+          "Local Street / Road": 0.1491,
+          "Urban": 0.1406,
+          "Rural": 0.1381,
+          "Paved - bituminous / asphalt": 0.2422,
+          "Paved - non-bituminous / concrete": 0.2518,
+          "Unpaved": 0.2345,
+          "Undetermined": 0.2714,
+          "Solid Line": 0.1029,
+          "Dashed Line": 0.1047,
+          "Double Line": 0.1037,
+          "Edge Line": 0.1125,
+          "Curved Line": 0.1008,
+          "Gore Markings": 0.1475,
+          "Crosswalks": 0.1003,
+          "Arrows": 0.1023,
+          "Unmarked Pavement": 0.1254,
+          "Clearly Visible": 0.1514,
+          "Faded / Worn / Not Visible": 0.1796,
+          "Low Contrast": 0.1384,
+          "Partially Missing": 0.1956,
+          "Occluded": 0.1559,
+          "Not Applicable": 0.1791,
+          "Daylight": 0.1597,
+          "Nighttime": 0.0881,
+          "Dusk / Dawn": 0.0947,
+          "Shadow": 0.1093,
+          "Glare": 0.1017,
+          "Rain": 0.0881,
+          "Fog": 0.0935,
+          "Snow": 0.088,
+          "Wet Pavement": 0.0888,
+          "Icy Road": 0.0881
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_17",
+      "file_name": "cac32276-2ea56b83.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Faded / Worn / Not Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cac32276-2ea56b83.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Collector Roadway",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1169,
+          "Roundabouts": 0.1078,
+          "Ramps / Merges": 0.1141,
+          "At-Grade Rail Crossings": 0.1069,
+          "Tolling Stations": 0.1081,
+          "Work Zones": 0.114,
+          "Managed Lanes": 0.174,
+          "General Roadway Segments": 0.1583,
+          "Freeway/Expressway": 0.1474,
+          "Arterial Roadway": 0.1666,
+          "Collector Roadway": 0.1967,
+          "Local Street / Road": 0.1772,
+          "Urban": 0.1675,
+          "Rural": 0.1446,
+          "Paved - bituminous / asphalt": 0.2156,
+          "Paved - non-bituminous / concrete": 0.2213,
+          "Unpaved": 0.2014,
+          "Undetermined": 0.3617,
+          "Solid Line": 0.1046,
+          "Dashed Line": 0.1069,
+          "Double Line": 0.1077,
+          "Edge Line": 0.1276,
+          "Curved Line": 0.1013,
+          "Gore Markings": 0.1203,
+          "Crosswalks": 0.0988,
+          "Arrows": 0.1037,
+          "Unmarked Pavement": 0.1291,
+          "Clearly Visible": 0.1375,
+          "Faded / Worn / Not Visible": 0.1921,
+          "Low Contrast": 0.1664,
+          "Partially Missing": 0.163,
+          "Occluded": 0.1859,
+          "Not Applicable": 0.1551,
+          "Daylight": 0.1542,
+          "Nighttime": 0.0846,
+          "Dusk / Dawn": 0.0916,
+          "Shadow": 0.0913,
+          "Glare": 0.1478,
+          "Rain": 0.0861,
+          "Fog": 0.0865,
+          "Snow": 0.0845,
+          "Wet Pavement": 0.0888,
+          "Icy Road": 0.0847
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_18",
+      "file_name": "cad180c4-d05b49f1.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare; Wet Pavement"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare",
+          "Wet Pavement"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cad180c4-d05b49f1.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Crosswalks"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Dusk / Dawn"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Urban",
+          "Undetermined",
+          "Crosswalks",
+          "Faded / Worn / Not Visible",
+          "Dusk / Dawn"
+        ],
+        "scores": {
+          "Intersections": 0.1248,
+          "Roundabouts": 0.1246,
+          "Ramps / Merges": 0.1253,
+          "At-Grade Rail Crossings": 0.1246,
+          "Tolling Stations": 0.1249,
+          "Work Zones": 0.1252,
+          "Managed Lanes": 0.1258,
+          "General Roadway Segments": 0.1247,
+          "Freeway/Expressway": 0.1661,
+          "Arterial Roadway": 0.1662,
+          "Collector Roadway": 0.1662,
+          "Local Street / Road": 0.1673,
+          "Urban": 0.1682,
+          "Rural": 0.166,
+          "Paved - bituminous / asphalt": 0.2499,
+          "Paved - non-bituminous / concrete": 0.2501,
+          "Unpaved": 0.2497,
+          "Undetermined": 0.2503,
+          "Solid Line": 0.1111,
+          "Dashed Line": 0.1111,
+          "Double Line": 0.1109,
+          "Edge Line": 0.111,
+          "Curved Line": 0.1109,
+          "Gore Markings": 0.1112,
+          "Crosswalks": 0.1116,
+          "Arrows": 0.111,
+          "Unmarked Pavement": 0.1112,
+          "Clearly Visible": 0.1658,
+          "Faded / Worn / Not Visible": 0.1716,
+          "Low Contrast": 0.1658,
+          "Partially Missing": 0.1654,
+          "Occluded": 0.1665,
+          "Not Applicable": 0.1649,
+          "Daylight": 0.0996,
+          "Nighttime": 0.1022,
+          "Dusk / Dawn": 0.1037,
+          "Shadow": 0.0985,
+          "Glare": 0.0989,
+          "Rain": 0.0994,
+          "Fog": 0.0986,
+          "Snow": 0.0984,
+          "Wet Pavement": 0.1022,
+          "Icy Road": 0.0986
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_19",
+      "file_name": "cade2aed-db2e9c98.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections; Work Zones",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow; Wet Pavement"
+        },
+        "labels": [
+          "Intersections",
+          "Work Zones",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow",
+          "Wet Pavement"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cade2aed-db2e9c98.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Work Zones"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Crosswalks"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Wet Pavement"
+          ]
+        },
+        "labels": [
+          "Work Zones",
+          "Urban",
+          "Undetermined",
+          "Crosswalks",
+          "Faded / Worn / Not Visible",
+          "Wet Pavement"
+        ],
+        "scores": {
+          "Intersections": 0.1275,
+          "Roundabouts": 0.1219,
+          "Ramps / Merges": 0.1222,
+          "At-Grade Rail Crossings": 0.122,
+          "Tolling Stations": 0.1218,
+          "Work Zones": 0.1364,
+          "Managed Lanes": 0.1253,
+          "General Roadway Segments": 0.1229,
+          "Freeway/Expressway": 0.1529,
+          "Arterial Roadway": 0.1542,
+          "Collector Roadway": 0.1595,
+          "Local Street / Road": 0.1625,
+          "Urban": 0.2181,
+          "Rural": 0.1528,
+          "Paved - bituminous / asphalt": 0.2502,
+          "Paved - non-bituminous / concrete": 0.2502,
+          "Unpaved": 0.248,
+          "Undetermined": 0.2516,
+          "Solid Line": 0.1104,
+          "Dashed Line": 0.1094,
+          "Double Line": 0.1095,
+          "Edge Line": 0.1096,
+          "Curved Line": 0.108,
+          "Gore Markings": 0.1112,
+          "Crosswalks": 0.1236,
+          "Arrows": 0.1084,
+          "Unmarked Pavement": 0.11,
+          "Clearly Visible": 0.1653,
+          "Faded / Worn / Not Visible": 0.1703,
+          "Low Contrast": 0.1665,
+          "Partially Missing": 0.1665,
+          "Occluded": 0.1659,
+          "Not Applicable": 0.1653,
+          "Daylight": 0.1018,
+          "Nighttime": 0.096,
+          "Dusk / Dawn": 0.0964,
+          "Shadow": 0.0962,
+          "Glare": 0.0966,
+          "Rain": 0.0993,
+          "Fog": 0.0964,
+          "Snow": 0.1067,
+          "Wet Pavement": 0.1078,
+          "Icy Road": 0.1028
+        }
+      }
+    },
+    {
+      "sample_id": "bdd100k_20",
+      "file_name": "cae49ab7-c87d52c4.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Work Zones",
+          "Roadway Context & Facility Type": "Arterial Roadway; Local Street / Road; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Unmarked Pavement",
+          "Observed Marking Visibility": "Not Applicable",
+          "Lighting & Weather": "Shadow"
+        },
+        "labels": [
+          "Work Zones",
+          "Arterial Roadway",
+          "Local Street / Road",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Unmarked Pavement",
+          "Not Applicable",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cae49ab7-c87d52c4.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Local Street / Road",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.129,
+          "Roundabouts": 0.1233,
+          "Ramps / Merges": 0.1227,
+          "At-Grade Rail Crossings": 0.1221,
+          "Tolling Stations": 0.1219,
+          "Work Zones": 0.1243,
+          "Managed Lanes": 0.1304,
+          "General Roadway Segments": 0.1262,
+          "Freeway/Expressway": 0.1365,
+          "Arterial Roadway": 0.1384,
+          "Collector Roadway": 0.1582,
+          "Local Street / Road": 0.2634,
+          "Urban": 0.1672,
+          "Rural": 0.1363,
+          "Paved - bituminous / asphalt": 0.2492,
+          "Paved - non-bituminous / concrete": 0.2485,
+          "Unpaved": 0.2471,
+          "Undetermined": 0.2551,
+          "Solid Line": 0.1103,
+          "Dashed Line": 0.1098,
+          "Double Line": 0.1096,
+          "Edge Line": 0.111,
+          "Curved Line": 0.1092,
+          "Gore Markings": 0.1108,
+          "Crosswalks": 0.1131,
+          "Arrows": 0.1093,
+          "Unmarked Pavement": 0.117,
+          "Clearly Visible": 0.1553,
+          "Faded / Worn / Not Visible": 0.2005,
+          "Low Contrast": 0.1598,
+          "Partially Missing": 0.1572,
+          "Occluded": 0.1602,
+          "Not Applicable": 0.1671,
+          "Daylight": 0.1327,
+          "Nighttime": 0.0915,
+          "Dusk / Dawn": 0.0943,
+          "Shadow": 0.0983,
+          "Glare": 0.1254,
+          "Rain": 0.0915,
+          "Fog": 0.0916,
+          "Snow": 0.0914,
+          "Wet Pavement": 0.0919,
+          "Icy Road": 0.0914
+        }
+      }
+    }
+  ]
+}

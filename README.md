@@ -78,7 +78,7 @@ via the `--manifest` flag.
       "width": 1280,
       "height": 720,
       "ground_truth": {
-        "mask_path": "manifests/tusimple/masks/<sample_id>.png",
+        "mask_path": "/abs/path/to/repo/manifests/tusimple/masks/<sample_id>.png",
         "natural_gt": "lanes",
         "lane_json": {
           "h_samples": [10, 20, 30, "...", 710],

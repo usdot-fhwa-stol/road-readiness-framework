@@ -1,0 +1,489 @@
+{
+  "metadata": {
+    "dataset": "tusimple",
+    "source_xlsx": "TO_25-203_All_Datasets_Categorized.xlsx",
+    "source_sheet": "TuSimple",
+    "num_samples": 14,
+    "num_image_found": 0,
+    "num_gt_found": 0,
+    "num_image_missing": 14,
+    "num_gt_missing": 14,
+    "summary_dimensions": [
+      "Operational Scenario",
+      "Roadway Context & Facility Type",
+      "Roadway Surface Type",
+      "Pavement Marking Type & Configuration",
+      "Observed Marking Visibility",
+      "Lighting & Weather"
+    ],
+    "tag_vocabulary": [
+      "Intersections",
+      "Roundabouts",
+      "Ramps / Merges",
+      "At-Grade Rail Crossings",
+      "Tolling Stations",
+      "Work Zones",
+      "Managed Lanes",
+      "General Roadway Segments",
+      "Freeway/Expressway",
+      "Arterial Roadway",
+      "Collector Roadway",
+      "Local Street / Road",
+      "Urban",
+      "Rural",
+      "Paved - bituminous / asphalt",
+      "Paved - non-bituminous / concrete",
+      "Unpaved",
+      "Undetermined",
+      "Solid Line",
+      "Dashed Line",
+      "Double Line",
+      "Edge Line",
+      "Curved Line",
+      "Gore Markings",
+      "Crosswalks",
+      "Arrows",
+      "Unmarked Pavement",
+      "Clearly Visible",
+      "Faded / Worn / Not Visible",
+      "Low Contrast",
+      "Partially Missing",
+      "Occluded",
+      "Not Applicable",
+      "Daylight",
+      "Nighttime",
+      "Dusk / Dawn",
+      "Shadow",
+      "Glare",
+      "Rain",
+      "Fog",
+      "Snow",
+      "Wet Pavement",
+      "Icy Road"
+    ]
+  },
+  "samples": [
+    {
+      "sample_id": "tusimple_1",
+      "file_name": "985",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt; Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Paved - non-bituminous / concrete",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "tusimple_lane_json",
+      "image_found": false,
+      "gt_found": false,
+      "note": "bare numeric id; no path/mapping saved -> UNRESOLVED (needs the id->clip mapping from the person who labeled it)"
+    },
+    {
+      "sample_id": "tusimple_2",
+      "file_name": "980",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - non-bituminous / concrete",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "tusimple_lane_json",
+      "image_found": false,
+      "gt_found": false,
+      "note": "bare numeric id; no path/mapping saved -> UNRESOLVED (needs the id->clip mapping from the person who labeled it)"
+    },
+    {
+      "sample_id": "tusimple_3",
+      "file_name": "9720",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Ramps / Merges",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible; Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "Ramps / Merges",
+          "Freeway/Expressway",
+          "Paved - non-bituminous / concrete",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "tusimple_lane_json",
+      "image_found": false,
+      "gt_found": false,
+      "note": "bare numeric id; no path/mapping saved -> UNRESOLVED (needs the id->clip mapping from the person who labeled it)"
+    },
+    {
+      "sample_id": "tusimple_4",
+      "file_name": "9540",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Ramps / Merges",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "Ramps / Merges",
+          "Freeway/Expressway",
+          "Paved - non-bituminous / concrete",
+          "Dashed Line",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "tusimple_lane_json",
+      "image_found": false,
+      "gt_found": false,
+      "note": "bare numeric id; no path/mapping saved -> UNRESOLVED (needs the id->clip mapping from the person who labeled it)"
+    },
+    {
+      "sample_id": "tusimple_5",
+      "file_name": "945",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Nighttime"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - non-bituminous / concrete",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Nighttime"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "tusimple_lane_json",
+      "image_found": false,
+      "gt_found": false,
+      "note": "bare numeric id; no path/mapping saved -> UNRESOLVED (needs the id->clip mapping from the person who labeled it)"
+    },
+    {
+      "sample_id": "tusimple_6",
+      "file_name": "885",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Nighttime"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - non-bituminous / concrete",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Nighttime"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "tusimple_lane_json",
+      "image_found": false,
+      "gt_found": false,
+      "note": "bare numeric id; no path/mapping saved -> UNRESOLVED (needs the id->clip mapping from the person who labeled it)"
+    },
+    {
+      "sample_id": "tusimple_7",
+      "file_name": "7980",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - non-bituminous / concrete",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "tusimple_lane_json",
+      "image_found": false,
+      "gt_found": false,
+      "note": "bare numeric id; no path/mapping saved -> UNRESOLVED (needs the id->clip mapping from the person who labeled it)"
+    },
+    {
+      "sample_id": "tusimple_8",
+      "file_name": "6900",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - non-bituminous / concrete",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "tusimple_lane_json",
+      "image_found": false,
+      "gt_found": false,
+      "note": "bare numeric id; no path/mapping saved -> UNRESOLVED (needs the id->clip mapping from the person who labeled it)"
+    },
+    {
+      "sample_id": "tusimple_9",
+      "file_name": "6600",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Managed Lanes",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "Managed Lanes",
+          "Freeway/Expressway",
+          "Paved - non-bituminous / concrete",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "tusimple_lane_json",
+      "image_found": false,
+      "gt_found": false,
+      "note": "bare numeric id; no path/mapping saved -> UNRESOLVED (needs the id->clip mapping from the person who labeled it)"
+    },
+    {
+      "sample_id": "tusimple_10",
+      "file_name": "64500",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - non-bituminous / concrete",
+          "Solid Line",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "tusimple_lane_json",
+      "image_found": false,
+      "gt_found": false,
+      "note": "bare numeric id; no path/mapping saved -> UNRESOLVED (needs the id->clip mapping from the person who labeled it)"
+    },
+    {
+      "sample_id": "tusimple_11",
+      "file_name": "63840",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - non-bituminous / concrete",
+          "Solid Line",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "tusimple_lane_json",
+      "image_found": false,
+      "gt_found": false,
+      "note": "bare numeric id; no path/mapping saved -> UNRESOLVED (needs the id->clip mapping from the person who labeled it)"
+    },
+    {
+      "sample_id": "tusimple_12",
+      "file_name": "620",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - non-bituminous / concrete",
+          "Solid Line",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "tusimple_lane_json",
+      "image_found": false,
+      "gt_found": false,
+      "note": "bare numeric id; no path/mapping saved -> UNRESOLVED (needs the id->clip mapping from the person who labeled it)"
+    },
+    {
+      "sample_id": "tusimple_13",
+      "file_name": "59940",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - non-bituminous / concrete",
+          "Solid Line",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "tusimple_lane_json",
+      "image_found": false,
+      "gt_found": false,
+      "note": "bare numeric id; no path/mapping saved -> UNRESOLVED (needs the id->clip mapping from the person who labeled it)"
+    },
+    {
+      "sample_id": "tusimple_14",
+      "file_name": "10020",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Nighttime"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - non-bituminous / concrete",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Nighttime"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "tusimple_lane_json",
+      "image_found": false,
+      "gt_found": false,
+      "note": "bare numeric id; no path/mapping saved -> UNRESOLVED (needs the id->clip mapping from the person who labeled it)"
+    }
+  ]
+}

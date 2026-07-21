@@ -63,3 +63,6 @@ outputs/clrernet_overlay_direct/
 outputs/clrernet_overlay_test/
 outputs/results/clrernet_*.json
 outputs/results/model_comparison_with_clrernet.md
+CODE_SUMMARY_FOR_CHATGPT.md
+outputs/*
+outputs_*/*

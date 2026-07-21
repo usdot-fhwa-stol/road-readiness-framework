@@ -1,6 +1,7 @@
 """Write model predictions in the universal manifest format.
 
-This is the output side of the YOLOPX adapter. For each processed image it
+This is the output side of the shared, model-agnostic manifest adapter (used by
+both YOLOPX and HybridNets). For each processed image it
 records both prediction representations the manifest spec asks for: a predicted
 lane-mask PNG link and a predicted lane_json (derived from the mask via the
 existing mask_to_lanes converter — no new geometry).
@@ -42,7 +43,7 @@ class PredictionManifestWriter:
             self.mask_dir.mkdir(parents=True, exist_ok=True)
         self.samples: list[dict] = []
 
-    def add(self, sample_id, image_path, pred_mask: np.ndarray) -> None:
+    def add(self, sample_id, image_path, pred_mask: np.ndarray, lane_json=None) -> None:
         pred = (np.asarray(pred_mask) > 0).astype(np.uint8)
         h, w = pred.shape[:2]
 
@@ -51,7 +52,12 @@ class PredictionManifestWriter:
             mask_path = str(self.mask_dir / f"{_safe(sample_id)}.png")
             cv2.imwrite(mask_path, pred * 255)
 
-        lane_json = mask_to_lane_json(pred, step=self.h_step)
+        # Prefer the model's own lane geometry when the caller supplies it (e.g.
+        # a lane-line detector like CLRerNet, whose native lane_json is exact and
+        # independent of the rasterisation thickness). Fall back to deriving it
+        # from the mask for mask-based models (YOLOPX/HybridNets).
+        if lane_json is None:
+            lane_json = mask_to_lane_json(pred, step=self.h_step)
         self.samples.append({
             "sample_id": sample_id,
             "image_path": image_path,

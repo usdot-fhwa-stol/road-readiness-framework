@@ -1,0 +1,917 @@
+{
+  "metadata": {
+    "dataset": "culane",
+    "split": "test",
+    "num_samples": 20,
+    "gt_type": "lane_mask_png",
+    "note": "image+GT both guaranteed present",
+    "tagger": {
+      "backend": "vlm",
+      "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+      "num_tagged": 20,
+      "num_skipped": 0
+    }
+  },
+  "samples": [
+    {
+      "sample_id": "culane_1",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00000.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00000.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00000.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Local Street / Road",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_2",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00030.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00030.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00030.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Local Street / Road",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_3",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00060.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00060.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00060.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Collector Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_4",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00090.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00090.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00090.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Collector Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_5",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00120.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00120.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00120.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Collector Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_6",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00150.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00150.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00150.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Collector Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_7",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00180.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00180.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00180.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Collector Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_8",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00210.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00210.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00210.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Collector Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_9",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00240.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00240.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00240.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Collector Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_10",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00270.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00270.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00270.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Local Street / Road",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_11",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00300.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00300.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00300.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Edge Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Collector Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_12",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00330.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00330.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00330.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Collector Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_13",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00360.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00360.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00360.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Collector Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_14",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00390.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00390.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00390.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Collector Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_15",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00420.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00420.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00420.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Local Street / Road",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_16",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00450.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00450.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00450.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Collector Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_17",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00480.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00480.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00480.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Local Street / Road",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_18",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00510.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00510.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00510.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Local Street / Road",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_19",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00540.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00540.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00540.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Collector Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "culane_20",
+      "file_name": "driver_100_30frame/05251517_0433.MP4/00570.jpg",
+      "image_path": "/shared/data/culane/driver_100_30frame/05251517_0433.MP4/00570.jpg",
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251517_0433.MP4/00570.png",
+      "gt_type": "lane_mask_png",
+      "split": "test",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban",
+            "Collector Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Collector Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    }
+  ]
+}

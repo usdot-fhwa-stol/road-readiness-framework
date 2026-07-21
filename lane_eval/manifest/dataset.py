@@ -1,10 +1,11 @@
 """Read a universal manifest JSON and present it as a dataset adapter.
 
-This is the input side of the YOLOPX adapter: it replaces the native dataset
-adapters so inference consumes the dataset-agnostic manifest produced by
-lane_eval.manifest.generator. It yields the same LaneSample objects the rest of
-the eval pipeline expects, so it slots directly into run_lane_eval's
-_EvalDataset.
+This is the input side of the shared, model-agnostic manifest adapter: it
+replaces the native dataset adapters so inference consumes the dataset-agnostic
+manifest produced by lane_eval.manifest.generator. It yields the same LaneSample
+objects the rest of the eval pipeline expects, so it slots directly into the
+eval runners' _EvalDataset — both run_lane_eval (YOLOPX) and run_hybridnets
+(HybridNets) consume it identically via --manifest.
 """
 from __future__ import annotations
 

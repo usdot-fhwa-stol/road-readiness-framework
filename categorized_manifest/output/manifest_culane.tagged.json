@@ -1,0 +1,5263 @@
+{
+  "metadata": {
+    "dataset": "culane",
+    "source_xlsx": "TO_25-203_All_Datasets_Categorized.xlsx",
+    "source_sheet": "CuLane",
+    "num_samples": 48,
+    "num_image_found": 46,
+    "num_gt_found": 46,
+    "num_image_missing": 2,
+    "num_gt_missing": 2,
+    "summary_dimensions": [
+      "Operational Scenario",
+      "Roadway Context & Facility Type",
+      "Roadway Surface Type",
+      "Pavement Marking Type & Configuration",
+      "Observed Marking Visibility",
+      "Lighting & Weather"
+    ],
+    "tag_vocabulary": [
+      "Intersections",
+      "Roundabouts",
+      "Ramps / Merges",
+      "At-Grade Rail Crossings",
+      "Tolling Stations",
+      "Work Zones",
+      "Managed Lanes",
+      "General Roadway Segments",
+      "Freeway/Expressway",
+      "Arterial Roadway",
+      "Collector Roadway",
+      "Local Street / Road",
+      "Urban",
+      "Rural",
+      "Paved - bituminous / asphalt",
+      "Paved - non-bituminous / concrete",
+      "Unpaved",
+      "Undetermined",
+      "Solid Line",
+      "Dashed Line",
+      "Double Line",
+      "Edge Line",
+      "Curved Line",
+      "Gore Markings",
+      "Crosswalks",
+      "Arrows",
+      "Unmarked Pavement",
+      "Clearly Visible",
+      "Faded / Worn / Not Visible",
+      "Low Contrast",
+      "Partially Missing",
+      "Occluded",
+      "Not Applicable",
+      "Daylight",
+      "Nighttime",
+      "Dusk / Dawn",
+      "Shadow",
+      "Glare",
+      "Rain",
+      "Fog",
+      "Snow",
+      "Wet Pavement",
+      "Icy Road"
+    ],
+    "tagger": {
+      "model": "google/siglip2-base-patch16-224",
+      "num_tagged": 46,
+      "num_skipped": 2
+    }
+  },
+  "samples": [
+    {
+      "sample_id": "culane_1",
+      "file_name": "05250343_0278.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Curved Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Freeway/Expressway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Curved Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05250343_0278.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05250343_0278.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05250343_0278.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Local Street / Road",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1222,
+          "Roundabouts": 0.1195,
+          "Ramps / Merges": 0.1172,
+          "At-Grade Rail Crossings": 0.1148,
+          "Tolling Stations": 0.1153,
+          "Work Zones": 0.1177,
+          "Managed Lanes": 0.1394,
+          "General Roadway Segments": 0.1539,
+          "Freeway/Expressway": 0.156,
+          "Arterial Roadway": 0.1674,
+          "Collector Roadway": 0.1657,
+          "Local Street / Road": 0.1985,
+          "Urban": 0.1571,
+          "Rural": 0.1553,
+          "Paved - bituminous / asphalt": 0.2442,
+          "Paved - non-bituminous / concrete": 0.2049,
+          "Unpaved": 0.2012,
+          "Undetermined": 0.3497,
+          "Solid Line": 0.1041,
+          "Dashed Line": 0.1095,
+          "Double Line": 0.1045,
+          "Edge Line": 0.1075,
+          "Curved Line": 0.1103,
+          "Gore Markings": 0.1325,
+          "Crosswalks": 0.101,
+          "Arrows": 0.1126,
+          "Unmarked Pavement": 0.1179,
+          "Clearly Visible": 0.1837,
+          "Faded / Worn / Not Visible": 0.208,
+          "Low Contrast": 0.1764,
+          "Partially Missing": 0.1303,
+          "Occluded": 0.1423,
+          "Not Applicable": 0.1592,
+          "Daylight": 0.0972,
+          "Nighttime": 0.1531,
+          "Dusk / Dawn": 0.1461,
+          "Shadow": 0.0658,
+          "Glare": 0.1096,
+          "Rain": 0.1273,
+          "Fog": 0.0755,
+          "Snow": 0.0653,
+          "Wet Pavement": 0.0962,
+          "Icy Road": 0.0639
+        }
+      }
+    },
+    {
+      "sample_id": "culane_2",
+      "file_name": "05250325_0272.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Double Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05250325_0272.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05250325_0272.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05250325_0272.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1259,
+          "Roundabouts": 0.1202,
+          "Ramps / Merges": 0.1269,
+          "At-Grade Rail Crossings": 0.1155,
+          "Tolling Stations": 0.1183,
+          "Work Zones": 0.1279,
+          "Managed Lanes": 0.1314,
+          "General Roadway Segments": 0.1339,
+          "Freeway/Expressway": 0.1673,
+          "Arterial Roadway": 0.1725,
+          "Collector Roadway": 0.1658,
+          "Local Street / Road": 0.1696,
+          "Urban": 0.1624,
+          "Rural": 0.1624,
+          "Paved - bituminous / asphalt": 0.26,
+          "Paved - non-bituminous / concrete": 0.2329,
+          "Unpaved": 0.2293,
+          "Undetermined": 0.2777,
+          "Solid Line": 0.1081,
+          "Dashed Line": 0.1099,
+          "Double Line": 0.1072,
+          "Edge Line": 0.1072,
+          "Curved Line": 0.1098,
+          "Gore Markings": 0.1292,
+          "Crosswalks": 0.1065,
+          "Arrows": 0.1101,
+          "Unmarked Pavement": 0.112,
+          "Clearly Visible": 0.1769,
+          "Faded / Worn / Not Visible": 0.2015,
+          "Low Contrast": 0.1387,
+          "Partially Missing": 0.1668,
+          "Occluded": 0.1377,
+          "Not Applicable": 0.1785,
+          "Daylight": 0.1059,
+          "Nighttime": 0.1749,
+          "Dusk / Dawn": 0.1549,
+          "Shadow": 0.0795,
+          "Glare": 0.097,
+          "Rain": 0.0856,
+          "Fog": 0.0849,
+          "Snow": 0.0687,
+          "Wet Pavement": 0.0797,
+          "Icy Road": 0.0689
+        }
+      }
+    },
+    {
+      "sample_id": "culane_3",
+      "file_name": "05250358_0283.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime"
+        },
+        "labels": [
+          "Intersections",
+          "Freeway/Expressway",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Nighttime"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05250358_0283.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05250358_0283.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05250358_0283.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1088,
+          "Roundabouts": 0.1016,
+          "Ramps / Merges": 0.1338,
+          "At-Grade Rail Crossings": 0.0997,
+          "Tolling Stations": 0.1088,
+          "Work Zones": 0.102,
+          "Managed Lanes": 0.173,
+          "General Roadway Segments": 0.1723,
+          "Freeway/Expressway": 0.1894,
+          "Arterial Roadway": 0.2058,
+          "Collector Roadway": 0.1591,
+          "Local Street / Road": 0.1514,
+          "Urban": 0.1477,
+          "Rural": 0.1467,
+          "Paved - bituminous / asphalt": 0.2653,
+          "Paved - non-bituminous / concrete": 0.2092,
+          "Unpaved": 0.1961,
+          "Undetermined": 0.3294,
+          "Solid Line": 0.1033,
+          "Dashed Line": 0.1178,
+          "Double Line": 0.1082,
+          "Edge Line": 0.106,
+          "Curved Line": 0.1194,
+          "Gore Markings": 0.1314,
+          "Crosswalks": 0.092,
+          "Arrows": 0.1022,
+          "Unmarked Pavement": 0.1197,
+          "Clearly Visible": 0.1899,
+          "Faded / Worn / Not Visible": 0.1971,
+          "Low Contrast": 0.1649,
+          "Partially Missing": 0.1388,
+          "Occluded": 0.1486,
+          "Not Applicable": 0.1607,
+          "Daylight": 0.0993,
+          "Nighttime": 0.1412,
+          "Dusk / Dawn": 0.1383,
+          "Shadow": 0.0658,
+          "Glare": 0.1243,
+          "Rain": 0.1173,
+          "Fog": 0.0974,
+          "Snow": 0.0577,
+          "Wet Pavement": 0.1011,
+          "Icy Road": 0.0576
+        }
+      }
+    },
+    {
+      "sample_id": "culane_4",
+      "file_name": "05250401_0284.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Work Zones",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Solid Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Shadow; Glare"
+        },
+        "labels": [
+          "Work Zones",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Shadow",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05250401_0284.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05250401_0284.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05250401_0284.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Local Street / Road",
+          "Paved - bituminous / asphalt",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1228,
+          "Roundabouts": 0.1218,
+          "Ramps / Merges": 0.1223,
+          "At-Grade Rail Crossings": 0.1212,
+          "Tolling Stations": 0.1215,
+          "Work Zones": 0.1216,
+          "Managed Lanes": 0.1261,
+          "General Roadway Segments": 0.1428,
+          "Freeway/Expressway": 0.1625,
+          "Arterial Roadway": 0.1645,
+          "Collector Roadway": 0.1674,
+          "Local Street / Road": 0.1808,
+          "Urban": 0.1625,
+          "Rural": 0.1623,
+          "Paved - bituminous / asphalt": 0.2691,
+          "Paved - non-bituminous / concrete": 0.2344,
+          "Unpaved": 0.2338,
+          "Undetermined": 0.2627,
+          "Solid Line": 0.1099,
+          "Dashed Line": 0.1114,
+          "Double Line": 0.111,
+          "Edge Line": 0.1103,
+          "Curved Line": 0.111,
+          "Gore Markings": 0.1117,
+          "Crosswalks": 0.1091,
+          "Arrows": 0.1103,
+          "Unmarked Pavement": 0.1154,
+          "Clearly Visible": 0.1764,
+          "Faded / Worn / Not Visible": 0.2088,
+          "Low Contrast": 0.1584,
+          "Partially Missing": 0.1439,
+          "Occluded": 0.1471,
+          "Not Applicable": 0.1654,
+          "Daylight": 0.0936,
+          "Nighttime": 0.169,
+          "Dusk / Dawn": 0.1498,
+          "Shadow": 0.085,
+          "Glare": 0.1367,
+          "Rain": 0.0767,
+          "Fog": 0.0762,
+          "Snow": 0.0663,
+          "Wet Pavement": 0.0799,
+          "Icy Road": 0.0668
+        }
+      }
+    },
+    {
+      "sample_id": "culane_5",
+      "file_name": "05250416_0289.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Dusk / Dawn; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Dusk / Dawn",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05250416_0289.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05250416_0289.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05250416_0289.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Dusk / Dawn"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Urban",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Dusk / Dawn"
+        ],
+        "scores": {
+          "Intersections": 0.1102,
+          "Roundabouts": 0.0937,
+          "Ramps / Merges": 0.1528,
+          "At-Grade Rail Crossings": 0.089,
+          "Tolling Stations": 0.0937,
+          "Work Zones": 0.097,
+          "Managed Lanes": 0.1943,
+          "General Roadway Segments": 0.1693,
+          "Freeway/Expressway": 0.1992,
+          "Arterial Roadway": 0.1822,
+          "Collector Roadway": 0.1414,
+          "Local Street / Road": 0.134,
+          "Urban": 0.2346,
+          "Rural": 0.1085,
+          "Paved - bituminous / asphalt": 0.2859,
+          "Paved - non-bituminous / concrete": 0.2095,
+          "Unpaved": 0.1851,
+          "Undetermined": 0.3195,
+          "Solid Line": 0.1053,
+          "Dashed Line": 0.1198,
+          "Double Line": 0.1087,
+          "Edge Line": 0.1058,
+          "Curved Line": 0.1269,
+          "Gore Markings": 0.1097,
+          "Crosswalks": 0.0873,
+          "Arrows": 0.0975,
+          "Unmarked Pavement": 0.1389,
+          "Clearly Visible": 0.1765,
+          "Faded / Worn / Not Visible": 0.1995,
+          "Low Contrast": 0.1671,
+          "Partially Missing": 0.1317,
+          "Occluded": 0.1584,
+          "Not Applicable": 0.1668,
+          "Daylight": 0.1292,
+          "Nighttime": 0.1462,
+          "Dusk / Dawn": 0.1476,
+          "Shadow": 0.0868,
+          "Glare": 0.1368,
+          "Rain": 0.0672,
+          "Fog": 0.0758,
+          "Snow": 0.0574,
+          "Wet Pavement": 0.0945,
+          "Icy Road": 0.0586
+        }
+      }
+    },
+    {
+      "sample_id": "culane_6",
+      "file_name": "05250434_0295.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Arterial Roadway; Local Street / Road",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Dusk / Dawn; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Arterial Roadway",
+          "Local Street / Road",
+          "Undetermined",
+          "Dashed Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Dusk / Dawn",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05250434_0295.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05250434_0295.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05250434_0295.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Dusk / Dawn"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Local Street / Road",
+          "Paved - bituminous / asphalt",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Dusk / Dawn"
+        ],
+        "scores": {
+          "Intersections": 0.1462,
+          "Roundabouts": 0.1107,
+          "Ramps / Merges": 0.114,
+          "At-Grade Rail Crossings": 0.102,
+          "Tolling Stations": 0.1025,
+          "Work Zones": 0.105,
+          "Managed Lanes": 0.1516,
+          "General Roadway Segments": 0.168,
+          "Freeway/Expressway": 0.1277,
+          "Arterial Roadway": 0.1502,
+          "Collector Roadway": 0.1576,
+          "Local Street / Road": 0.2233,
+          "Urban": 0.2214,
+          "Rural": 0.1197,
+          "Paved - bituminous / asphalt": 0.3034,
+          "Paved - non-bituminous / concrete": 0.2084,
+          "Unpaved": 0.1908,
+          "Undetermined": 0.2974,
+          "Solid Line": 0.1021,
+          "Dashed Line": 0.1104,
+          "Double Line": 0.1068,
+          "Edge Line": 0.1089,
+          "Curved Line": 0.1163,
+          "Gore Markings": 0.1056,
+          "Crosswalks": 0.0971,
+          "Arrows": 0.1081,
+          "Unmarked Pavement": 0.1446,
+          "Clearly Visible": 0.1659,
+          "Faded / Worn / Not Visible": 0.2205,
+          "Low Contrast": 0.1771,
+          "Partially Missing": 0.1194,
+          "Occluded": 0.1505,
+          "Not Applicable": 0.1666,
+          "Daylight": 0.1366,
+          "Nighttime": 0.1344,
+          "Dusk / Dawn": 0.1519,
+          "Shadow": 0.0812,
+          "Glare": 0.1314,
+          "Rain": 0.0763,
+          "Fog": 0.0692,
+          "Snow": 0.059,
+          "Wet Pavement": 0.1007,
+          "Icy Road": 0.0593
+        }
+      }
+    },
+    {
+      "sample_id": "culane_7",
+      "file_name": "05250452_0301.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Work Zones",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Edge Line; Double Line; Arrows",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Daylight; Shadow; Glare"
+        },
+        "labels": [
+          "Work Zones",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Double Line",
+          "Edge Line",
+          "Arrows",
+          "Faded / Worn / Not Visible",
+          "Daylight",
+          "Shadow",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05250452_0301.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05250452_0301.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05250452_0301.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Urban",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1551,
+          "Roundabouts": 0.0959,
+          "Ramps / Merges": 0.1351,
+          "At-Grade Rail Crossings": 0.0926,
+          "Tolling Stations": 0.1009,
+          "Work Zones": 0.0986,
+          "Managed Lanes": 0.1751,
+          "General Roadway Segments": 0.1467,
+          "Freeway/Expressway": 0.162,
+          "Arterial Roadway": 0.1923,
+          "Collector Roadway": 0.1654,
+          "Local Street / Road": 0.1538,
+          "Urban": 0.2237,
+          "Rural": 0.1028,
+          "Paved - bituminous / asphalt": 0.2327,
+          "Paved - non-bituminous / concrete": 0.2258,
+          "Unpaved": 0.2027,
+          "Undetermined": 0.3389,
+          "Solid Line": 0.1086,
+          "Dashed Line": 0.1116,
+          "Double Line": 0.1068,
+          "Edge Line": 0.1148,
+          "Curved Line": 0.1128,
+          "Gore Markings": 0.1107,
+          "Crosswalks": 0.1011,
+          "Arrows": 0.1154,
+          "Unmarked Pavement": 0.1183,
+          "Clearly Visible": 0.1612,
+          "Faded / Worn / Not Visible": 0.2235,
+          "Low Contrast": 0.1638,
+          "Partially Missing": 0.133,
+          "Occluded": 0.1699,
+          "Not Applicable": 0.1486,
+          "Daylight": 0.1569,
+          "Nighttime": 0.0708,
+          "Dusk / Dawn": 0.148,
+          "Shadow": 0.1012,
+          "Glare": 0.1525,
+          "Rain": 0.0727,
+          "Fog": 0.0918,
+          "Snow": 0.0638,
+          "Wet Pavement": 0.0782,
+          "Icy Road": 0.064
+        }
+      }
+    },
+    {
+      "sample_id": "culane_8",
+      "file_name": "05250510_0307.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Edge Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Undetermined",
+          "Edge Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Daylight",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05250510_0307.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05250510_0307.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 106,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05250510_0307.MP4",
+      "lines_txt_count": 106,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1218,
+          "Roundabouts": 0.0923,
+          "Ramps / Merges": 0.1446,
+          "At-Grade Rail Crossings": 0.0864,
+          "Tolling Stations": 0.1223,
+          "Work Zones": 0.0918,
+          "Managed Lanes": 0.1788,
+          "General Roadway Segments": 0.162,
+          "Freeway/Expressway": 0.1703,
+          "Arterial Roadway": 0.208,
+          "Collector Roadway": 0.1713,
+          "Local Street / Road": 0.153,
+          "Urban": 0.1596,
+          "Rural": 0.1378,
+          "Paved - bituminous / asphalt": 0.2255,
+          "Paved - non-bituminous / concrete": 0.2177,
+          "Unpaved": 0.1827,
+          "Undetermined": 0.374,
+          "Solid Line": 0.0965,
+          "Dashed Line": 0.1109,
+          "Double Line": 0.0935,
+          "Edge Line": 0.1163,
+          "Curved Line": 0.129,
+          "Gore Markings": 0.1327,
+          "Crosswalks": 0.083,
+          "Arrows": 0.1078,
+          "Unmarked Pavement": 0.1302,
+          "Clearly Visible": 0.1618,
+          "Faded / Worn / Not Visible": 0.1852,
+          "Low Contrast": 0.1738,
+          "Partially Missing": 0.1642,
+          "Occluded": 0.1673,
+          "Not Applicable": 0.1477,
+          "Daylight": 0.1629,
+          "Nighttime": 0.0713,
+          "Dusk / Dawn": 0.0783,
+          "Shadow": 0.129,
+          "Glare": 0.1402,
+          "Rain": 0.0912,
+          "Fog": 0.0858,
+          "Snow": 0.0709,
+          "Wet Pavement": 0.0986,
+          "Icy Road": 0.0718
+        }
+      }
+    },
+    {
+      "sample_id": "culane_9",
+      "file_name": "05250541_0314.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Ramps / Merges",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line; Edge Line; Curved Line; Crosswalks; Arrows",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow; Glare"
+        },
+        "labels": [
+          "Ramps / Merges",
+          "Freeway/Expressway",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - non-bituminous / concrete",
+          "Dashed Line",
+          "Edge Line",
+          "Curved Line",
+          "Crosswalks",
+          "Arrows",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05250541_0314.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05250541_0314.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05250541_0314.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Edge Line"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Undetermined",
+          "Edge Line",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1347,
+          "Roundabouts": 0.1161,
+          "Ramps / Merges": 0.1172,
+          "At-Grade Rail Crossings": 0.116,
+          "Tolling Stations": 0.1156,
+          "Work Zones": 0.1203,
+          "Managed Lanes": 0.13,
+          "General Roadway Segments": 0.1501,
+          "Freeway/Expressway": 0.1437,
+          "Arterial Roadway": 0.1553,
+          "Collector Roadway": 0.1658,
+          "Local Street / Road": 0.1856,
+          "Urban": 0.2067,
+          "Rural": 0.1429,
+          "Paved - bituminous / asphalt": 0.2403,
+          "Paved - non-bituminous / concrete": 0.2448,
+          "Unpaved": 0.2226,
+          "Undetermined": 0.2923,
+          "Solid Line": 0.1068,
+          "Dashed Line": 0.1019,
+          "Double Line": 0.1101,
+          "Edge Line": 0.1272,
+          "Curved Line": 0.1009,
+          "Gore Markings": 0.1042,
+          "Crosswalks": 0.1147,
+          "Arrows": 0.1079,
+          "Unmarked Pavement": 0.1262,
+          "Clearly Visible": 0.1534,
+          "Faded / Worn / Not Visible": 0.2173,
+          "Low Contrast": 0.1854,
+          "Partially Missing": 0.1355,
+          "Occluded": 0.1548,
+          "Not Applicable": 0.1537,
+          "Daylight": 0.1654,
+          "Nighttime": 0.0842,
+          "Dusk / Dawn": 0.0873,
+          "Shadow": 0.0926,
+          "Glare": 0.1286,
+          "Rain": 0.0874,
+          "Fog": 0.0869,
+          "Snow": 0.0841,
+          "Wet Pavement": 0.0994,
+          "Icy Road": 0.0841
+        }
+      }
+    },
+    {
+      "sample_id": "culane_10",
+      "file_name": "05250556_0319.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Urban",
+          "Undetermined",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05250556_0319.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05250556_0319.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05250556_0319.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Curved Line"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Undetermined",
+          "Curved Line",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1334,
+          "Roundabouts": 0.0961,
+          "Ramps / Merges": 0.1499,
+          "At-Grade Rail Crossings": 0.0906,
+          "Tolling Stations": 0.0944,
+          "Work Zones": 0.0934,
+          "Managed Lanes": 0.1782,
+          "General Roadway Segments": 0.164,
+          "Freeway/Expressway": 0.171,
+          "Arterial Roadway": 0.2307,
+          "Collector Roadway": 0.1588,
+          "Local Street / Road": 0.1431,
+          "Urban": 0.1743,
+          "Rural": 0.1221,
+          "Paved - bituminous / asphalt": 0.2327,
+          "Paved - non-bituminous / concrete": 0.2169,
+          "Unpaved": 0.1747,
+          "Undetermined": 0.3757,
+          "Solid Line": 0.1023,
+          "Dashed Line": 0.1039,
+          "Double Line": 0.1055,
+          "Edge Line": 0.1263,
+          "Curved Line": 0.1354,
+          "Gore Markings": 0.1069,
+          "Crosswalks": 0.0828,
+          "Arrows": 0.1053,
+          "Unmarked Pavement": 0.1316,
+          "Clearly Visible": 0.1687,
+          "Faded / Worn / Not Visible": 0.1932,
+          "Low Contrast": 0.1805,
+          "Partially Missing": 0.1436,
+          "Occluded": 0.1659,
+          "Not Applicable": 0.1481,
+          "Daylight": 0.167,
+          "Nighttime": 0.0693,
+          "Dusk / Dawn": 0.0854,
+          "Shadow": 0.1182,
+          "Glare": 0.1389,
+          "Rain": 0.0836,
+          "Fog": 0.0939,
+          "Snow": 0.0683,
+          "Wet Pavement": 0.1069,
+          "Icy Road": 0.0685
+        }
+      }
+    },
+    {
+      "sample_id": "culane_11",
+      "file_name": "05252005_0505.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Local Street / Road; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Dusk / Dawn; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Local Street / Road",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Nighttime",
+          "Dusk / Dawn",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05252005_0505.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05252005_0505.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05252005_0505.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Local Street / Road",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1262,
+          "Roundabouts": 0.123,
+          "Ramps / Merges": 0.1221,
+          "At-Grade Rail Crossings": 0.1215,
+          "Tolling Stations": 0.1216,
+          "Work Zones": 0.1233,
+          "Managed Lanes": 0.1306,
+          "General Roadway Segments": 0.1318,
+          "Freeway/Expressway": 0.1527,
+          "Arterial Roadway": 0.1544,
+          "Collector Roadway": 0.1575,
+          "Local Street / Road": 0.222,
+          "Urban": 0.161,
+          "Rural": 0.1523,
+          "Paved - bituminous / asphalt": 0.254,
+          "Paved - non-bituminous / concrete": 0.2249,
+          "Unpaved": 0.2233,
+          "Undetermined": 0.2978,
+          "Solid Line": 0.1099,
+          "Dashed Line": 0.111,
+          "Double Line": 0.1102,
+          "Edge Line": 0.1104,
+          "Curved Line": 0.1101,
+          "Gore Markings": 0.1133,
+          "Crosswalks": 0.1102,
+          "Arrows": 0.1114,
+          "Unmarked Pavement": 0.1135,
+          "Clearly Visible": 0.1668,
+          "Faded / Worn / Not Visible": 0.2364,
+          "Low Contrast": 0.1563,
+          "Partially Missing": 0.1302,
+          "Occluded": 0.147,
+          "Not Applicable": 0.1633,
+          "Daylight": 0.103,
+          "Nighttime": 0.1499,
+          "Dusk / Dawn": 0.1483,
+          "Shadow": 0.0824,
+          "Glare": 0.1345,
+          "Rain": 0.0898,
+          "Fog": 0.0894,
+          "Snow": 0.0592,
+          "Wet Pavement": 0.0842,
+          "Icy Road": 0.0593
+        }
+      }
+    },
+    {
+      "sample_id": "culane_12",
+      "file_name": "05251947_0499.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Dusk / Dawn"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Dusk / Dawn"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05251947_0499.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05251947_0499.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251947_0499.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Glare"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Urban",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Glare"
+        ],
+        "scores": {
+          "Intersections": 0.1525,
+          "Roundabouts": 0.1137,
+          "Ramps / Merges": 0.1234,
+          "At-Grade Rail Crossings": 0.0961,
+          "Tolling Stations": 0.1011,
+          "Work Zones": 0.1098,
+          "Managed Lanes": 0.1712,
+          "General Roadway Segments": 0.1322,
+          "Freeway/Expressway": 0.1559,
+          "Arterial Roadway": 0.1691,
+          "Collector Roadway": 0.156,
+          "Local Street / Road": 0.1805,
+          "Urban": 0.2093,
+          "Rural": 0.1292,
+          "Paved - bituminous / asphalt": 0.2377,
+          "Paved - non-bituminous / concrete": 0.222,
+          "Unpaved": 0.2185,
+          "Undetermined": 0.3219,
+          "Solid Line": 0.1081,
+          "Dashed Line": 0.1128,
+          "Double Line": 0.1078,
+          "Edge Line": 0.1095,
+          "Curved Line": 0.1126,
+          "Gore Markings": 0.114,
+          "Crosswalks": 0.1071,
+          "Arrows": 0.1105,
+          "Unmarked Pavement": 0.1175,
+          "Clearly Visible": 0.1614,
+          "Faded / Worn / Not Visible": 0.2227,
+          "Low Contrast": 0.1465,
+          "Partially Missing": 0.1317,
+          "Occluded": 0.1582,
+          "Not Applicable": 0.1795,
+          "Daylight": 0.1329,
+          "Nighttime": 0.119,
+          "Dusk / Dawn": 0.1468,
+          "Shadow": 0.0732,
+          "Glare": 0.1477,
+          "Rain": 0.0947,
+          "Fog": 0.079,
+          "Snow": 0.0583,
+          "Wet Pavement": 0.0898,
+          "Icy Road": 0.0586
+        }
+      }
+    },
+    {
+      "sample_id": "culane_13",
+      "file_name": "05251739_0476.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Crosswalks",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05251739_0476.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05251739_0476.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251739_0476.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Intersections"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Intersections",
+          "Urban",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1652,
+          "Roundabouts": 0.1126,
+          "Ramps / Merges": 0.1237,
+          "At-Grade Rail Crossings": 0.1095,
+          "Tolling Stations": 0.112,
+          "Work Zones": 0.1105,
+          "Managed Lanes": 0.1382,
+          "General Roadway Segments": 0.1284,
+          "Freeway/Expressway": 0.1368,
+          "Arterial Roadway": 0.16,
+          "Collector Roadway": 0.1466,
+          "Local Street / Road": 0.175,
+          "Urban": 0.2574,
+          "Rural": 0.1241,
+          "Paved - bituminous / asphalt": 0.2244,
+          "Paved - non-bituminous / concrete": 0.2261,
+          "Unpaved": 0.2197,
+          "Undetermined": 0.3298,
+          "Solid Line": 0.1092,
+          "Dashed Line": 0.1107,
+          "Double Line": 0.1102,
+          "Edge Line": 0.1099,
+          "Curved Line": 0.1132,
+          "Gore Markings": 0.1103,
+          "Crosswalks": 0.1094,
+          "Arrows": 0.1111,
+          "Unmarked Pavement": 0.1161,
+          "Clearly Visible": 0.152,
+          "Faded / Worn / Not Visible": 0.2252,
+          "Low Contrast": 0.1722,
+          "Partially Missing": 0.1371,
+          "Occluded": 0.1648,
+          "Not Applicable": 0.1487,
+          "Daylight": 0.1753,
+          "Nighttime": 0.078,
+          "Dusk / Dawn": 0.088,
+          "Shadow": 0.1015,
+          "Glare": 0.1355,
+          "Rain": 0.0866,
+          "Fog": 0.0913,
+          "Snow": 0.0764,
+          "Wet Pavement": 0.0908,
+          "Icy Road": 0.0765
+        }
+      }
+    },
+    {
+      "sample_id": "culane_14",
+      "file_name": "05251928_0493.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05251928_0493.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05251928_0493.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251928_0493.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1706,
+          "Roundabouts": 0.1013,
+          "Ramps / Merges": 0.1123,
+          "At-Grade Rail Crossings": 0.0865,
+          "Tolling Stations": 0.0869,
+          "Work Zones": 0.0963,
+          "Managed Lanes": 0.1668,
+          "General Roadway Segments": 0.1793,
+          "Freeway/Expressway": 0.1428,
+          "Arterial Roadway": 0.1921,
+          "Collector Roadway": 0.171,
+          "Local Street / Road": 0.1767,
+          "Urban": 0.1887,
+          "Rural": 0.1287,
+          "Paved - bituminous / asphalt": 0.2244,
+          "Paved - non-bituminous / concrete": 0.2177,
+          "Unpaved": 0.167,
+          "Undetermined": 0.391,
+          "Solid Line": 0.0929,
+          "Dashed Line": 0.0928,
+          "Double Line": 0.0999,
+          "Edge Line": 0.1136,
+          "Curved Line": 0.1091,
+          "Gore Markings": 0.1222,
+          "Crosswalks": 0.1085,
+          "Arrows": 0.1146,
+          "Unmarked Pavement": 0.1464,
+          "Clearly Visible": 0.1657,
+          "Faded / Worn / Not Visible": 0.1744,
+          "Low Contrast": 0.1708,
+          "Partially Missing": 0.1565,
+          "Occluded": 0.1646,
+          "Not Applicable": 0.168,
+          "Daylight": 0.1597,
+          "Nighttime": 0.0648,
+          "Dusk / Dawn": 0.0917,
+          "Shadow": 0.139,
+          "Glare": 0.1462,
+          "Rain": 0.0745,
+          "Fog": 0.0902,
+          "Snow": 0.0632,
+          "Wet Pavement": 0.1074,
+          "Icy Road": 0.0634
+        }
+      }
+    },
+    {
+      "sample_id": "culane_15",
+      "file_name": "05251910_0487.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Dusk / Dawn"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Daylight",
+          "Dusk / Dawn"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05251910_0487.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05251910_0487.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251910_0487.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Urban",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1495,
+          "Roundabouts": 0.1064,
+          "Ramps / Merges": 0.1207,
+          "At-Grade Rail Crossings": 0.1004,
+          "Tolling Stations": 0.1018,
+          "Work Zones": 0.1034,
+          "Managed Lanes": 0.169,
+          "General Roadway Segments": 0.1488,
+          "Freeway/Expressway": 0.1765,
+          "Arterial Roadway": 0.1942,
+          "Collector Roadway": 0.1461,
+          "Local Street / Road": 0.1458,
+          "Urban": 0.199,
+          "Rural": 0.1384,
+          "Paved - bituminous / asphalt": 0.2077,
+          "Paved - non-bituminous / concrete": 0.2056,
+          "Unpaved": 0.197,
+          "Undetermined": 0.3897,
+          "Solid Line": 0.1045,
+          "Dashed Line": 0.1057,
+          "Double Line": 0.1044,
+          "Edge Line": 0.1072,
+          "Curved Line": 0.12,
+          "Gore Markings": 0.1074,
+          "Crosswalks": 0.1003,
+          "Arrows": 0.1171,
+          "Unmarked Pavement": 0.1334,
+          "Clearly Visible": 0.159,
+          "Faded / Worn / Not Visible": 0.2026,
+          "Low Contrast": 0.1789,
+          "Partially Missing": 0.1285,
+          "Occluded": 0.1588,
+          "Not Applicable": 0.1722,
+          "Daylight": 0.1714,
+          "Nighttime": 0.0722,
+          "Dusk / Dawn": 0.0955,
+          "Shadow": 0.0946,
+          "Glare": 0.1493,
+          "Rain": 0.0889,
+          "Fog": 0.1004,
+          "Snow": 0.0717,
+          "Wet Pavement": 0.0844,
+          "Icy Road": 0.0716
+        }
+      }
+    },
+    {
+      "sample_id": "culane_16",
+      "file_name": "05252041_0517.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Local Street / Road; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Crosswalks",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Local Street / Road",
+          "Urban",
+          "Undetermined",
+          "Crosswalks",
+          "Faded / Worn / Not Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05252041_0517.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05252041_0517.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05252041_0517.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Urban",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1291,
+          "Roundabouts": 0.1223,
+          "Ramps / Merges": 0.1231,
+          "At-Grade Rail Crossings": 0.1211,
+          "Tolling Stations": 0.1216,
+          "Work Zones": 0.122,
+          "Managed Lanes": 0.136,
+          "General Roadway Segments": 0.1248,
+          "Freeway/Expressway": 0.1617,
+          "Arterial Roadway": 0.1631,
+          "Collector Roadway": 0.1607,
+          "Local Street / Road": 0.1761,
+          "Urban": 0.1796,
+          "Rural": 0.1587,
+          "Paved - bituminous / asphalt": 0.2528,
+          "Paved - non-bituminous / concrete": 0.244,
+          "Unpaved": 0.2435,
+          "Undetermined": 0.2597,
+          "Solid Line": 0.1106,
+          "Dashed Line": 0.1117,
+          "Double Line": 0.1106,
+          "Edge Line": 0.1107,
+          "Curved Line": 0.1113,
+          "Gore Markings": 0.1115,
+          "Crosswalks": 0.1103,
+          "Arrows": 0.1109,
+          "Unmarked Pavement": 0.1124,
+          "Clearly Visible": 0.1591,
+          "Faded / Worn / Not Visible": 0.2299,
+          "Low Contrast": 0.155,
+          "Partially Missing": 0.1416,
+          "Occluded": 0.1475,
+          "Not Applicable": 0.1668,
+          "Daylight": 0.0874,
+          "Nighttime": 0.1671,
+          "Dusk / Dawn": 0.1279,
+          "Shadow": 0.0688,
+          "Glare": 0.0949,
+          "Rain": 0.1398,
+          "Fog": 0.0807,
+          "Snow": 0.0711,
+          "Wet Pavement": 0.0933,
+          "Icy Road": 0.069
+        }
+      }
+    },
+    {
+      "sample_id": "culane_17",
+      "file_name": "05251931_0494.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Local Street / Road",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Freeway/Expressway",
+          "Local Street / Road",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05251931_0494.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05251931_0494.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05251931_0494.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Urban",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1402,
+          "Roundabouts": 0.1063,
+          "Ramps / Merges": 0.1206,
+          "At-Grade Rail Crossings": 0.1012,
+          "Tolling Stations": 0.1028,
+          "Work Zones": 0.1105,
+          "Managed Lanes": 0.1574,
+          "General Roadway Segments": 0.1609,
+          "Freeway/Expressway": 0.1413,
+          "Arterial Roadway": 0.1688,
+          "Collector Roadway": 0.1636,
+          "Local Street / Road": 0.1828,
+          "Urban": 0.2132,
+          "Rural": 0.1304,
+          "Paved - bituminous / asphalt": 0.2264,
+          "Paved - non-bituminous / concrete": 0.2283,
+          "Unpaved": 0.2066,
+          "Undetermined": 0.3387,
+          "Solid Line": 0.1066,
+          "Dashed Line": 0.107,
+          "Double Line": 0.1041,
+          "Edge Line": 0.1204,
+          "Curved Line": 0.11,
+          "Gore Markings": 0.1097,
+          "Crosswalks": 0.0989,
+          "Arrows": 0.1085,
+          "Unmarked Pavement": 0.1349,
+          "Clearly Visible": 0.1467,
+          "Faded / Worn / Not Visible": 0.2279,
+          "Low Contrast": 0.1889,
+          "Partially Missing": 0.1298,
+          "Occluded": 0.1607,
+          "Not Applicable": 0.1459,
+          "Daylight": 0.1703,
+          "Nighttime": 0.0779,
+          "Dusk / Dawn": 0.0868,
+          "Shadow": 0.1042,
+          "Glare": 0.1522,
+          "Rain": 0.0808,
+          "Fog": 0.0833,
+          "Snow": 0.0777,
+          "Wet Pavement": 0.0891,
+          "Icy Road": 0.0778
+        }
+      }
+    },
+    {
+      "sample_id": "culane_18",
+      "file_name": "06042010_0511.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Ramps / Merges",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Edge Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Dusk / Dawn"
+        },
+        "labels": [
+          "Ramps / Merges",
+          "Freeway/Expressway",
+          "Undetermined",
+          "Dashed Line",
+          "Edge Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Dusk / Dawn"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_193_90frame/06042010_0511.MP4",
+      "representative_frame": "/shared/data/culane/driver_193_90frame/06042010_0511.MP4/00000.jpg",
+      "driver": "driver_193_90frame",
+      "split": "test",
+      "num_frames": 60,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_193_90frame/06042010_0511.MP4",
+      "lines_txt_count": 60,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Dusk / Dawn"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Dusk / Dawn"
+        ],
+        "scores": {
+          "Intersections": 0.1441,
+          "Roundabouts": 0.1016,
+          "Ramps / Merges": 0.1428,
+          "At-Grade Rail Crossings": 0.0946,
+          "Tolling Stations": 0.099,
+          "Work Zones": 0.1028,
+          "Managed Lanes": 0.1723,
+          "General Roadway Segments": 0.1428,
+          "Freeway/Expressway": 0.1742,
+          "Arterial Roadway": 0.1998,
+          "Collector Roadway": 0.1494,
+          "Local Street / Road": 0.1702,
+          "Urban": 0.1818,
+          "Rural": 0.1246,
+          "Paved - bituminous / asphalt": 0.26,
+          "Paved - non-bituminous / concrete": 0.2119,
+          "Unpaved": 0.2056,
+          "Undetermined": 0.3225,
+          "Solid Line": 0.1038,
+          "Dashed Line": 0.1169,
+          "Double Line": 0.1037,
+          "Edge Line": 0.1042,
+          "Curved Line": 0.1151,
+          "Gore Markings": 0.1241,
+          "Crosswalks": 0.1007,
+          "Arrows": 0.1178,
+          "Unmarked Pavement": 0.1135,
+          "Clearly Visible": 0.1743,
+          "Faded / Worn / Not Visible": 0.208,
+          "Low Contrast": 0.1593,
+          "Partially Missing": 0.1435,
+          "Occluded": 0.1575,
+          "Not Applicable": 0.1575,
+          "Daylight": 0.1231,
+          "Nighttime": 0.1317,
+          "Dusk / Dawn": 0.1333,
+          "Shadow": 0.0631,
+          "Glare": 0.1244,
+          "Rain": 0.116,
+          "Fog": 0.1029,
+          "Snow": 0.0526,
+          "Wet Pavement": 0.0996,
+          "Icy Road": 0.0533
+        }
+      }
+    },
+    {
+      "sample_id": "culane_19",
+      "file_name": "05250559_0320.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Arterial Roadway",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Edge Line; Gore Markings",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Arterial Roadway",
+          "Undetermined",
+          "Dashed Line",
+          "Edge Line",
+          "Gore Markings",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05250559_0320.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05250559_0320.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05250559_0320.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Urban",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1277,
+          "Roundabouts": 0.1156,
+          "Ramps / Merges": 0.1229,
+          "At-Grade Rail Crossings": 0.115,
+          "Tolling Stations": 0.1152,
+          "Work Zones": 0.1153,
+          "Managed Lanes": 0.1628,
+          "General Roadway Segments": 0.1255,
+          "Freeway/Expressway": 0.1584,
+          "Arterial Roadway": 0.1847,
+          "Collector Roadway": 0.1563,
+          "Local Street / Road": 0.1606,
+          "Urban": 0.1883,
+          "Rural": 0.1517,
+          "Paved - bituminous / asphalt": 0.2347,
+          "Paved - non-bituminous / concrete": 0.2355,
+          "Unpaved": 0.2324,
+          "Undetermined": 0.2974,
+          "Solid Line": 0.1108,
+          "Dashed Line": 0.1103,
+          "Double Line": 0.1099,
+          "Edge Line": 0.1128,
+          "Curved Line": 0.1098,
+          "Gore Markings": 0.1136,
+          "Crosswalks": 0.1083,
+          "Arrows": 0.1104,
+          "Unmarked Pavement": 0.1141,
+          "Clearly Visible": 0.1585,
+          "Faded / Worn / Not Visible": 0.2216,
+          "Low Contrast": 0.1817,
+          "Partially Missing": 0.1339,
+          "Occluded": 0.1736,
+          "Not Applicable": 0.1306,
+          "Daylight": 0.1532,
+          "Nighttime": 0.0866,
+          "Dusk / Dawn": 0.0892,
+          "Shadow": 0.0907,
+          "Glare": 0.12,
+          "Rain": 0.0994,
+          "Fog": 0.0974,
+          "Snow": 0.0865,
+          "Wet Pavement": 0.0907,
+          "Icy Road": 0.0864
+        }
+      }
+    },
+    {
+      "sample_id": "culane_20",
+      "file_name": "05252044_0518.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Crosswalks",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Dashed Line",
+          "Crosswalks",
+          "Faded / Worn / Not Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05252044_0518.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05252044_0518.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05252044_0518.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Urban",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.128,
+          "Roundabouts": 0.1238,
+          "Ramps / Merges": 0.124,
+          "At-Grade Rail Crossings": 0.1234,
+          "Tolling Stations": 0.1234,
+          "Work Zones": 0.124,
+          "Managed Lanes": 0.128,
+          "General Roadway Segments": 0.1254,
+          "Freeway/Expressway": 0.1591,
+          "Arterial Roadway": 0.1608,
+          "Collector Roadway": 0.1594,
+          "Local Street / Road": 0.1688,
+          "Urban": 0.1936,
+          "Rural": 0.1583,
+          "Paved - bituminous / asphalt": 0.255,
+          "Paved - non-bituminous / concrete": 0.2435,
+          "Unpaved": 0.2428,
+          "Undetermined": 0.2587,
+          "Solid Line": 0.111,
+          "Dashed Line": 0.1114,
+          "Double Line": 0.1109,
+          "Edge Line": 0.111,
+          "Curved Line": 0.1109,
+          "Gore Markings": 0.111,
+          "Crosswalks": 0.1109,
+          "Arrows": 0.1108,
+          "Unmarked Pavement": 0.1122,
+          "Clearly Visible": 0.1607,
+          "Faded / Worn / Not Visible": 0.2039,
+          "Low Contrast": 0.1622,
+          "Partially Missing": 0.1515,
+          "Occluded": 0.1569,
+          "Not Applicable": 0.1648,
+          "Daylight": 0.0888,
+          "Nighttime": 0.1718,
+          "Dusk / Dawn": 0.1252,
+          "Shadow": 0.0721,
+          "Glare": 0.0849,
+          "Rain": 0.1369,
+          "Fog": 0.0814,
+          "Snow": 0.0716,
+          "Wet Pavement": 0.0962,
+          "Icy Road": 0.0711
+        }
+      }
+    },
+    {
+      "sample_id": "culane_21",
+      "file_name": "05252210_0529.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05252210_0529.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05252210_0529.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05252210_0529.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1159,
+          "Roundabouts": 0.1102,
+          "Ramps / Merges": 0.1196,
+          "At-Grade Rail Crossings": 0.1086,
+          "Tolling Stations": 0.1095,
+          "Work Zones": 0.111,
+          "Managed Lanes": 0.1674,
+          "General Roadway Segments": 0.1577,
+          "Freeway/Expressway": 0.1648,
+          "Arterial Roadway": 0.181,
+          "Collector Roadway": 0.1649,
+          "Local Street / Road": 0.175,
+          "Urban": 0.1579,
+          "Rural": 0.1565,
+          "Paved - bituminous / asphalt": 0.2603,
+          "Paved - non-bituminous / concrete": 0.2031,
+          "Unpaved": 0.1941,
+          "Undetermined": 0.3425,
+          "Solid Line": 0.1044,
+          "Dashed Line": 0.1127,
+          "Double Line": 0.1067,
+          "Edge Line": 0.1079,
+          "Curved Line": 0.1093,
+          "Gore Markings": 0.1267,
+          "Crosswalks": 0.0992,
+          "Arrows": 0.1064,
+          "Unmarked Pavement": 0.1267,
+          "Clearly Visible": 0.1825,
+          "Faded / Worn / Not Visible": 0.1922,
+          "Low Contrast": 0.1602,
+          "Partially Missing": 0.1425,
+          "Occluded": 0.1451,
+          "Not Applicable": 0.1775,
+          "Daylight": 0.1016,
+          "Nighttime": 0.1386,
+          "Dusk / Dawn": 0.129,
+          "Shadow": 0.0607,
+          "Glare": 0.1176,
+          "Rain": 0.13,
+          "Fog": 0.0915,
+          "Snow": 0.0566,
+          "Wet Pavement": 0.1177,
+          "Icy Road": 0.0567
+        }
+      }
+    },
+    {
+      "sample_id": "culane_22",
+      "file_name": "05252213_0530.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Urban",
+          "Undetermined",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05252213_0530.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05252213_0530.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05252213_0530.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Urban",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1277,
+          "Roundabouts": 0.1162,
+          "Ramps / Merges": 0.1239,
+          "At-Grade Rail Crossings": 0.1152,
+          "Tolling Stations": 0.1158,
+          "Work Zones": 0.119,
+          "Managed Lanes": 0.1496,
+          "General Roadway Segments": 0.1327,
+          "Freeway/Expressway": 0.1605,
+          "Arterial Roadway": 0.1732,
+          "Collector Roadway": 0.1596,
+          "Local Street / Road": 0.1711,
+          "Urban": 0.1815,
+          "Rural": 0.154,
+          "Paved - bituminous / asphalt": 0.257,
+          "Paved - non-bituminous / concrete": 0.226,
+          "Unpaved": 0.2237,
+          "Undetermined": 0.2933,
+          "Solid Line": 0.1101,
+          "Dashed Line": 0.1119,
+          "Double Line": 0.1096,
+          "Edge Line": 0.1101,
+          "Curved Line": 0.1104,
+          "Gore Markings": 0.1144,
+          "Crosswalks": 0.1082,
+          "Arrows": 0.1095,
+          "Unmarked Pavement": 0.1159,
+          "Clearly Visible": 0.1757,
+          "Faded / Worn / Not Visible": 0.2142,
+          "Low Contrast": 0.1608,
+          "Partially Missing": 0.1276,
+          "Occluded": 0.1445,
+          "Not Applicable": 0.1772,
+          "Daylight": 0.1104,
+          "Nighttime": 0.1523,
+          "Dusk / Dawn": 0.1349,
+          "Shadow": 0.0617,
+          "Glare": 0.0945,
+          "Rain": 0.1365,
+          "Fog": 0.0835,
+          "Snow": 0.0599,
+          "Wet Pavement": 0.1068,
+          "Icy Road": 0.0595
+        }
+      }
+    },
+    {
+      "sample_id": "culane_23",
+      "file_name": "05252231_0536.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05252231_0536.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05252231_0536.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05252231_0536.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Urban",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1245,
+          "Roundabouts": 0.1232,
+          "Ramps / Merges": 0.1252,
+          "At-Grade Rail Crossings": 0.1231,
+          "Tolling Stations": 0.1236,
+          "Work Zones": 0.1238,
+          "Managed Lanes": 0.1288,
+          "General Roadway Segments": 0.1278,
+          "Freeway/Expressway": 0.165,
+          "Arterial Roadway": 0.1656,
+          "Collector Roadway": 0.1627,
+          "Local Street / Road": 0.163,
+          "Urban": 0.1821,
+          "Rural": 0.1615,
+          "Paved - bituminous / asphalt": 0.2537,
+          "Paved - non-bituminous / concrete": 0.2457,
+          "Unpaved": 0.2429,
+          "Undetermined": 0.2576,
+          "Solid Line": 0.1109,
+          "Dashed Line": 0.1124,
+          "Double Line": 0.1108,
+          "Edge Line": 0.1113,
+          "Curved Line": 0.1109,
+          "Gore Markings": 0.1109,
+          "Crosswalks": 0.1099,
+          "Arrows": 0.1103,
+          "Unmarked Pavement": 0.1126,
+          "Clearly Visible": 0.1752,
+          "Faded / Worn / Not Visible": 0.1905,
+          "Low Contrast": 0.1646,
+          "Partially Missing": 0.1527,
+          "Occluded": 0.159,
+          "Not Applicable": 0.1579,
+          "Daylight": 0.0846,
+          "Nighttime": 0.1542,
+          "Dusk / Dawn": 0.1178,
+          "Shadow": 0.07,
+          "Glare": 0.0934,
+          "Rain": 0.1387,
+          "Fog": 0.0816,
+          "Snow": 0.072,
+          "Wet Pavement": 0.1153,
+          "Icy Road": 0.0724
+        }
+      }
+    },
+    {
+      "sample_id": "culane_24",
+      "file_name": "05252246_0541.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Shadow; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Paved - non-bituminous / concrete",
+          "Solid Line",
+          "Dashed Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Nighttime",
+          "Shadow",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05252246_0541.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05252246_0541.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05252246_0541.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Urban",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.124,
+          "Roundabouts": 0.1124,
+          "Ramps / Merges": 0.1236,
+          "At-Grade Rail Crossings": 0.1094,
+          "Tolling Stations": 0.1107,
+          "Work Zones": 0.1137,
+          "Managed Lanes": 0.1619,
+          "General Roadway Segments": 0.1445,
+          "Freeway/Expressway": 0.1549,
+          "Arterial Roadway": 0.1714,
+          "Collector Roadway": 0.1525,
+          "Local Street / Road": 0.1718,
+          "Urban": 0.2076,
+          "Rural": 0.1419,
+          "Paved - bituminous / asphalt": 0.2674,
+          "Paved - non-bituminous / concrete": 0.2099,
+          "Unpaved": 0.2036,
+          "Undetermined": 0.319,
+          "Solid Line": 0.1067,
+          "Dashed Line": 0.1145,
+          "Double Line": 0.1069,
+          "Edge Line": 0.1094,
+          "Curved Line": 0.1135,
+          "Gore Markings": 0.1136,
+          "Crosswalks": 0.1024,
+          "Arrows": 0.1109,
+          "Unmarked Pavement": 0.1222,
+          "Clearly Visible": 0.1706,
+          "Faded / Worn / Not Visible": 0.2252,
+          "Low Contrast": 0.1681,
+          "Partially Missing": 0.1219,
+          "Occluded": 0.1493,
+          "Not Applicable": 0.1649,
+          "Daylight": 0.1132,
+          "Nighttime": 0.1517,
+          "Dusk / Dawn": 0.1425,
+          "Shadow": 0.0632,
+          "Glare": 0.1178,
+          "Rain": 0.1106,
+          "Fog": 0.0682,
+          "Snow": 0.0599,
+          "Wet Pavement": 0.1131,
+          "Icy Road": 0.0598
+        }
+      }
+    },
+    {
+      "sample_id": "culane_25",
+      "file_name": "05252322_0559.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections; Ramps / Merges",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Arrows",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime"
+        },
+        "labels": [
+          "Intersections",
+          "Ramps / Merges",
+          "Freeway/Expressway",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Arrows",
+          "Clearly Visible",
+          "Nighttime"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "culane_segment",
+      "image_found": false,
+      "gt_found": false,
+      "num_frames": 0,
+      "note": "segment directory not found under any driver_*",
+      "predicted_tags": null,
+      "predicted_note": "no resolvable image to tag"
+    },
+    {
+      "sample_id": "culane_26",
+      "file_name": "05252246_0542.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Ramps / Merges",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Edge Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "Ramps / Merges",
+          "Freeway/Expressway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Edge Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": null,
+      "split": null,
+      "ground_truth_path": null,
+      "gt_type": "culane_segment",
+      "image_found": false,
+      "gt_found": false,
+      "num_frames": 0,
+      "note": "segment directory not found under any driver_*",
+      "predicted_tags": null,
+      "predicted_note": "no resolvable image to tag"
+    },
+    {
+      "sample_id": "culane_27",
+      "file_name": "05252304_0547.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05252304_0547.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05252304_0547.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05252304_0547.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Local Street / Road",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.13,
+          "Roundabouts": 0.1216,
+          "Ramps / Merges": 0.1226,
+          "At-Grade Rail Crossings": 0.1204,
+          "Tolling Stations": 0.1211,
+          "Work Zones": 0.122,
+          "Managed Lanes": 0.1352,
+          "General Roadway Segments": 0.1271,
+          "Freeway/Expressway": 0.1604,
+          "Arterial Roadway": 0.1656,
+          "Collector Roadway": 0.1615,
+          "Local Street / Road": 0.1797,
+          "Urban": 0.175,
+          "Rural": 0.1578,
+          "Paved - bituminous / asphalt": 0.2561,
+          "Paved - non-bituminous / concrete": 0.2418,
+          "Unpaved": 0.241,
+          "Undetermined": 0.2612,
+          "Solid Line": 0.1104,
+          "Dashed Line": 0.1116,
+          "Double Line": 0.1105,
+          "Edge Line": 0.1106,
+          "Curved Line": 0.1107,
+          "Gore Markings": 0.1121,
+          "Crosswalks": 0.1102,
+          "Arrows": 0.1105,
+          "Unmarked Pavement": 0.1135,
+          "Clearly Visible": 0.1609,
+          "Faded / Worn / Not Visible": 0.2242,
+          "Low Contrast": 0.155,
+          "Partially Missing": 0.1411,
+          "Occluded": 0.1486,
+          "Not Applicable": 0.1702,
+          "Daylight": 0.0985,
+          "Nighttime": 0.1601,
+          "Dusk / Dawn": 0.135,
+          "Shadow": 0.068,
+          "Glare": 0.0989,
+          "Rain": 0.1342,
+          "Fog": 0.0746,
+          "Snow": 0.068,
+          "Wet Pavement": 0.0956,
+          "Icy Road": 0.0672
+        }
+      }
+    },
+    {
+      "sample_id": "culane_28",
+      "file_name": "05252322_0553.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime"
+        },
+        "labels": [
+          "Intersections",
+          "Freeway/Expressway",
+          "Undetermined",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Nighttime"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05252322_0553.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05252322_0553.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05252322_0553.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1202,
+          "Roundabouts": 0.1154,
+          "Ramps / Merges": 0.1247,
+          "At-Grade Rail Crossings": 0.1147,
+          "Tolling Stations": 0.1155,
+          "Work Zones": 0.1162,
+          "Managed Lanes": 0.1516,
+          "General Roadway Segments": 0.1416,
+          "Freeway/Expressway": 0.1693,
+          "Arterial Roadway": 0.1783,
+          "Collector Roadway": 0.1637,
+          "Local Street / Road": 0.1666,
+          "Urban": 0.1643,
+          "Rural": 0.1578,
+          "Paved - bituminous / asphalt": 0.2592,
+          "Paved - non-bituminous / concrete": 0.2249,
+          "Unpaved": 0.2185,
+          "Undetermined": 0.2974,
+          "Solid Line": 0.1091,
+          "Dashed Line": 0.1142,
+          "Double Line": 0.1088,
+          "Edge Line": 0.1102,
+          "Curved Line": 0.1125,
+          "Gore Markings": 0.1139,
+          "Crosswalks": 0.1054,
+          "Arrows": 0.1083,
+          "Unmarked Pavement": 0.1177,
+          "Clearly Visible": 0.1852,
+          "Faded / Worn / Not Visible": 0.2145,
+          "Low Contrast": 0.1661,
+          "Partially Missing": 0.1304,
+          "Occluded": 0.1489,
+          "Not Applicable": 0.1548,
+          "Daylight": 0.1021,
+          "Nighttime": 0.1507,
+          "Dusk / Dawn": 0.1384,
+          "Shadow": 0.061,
+          "Glare": 0.114,
+          "Rain": 0.1242,
+          "Fog": 0.0822,
+          "Snow": 0.0603,
+          "Wet Pavement": 0.1077,
+          "Icy Road": 0.0595
+        }
+      }
+    },
+    {
+      "sample_id": "culane_29",
+      "file_name": "05252307_0548.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Urban",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Freeway/Expressway",
+          "Urban",
+          "Paved - non-bituminous / concrete",
+          "Solid Line",
+          "Dashed Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05252307_0548.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05252307_0548.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05252307_0548.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Urban",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1262,
+          "Roundabouts": 0.1243,
+          "Ramps / Merges": 0.1253,
+          "At-Grade Rail Crossings": 0.124,
+          "Tolling Stations": 0.1242,
+          "Work Zones": 0.1248,
+          "Managed Lanes": 0.1268,
+          "General Roadway Segments": 0.1244,
+          "Freeway/Expressway": 0.1662,
+          "Arterial Roadway": 0.1676,
+          "Collector Roadway": 0.1657,
+          "Local Street / Road": 0.1671,
+          "Urban": 0.168,
+          "Rural": 0.1653,
+          "Paved - bituminous / asphalt": 0.2495,
+          "Paved - non-bituminous / concrete": 0.2491,
+          "Unpaved": 0.249,
+          "Undetermined": 0.2524,
+          "Solid Line": 0.1111,
+          "Dashed Line": 0.1111,
+          "Double Line": 0.1111,
+          "Edge Line": 0.1111,
+          "Curved Line": 0.1111,
+          "Gore Markings": 0.1112,
+          "Crosswalks": 0.111,
+          "Arrows": 0.1111,
+          "Unmarked Pavement": 0.1111,
+          "Clearly Visible": 0.1678,
+          "Faded / Worn / Not Visible": 0.1758,
+          "Low Contrast": 0.1654,
+          "Partially Missing": 0.1628,
+          "Occluded": 0.164,
+          "Not Applicable": 0.1642,
+          "Daylight": 0.0977,
+          "Nighttime": 0.1401,
+          "Dusk / Dawn": 0.1083,
+          "Shadow": 0.0919,
+          "Glare": 0.0948,
+          "Rain": 0.0949,
+          "Fog": 0.0924,
+          "Snow": 0.0919,
+          "Wet Pavement": 0.0962,
+          "Icy Road": 0.0919
+        }
+      }
+    },
+    {
+      "sample_id": "culane_30",
+      "file_name": "05252358_0565.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Solid Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare; Wet Pavement"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare",
+          "Wet Pavement"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05252358_0565.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05252358_0565.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05252358_0565.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Undetermined",
+          "Gore Markings",
+          "Clearly Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1268,
+          "Roundabouts": 0.1147,
+          "Ramps / Merges": 0.1191,
+          "At-Grade Rail Crossings": 0.1122,
+          "Tolling Stations": 0.1131,
+          "Work Zones": 0.1389,
+          "Managed Lanes": 0.1522,
+          "General Roadway Segments": 0.1231,
+          "Freeway/Expressway": 0.1625,
+          "Arterial Roadway": 0.1789,
+          "Collector Roadway": 0.1641,
+          "Local Street / Road": 0.1702,
+          "Urban": 0.164,
+          "Rural": 0.1603,
+          "Paved - bituminous / asphalt": 0.225,
+          "Paved - non-bituminous / concrete": 0.2141,
+          "Unpaved": 0.2133,
+          "Undetermined": 0.3475,
+          "Solid Line": 0.1089,
+          "Dashed Line": 0.1095,
+          "Double Line": 0.107,
+          "Edge Line": 0.1085,
+          "Curved Line": 0.1079,
+          "Gore Markings": 0.1247,
+          "Crosswalks": 0.1075,
+          "Arrows": 0.111,
+          "Unmarked Pavement": 0.1149,
+          "Clearly Visible": 0.1908,
+          "Faded / Worn / Not Visible": 0.183,
+          "Low Contrast": 0.1571,
+          "Partially Missing": 0.1462,
+          "Occluded": 0.1503,
+          "Not Applicable": 0.1727,
+          "Daylight": 0.1013,
+          "Nighttime": 0.1577,
+          "Dusk / Dawn": 0.1282,
+          "Shadow": 0.0646,
+          "Glare": 0.1089,
+          "Rain": 0.1147,
+          "Fog": 0.0718,
+          "Snow": 0.0671,
+          "Wet Pavement": 0.1162,
+          "Icy Road": 0.0694
+        }
+      }
+    },
+    {
+      "sample_id": "culane_31",
+      "file_name": "05260016_0571.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05260016_0571.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05260016_0571.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05260016_0571.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1251,
+          "Roundabouts": 0.1225,
+          "Ramps / Merges": 0.1244,
+          "At-Grade Rail Crossings": 0.1221,
+          "Tolling Stations": 0.1225,
+          "Work Zones": 0.1225,
+          "Managed Lanes": 0.1308,
+          "General Roadway Segments": 0.1301,
+          "Freeway/Expressway": 0.1669,
+          "Arterial Roadway": 0.1727,
+          "Collector Roadway": 0.1656,
+          "Local Street / Road": 0.166,
+          "Urban": 0.1647,
+          "Rural": 0.1642,
+          "Paved - bituminous / asphalt": 0.2512,
+          "Paved - non-bituminous / concrete": 0.2395,
+          "Unpaved": 0.238,
+          "Undetermined": 0.2713,
+          "Solid Line": 0.1105,
+          "Dashed Line": 0.1115,
+          "Double Line": 0.1105,
+          "Edge Line": 0.1104,
+          "Curved Line": 0.1109,
+          "Gore Markings": 0.1134,
+          "Crosswalks": 0.1092,
+          "Arrows": 0.1105,
+          "Unmarked Pavement": 0.1131,
+          "Clearly Visible": 0.1805,
+          "Faded / Worn / Not Visible": 0.2088,
+          "Low Contrast": 0.1579,
+          "Partially Missing": 0.1423,
+          "Occluded": 0.1504,
+          "Not Applicable": 0.16,
+          "Daylight": 0.0867,
+          "Nighttime": 0.1559,
+          "Dusk / Dawn": 0.1365,
+          "Shadow": 0.0685,
+          "Glare": 0.0905,
+          "Rain": 0.1306,
+          "Fog": 0.0836,
+          "Snow": 0.0697,
+          "Wet Pavement": 0.1094,
+          "Icy Road": 0.0686
+        }
+      }
+    },
+    {
+      "sample_id": "culane_32",
+      "file_name": "06042013_0512.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Dusk / Dawn"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Dusk / Dawn"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_193_90frame/06042013_0512.MP4",
+      "representative_frame": "/shared/data/culane/driver_193_90frame/06042013_0512.MP4/00000.jpg",
+      "driver": "driver_193_90frame",
+      "split": "test",
+      "num_frames": 60,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_193_90frame/06042013_0512.MP4",
+      "lines_txt_count": 60,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Freeway/Expressway",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1106,
+          "Roundabouts": 0.1014,
+          "Ramps / Merges": 0.1411,
+          "At-Grade Rail Crossings": 0.1003,
+          "Tolling Stations": 0.1034,
+          "Work Zones": 0.1068,
+          "Managed Lanes": 0.1818,
+          "General Roadway Segments": 0.1547,
+          "Freeway/Expressway": 0.1999,
+          "Arterial Roadway": 0.1814,
+          "Collector Roadway": 0.1581,
+          "Local Street / Road": 0.1585,
+          "Urban": 0.152,
+          "Rural": 0.15,
+          "Paved - bituminous / asphalt": 0.2629,
+          "Paved - non-bituminous / concrete": 0.2096,
+          "Unpaved": 0.2018,
+          "Undetermined": 0.3257,
+          "Solid Line": 0.1068,
+          "Dashed Line": 0.1197,
+          "Double Line": 0.1051,
+          "Edge Line": 0.1068,
+          "Curved Line": 0.1132,
+          "Gore Markings": 0.1196,
+          "Crosswalks": 0.0998,
+          "Arrows": 0.1066,
+          "Unmarked Pavement": 0.1224,
+          "Clearly Visible": 0.1894,
+          "Faded / Worn / Not Visible": 0.206,
+          "Low Contrast": 0.1551,
+          "Partially Missing": 0.1393,
+          "Occluded": 0.1463,
+          "Not Applicable": 0.1639,
+          "Daylight": 0.1104,
+          "Nighttime": 0.1426,
+          "Dusk / Dawn": 0.1406,
+          "Shadow": 0.0667,
+          "Glare": 0.1314,
+          "Rain": 0.1015,
+          "Fog": 0.113,
+          "Snow": 0.0552,
+          "Wet Pavement": 0.0827,
+          "Icy Road": 0.056
+        }
+      }
+    },
+    {
+      "sample_id": "culane_33",
+      "file_name": "05260049_0577.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05260049_0577.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05260049_0577.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05260049_0577.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Local Street / Road",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1239,
+          "Roundabouts": 0.1186,
+          "Ramps / Merges": 0.1214,
+          "At-Grade Rail Crossings": 0.1171,
+          "Tolling Stations": 0.1183,
+          "Work Zones": 0.1189,
+          "Managed Lanes": 0.1386,
+          "General Roadway Segments": 0.1433,
+          "Freeway/Expressway": 0.1618,
+          "Arterial Roadway": 0.1716,
+          "Collector Roadway": 0.1696,
+          "Local Street / Road": 0.1748,
+          "Urban": 0.162,
+          "Rural": 0.1601,
+          "Paved - bituminous / asphalt": 0.2633,
+          "Paved - non-bituminous / concrete": 0.2234,
+          "Unpaved": 0.2183,
+          "Undetermined": 0.295,
+          "Solid Line": 0.1061,
+          "Dashed Line": 0.1112,
+          "Double Line": 0.1071,
+          "Edge Line": 0.1083,
+          "Curved Line": 0.1107,
+          "Gore Markings": 0.123,
+          "Crosswalks": 0.1044,
+          "Arrows": 0.1133,
+          "Unmarked Pavement": 0.1159,
+          "Clearly Visible": 0.1797,
+          "Faded / Worn / Not Visible": 0.211,
+          "Low Contrast": 0.1556,
+          "Partially Missing": 0.1415,
+          "Occluded": 0.1424,
+          "Not Applicable": 0.1697,
+          "Daylight": 0.0933,
+          "Nighttime": 0.1455,
+          "Dusk / Dawn": 0.1318,
+          "Shadow": 0.0607,
+          "Glare": 0.1074,
+          "Rain": 0.1178,
+          "Fog": 0.0864,
+          "Snow": 0.0793,
+          "Wet Pavement": 0.1072,
+          "Icy Road": 0.0706
+        }
+      }
+    },
+    {
+      "sample_id": "culane_34",
+      "file_name": "06030819_0755.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Arrows",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Dashed Line",
+          "Arrows",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_161_90frame/06030819_0755.MP4",
+      "representative_frame": "/shared/data/culane/driver_161_90frame/06030819_0755.MP4/00000.jpg",
+      "driver": "driver_161_90frame",
+      "split": "train/val",
+      "num_frames": 60,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16/driver_161_90frame/06030819_0755.MP4",
+      "lines_txt_count": 60,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1463,
+          "Roundabouts": 0.1238,
+          "Ramps / Merges": 0.1292,
+          "At-Grade Rail Crossings": 0.1062,
+          "Tolling Stations": 0.1092,
+          "Work Zones": 0.11,
+          "Managed Lanes": 0.1485,
+          "General Roadway Segments": 0.1269,
+          "Freeway/Expressway": 0.1692,
+          "Arterial Roadway": 0.1972,
+          "Collector Roadway": 0.1659,
+          "Local Street / Road": 0.1632,
+          "Urban": 0.1541,
+          "Rural": 0.1504,
+          "Paved - bituminous / asphalt": 0.2216,
+          "Paved - non-bituminous / concrete": 0.2242,
+          "Unpaved": 0.2115,
+          "Undetermined": 0.3428,
+          "Solid Line": 0.1162,
+          "Dashed Line": 0.1061,
+          "Double Line": 0.1053,
+          "Edge Line": 0.1099,
+          "Curved Line": 0.1098,
+          "Gore Markings": 0.1229,
+          "Crosswalks": 0.1036,
+          "Arrows": 0.115,
+          "Unmarked Pavement": 0.1112,
+          "Clearly Visible": 0.1664,
+          "Faded / Worn / Not Visible": 0.2381,
+          "Low Contrast": 0.1773,
+          "Partially Missing": 0.1348,
+          "Occluded": 0.1521,
+          "Not Applicable": 0.1313,
+          "Daylight": 0.1771,
+          "Nighttime": 0.0841,
+          "Dusk / Dawn": 0.0949,
+          "Shadow": 0.0957,
+          "Glare": 0.0997,
+          "Rain": 0.0894,
+          "Fog": 0.1002,
+          "Snow": 0.0837,
+          "Wet Pavement": 0.0919,
+          "Icy Road": 0.0832
+        }
+      }
+    },
+    {
+      "sample_id": "culane_35",
+      "file_name": "05181432_0203.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Unmarked Pavement",
+          "Observed Marking Visibility": "Not Applicable",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Paved - non-bituminous / concrete",
+          "Unmarked Pavement",
+          "Not Applicable",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_37_30frame/05181432_0203.MP4",
+      "representative_frame": "/shared/data/culane/driver_37_30frame/05181432_0203.MP4/00000.jpg",
+      "driver": "driver_37_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_37_30frame/05181432_0203.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Intersections"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.131,
+          "Roundabouts": 0.1236,
+          "Ramps / Merges": 0.1236,
+          "At-Grade Rail Crossings": 0.1227,
+          "Tolling Stations": 0.1231,
+          "Work Zones": 0.1235,
+          "Managed Lanes": 0.1281,
+          "General Roadway Segments": 0.1244,
+          "Freeway/Expressway": 0.1654,
+          "Arterial Roadway": 0.1689,
+          "Collector Roadway": 0.1658,
+          "Local Street / Road": 0.1677,
+          "Urban": 0.1672,
+          "Rural": 0.165,
+          "Paved - bituminous / asphalt": 0.2358,
+          "Paved - non-bituminous / concrete": 0.2369,
+          "Unpaved": 0.2349,
+          "Undetermined": 0.2924,
+          "Solid Line": 0.1109,
+          "Dashed Line": 0.1109,
+          "Double Line": 0.1107,
+          "Edge Line": 0.1108,
+          "Curved Line": 0.1107,
+          "Gore Markings": 0.1121,
+          "Crosswalks": 0.1109,
+          "Arrows": 0.1112,
+          "Unmarked Pavement": 0.1118,
+          "Clearly Visible": 0.1575,
+          "Faded / Worn / Not Visible": 0.2001,
+          "Low Contrast": 0.159,
+          "Partially Missing": 0.1579,
+          "Occluded": 0.1628,
+          "Not Applicable": 0.1627,
+          "Daylight": 0.1313,
+          "Nighttime": 0.0861,
+          "Dusk / Dawn": 0.0867,
+          "Shadow": 0.0893,
+          "Glare": 0.1145,
+          "Rain": 0.0935,
+          "Fog": 0.1273,
+          "Snow": 0.087,
+          "Wet Pavement": 0.096,
+          "Icy Road": 0.0882
+        }
+      }
+    },
+    {
+      "sample_id": "culane_36",
+      "file_name": "05260052_0578.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Local Street / Road; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Local Street / Road",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Faded / Worn / Not Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_100_30frame/05260052_0578.MP4",
+      "representative_frame": "/shared/data/culane/driver_100_30frame/05260052_0578.MP4/00000.jpg",
+      "driver": "driver_100_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_100_30frame/05260052_0578.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Local Street / Road",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1297,
+          "Roundabouts": 0.1238,
+          "Ramps / Merges": 0.1233,
+          "At-Grade Rail Crossings": 0.1218,
+          "Tolling Stations": 0.1222,
+          "Work Zones": 0.1229,
+          "Managed Lanes": 0.1304,
+          "General Roadway Segments": 0.1259,
+          "Freeway/Expressway": 0.1634,
+          "Arterial Roadway": 0.1677,
+          "Collector Roadway": 0.1649,
+          "Local Street / Road": 0.1758,
+          "Urban": 0.1655,
+          "Rural": 0.1626,
+          "Paved - bituminous / asphalt": 0.2487,
+          "Paved - non-bituminous / concrete": 0.2412,
+          "Unpaved": 0.24,
+          "Undetermined": 0.2702,
+          "Solid Line": 0.1106,
+          "Dashed Line": 0.1114,
+          "Double Line": 0.1104,
+          "Edge Line": 0.1106,
+          "Curved Line": 0.1109,
+          "Gore Markings": 0.1122,
+          "Crosswalks": 0.1103,
+          "Arrows": 0.111,
+          "Unmarked Pavement": 0.1126,
+          "Clearly Visible": 0.1648,
+          "Faded / Worn / Not Visible": 0.2228,
+          "Low Contrast": 0.1548,
+          "Partially Missing": 0.146,
+          "Occluded": 0.1531,
+          "Not Applicable": 0.1586,
+          "Daylight": 0.0948,
+          "Nighttime": 0.1527,
+          "Dusk / Dawn": 0.1288,
+          "Shadow": 0.066,
+          "Glare": 0.1062,
+          "Rain": 0.1372,
+          "Fog": 0.0757,
+          "Snow": 0.0666,
+          "Wet Pavement": 0.1058,
+          "Icy Road": 0.0663
+        }
+      }
+    },
+    {
+      "sample_id": "culane_37",
+      "file_name": "05181608_0235.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_37_30frame/05181608_0235.MP4",
+      "representative_frame": "/shared/data/culane/driver_37_30frame/05181608_0235.MP4/00000.jpg",
+      "driver": "driver_37_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_37_30frame/05181608_0235.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Urban",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1613,
+          "Roundabouts": 0.1072,
+          "Ramps / Merges": 0.1099,
+          "At-Grade Rail Crossings": 0.09,
+          "Tolling Stations": 0.1108,
+          "Work Zones": 0.1262,
+          "Managed Lanes": 0.1718,
+          "General Roadway Segments": 0.1228,
+          "Freeway/Expressway": 0.1358,
+          "Arterial Roadway": 0.1741,
+          "Collector Roadway": 0.1579,
+          "Local Street / Road": 0.1514,
+          "Urban": 0.2535,
+          "Rural": 0.1273,
+          "Paved - bituminous / asphalt": 0.2267,
+          "Paved - non-bituminous / concrete": 0.2178,
+          "Unpaved": 0.2107,
+          "Undetermined": 0.3448,
+          "Solid Line": 0.1092,
+          "Dashed Line": 0.104,
+          "Double Line": 0.1028,
+          "Edge Line": 0.1127,
+          "Curved Line": 0.1117,
+          "Gore Markings": 0.1183,
+          "Crosswalks": 0.1035,
+          "Arrows": 0.1149,
+          "Unmarked Pavement": 0.1228,
+          "Clearly Visible": 0.1518,
+          "Faded / Worn / Not Visible": 0.1917,
+          "Low Contrast": 0.1781,
+          "Partially Missing": 0.1344,
+          "Occluded": 0.1703,
+          "Not Applicable": 0.1738,
+          "Daylight": 0.1849,
+          "Nighttime": 0.0776,
+          "Dusk / Dawn": 0.0868,
+          "Shadow": 0.0873,
+          "Glare": 0.1437,
+          "Rain": 0.0833,
+          "Fog": 0.0874,
+          "Snow": 0.0774,
+          "Wet Pavement": 0.0939,
+          "Icy Road": 0.0776
+        }
+      }
+    },
+    {
+      "sample_id": "culane_38",
+      "file_name": "05181520_0219.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Undetermined",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_37_30frame/05181520_0219.MP4",
+      "representative_frame": "/shared/data/culane/driver_37_30frame/05181520_0219.MP4/00000.jpg",
+      "driver": "driver_37_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_37_30frame/05181520_0219.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1638,
+          "Roundabouts": 0.0944,
+          "Ramps / Merges": 0.1105,
+          "At-Grade Rail Crossings": 0.0857,
+          "Tolling Stations": 0.0956,
+          "Work Zones": 0.096,
+          "Managed Lanes": 0.1874,
+          "General Roadway Segments": 0.1666,
+          "Freeway/Expressway": 0.1351,
+          "Arterial Roadway": 0.2276,
+          "Collector Roadway": 0.1827,
+          "Local Street / Road": 0.1861,
+          "Urban": 0.1496,
+          "Rural": 0.119,
+          "Paved - bituminous / asphalt": 0.2262,
+          "Paved - non-bituminous / concrete": 0.219,
+          "Unpaved": 0.1991,
+          "Undetermined": 0.3557,
+          "Solid Line": 0.1079,
+          "Dashed Line": 0.1083,
+          "Double Line": 0.0962,
+          "Edge Line": 0.1236,
+          "Curved Line": 0.0935,
+          "Gore Markings": 0.1431,
+          "Crosswalks": 0.0895,
+          "Arrows": 0.0965,
+          "Unmarked Pavement": 0.1413,
+          "Clearly Visible": 0.156,
+          "Faded / Worn / Not Visible": 0.1811,
+          "Low Contrast": 0.1745,
+          "Partially Missing": 0.1625,
+          "Occluded": 0.1676,
+          "Not Applicable": 0.1582,
+          "Daylight": 0.1844,
+          "Nighttime": 0.0747,
+          "Dusk / Dawn": 0.0882,
+          "Shadow": 0.0916,
+          "Glare": 0.1631,
+          "Rain": 0.0818,
+          "Fog": 0.0809,
+          "Snow": 0.0743,
+          "Wet Pavement": 0.0866,
+          "Icy Road": 0.0745
+        }
+      }
+    },
+    {
+      "sample_id": "culane_39",
+      "file_name": "05181743_0267.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Local Street / Road",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Crosswalks",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Local Street / Road",
+          "Undetermined",
+          "Crosswalks",
+          "Faded / Worn / Not Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_37_30frame/05181743_0267.MP4",
+      "representative_frame": "/shared/data/culane/driver_37_30frame/05181743_0267.MP4/00000.jpg",
+      "driver": "driver_37_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_37_30frame/05181743_0267.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Glare"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Local Street / Road",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Glare"
+        ],
+        "scores": {
+          "Intersections": 0.1278,
+          "Roundabouts": 0.1029,
+          "Ramps / Merges": 0.1126,
+          "At-Grade Rail Crossings": 0.0991,
+          "Tolling Stations": 0.101,
+          "Work Zones": 0.1406,
+          "Managed Lanes": 0.1726,
+          "General Roadway Segments": 0.1435,
+          "Freeway/Expressway": 0.1464,
+          "Arterial Roadway": 0.1664,
+          "Collector Roadway": 0.1729,
+          "Local Street / Road": 0.221,
+          "Urban": 0.1544,
+          "Rural": 0.139,
+          "Paved - bituminous / asphalt": 0.2257,
+          "Paved - non-bituminous / concrete": 0.2213,
+          "Unpaved": 0.1977,
+          "Undetermined": 0.3553,
+          "Solid Line": 0.1093,
+          "Dashed Line": 0.1097,
+          "Double Line": 0.1018,
+          "Edge Line": 0.1118,
+          "Curved Line": 0.1064,
+          "Gore Markings": 0.1129,
+          "Crosswalks": 0.0985,
+          "Arrows": 0.1046,
+          "Unmarked Pavement": 0.1449,
+          "Clearly Visible": 0.1644,
+          "Faded / Worn / Not Visible": 0.2097,
+          "Low Contrast": 0.1674,
+          "Partially Missing": 0.1385,
+          "Occluded": 0.1584,
+          "Not Applicable": 0.1616,
+          "Daylight": 0.1578,
+          "Nighttime": 0.0662,
+          "Dusk / Dawn": 0.1187,
+          "Shadow": 0.1149,
+          "Glare": 0.168,
+          "Rain": 0.0711,
+          "Fog": 0.0809,
+          "Snow": 0.0643,
+          "Wet Pavement": 0.0935,
+          "Icy Road": 0.0646
+        }
+      }
+    },
+    {
+      "sample_id": "culane_40",
+      "file_name": "05181656_0251.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Edge Line; Curved Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Paved - non-bituminous / concrete",
+          "Edge Line",
+          "Curved Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_37_30frame/05181656_0251.MP4",
+      "representative_frame": "/shared/data/culane/driver_37_30frame/05181656_0251.MP4/00000.jpg",
+      "driver": "driver_37_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_37_30frame/05181656_0251.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1245,
+          "Roundabouts": 0.1243,
+          "Ramps / Merges": 0.1245,
+          "At-Grade Rail Crossings": 0.1243,
+          "Tolling Stations": 0.1261,
+          "Work Zones": 0.1243,
+          "Managed Lanes": 0.1274,
+          "General Roadway Segments": 0.1246,
+          "Freeway/Expressway": 0.1668,
+          "Arterial Roadway": 0.1669,
+          "Collector Roadway": 0.1666,
+          "Local Street / Road": 0.1665,
+          "Urban": 0.1667,
+          "Rural": 0.1665,
+          "Paved - bituminous / asphalt": 0.2491,
+          "Paved - non-bituminous / concrete": 0.2492,
+          "Unpaved": 0.249,
+          "Undetermined": 0.2527,
+          "Solid Line": 0.1111,
+          "Dashed Line": 0.111,
+          "Double Line": 0.111,
+          "Edge Line": 0.1111,
+          "Curved Line": 0.111,
+          "Gore Markings": 0.1114,
+          "Crosswalks": 0.1111,
+          "Arrows": 0.1111,
+          "Unmarked Pavement": 0.1111,
+          "Clearly Visible": 0.1656,
+          "Faded / Worn / Not Visible": 0.1739,
+          "Low Contrast": 0.1644,
+          "Partially Missing": 0.1632,
+          "Occluded": 0.1678,
+          "Not Applicable": 0.165,
+          "Daylight": 0.1035,
+          "Nighttime": 0.099,
+          "Dusk / Dawn": 0.0992,
+          "Shadow": 0.0993,
+          "Glare": 0.101,
+          "Rain": 0.0997,
+          "Fog": 0.1009,
+          "Snow": 0.0989,
+          "Wet Pavement": 0.0995,
+          "Icy Road": 0.0989
+        }
+      }
+    },
+    {
+      "sample_id": "culane_41",
+      "file_name": "05312327_0001.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Tolling Stations",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "Tolling Stations",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_182_30frame/05312327_0001.MP4",
+      "representative_frame": "/shared/data/culane/driver_182_30frame/05312327_0001.MP4/00000.jpg",
+      "driver": "driver_182_30frame",
+      "split": "train/val",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16/driver_182_30frame/05312327_0001.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Tolling Stations"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Dusk / Dawn"
+          ]
+        },
+        "labels": [
+          "Tolling Stations",
+          "Local Street / Road",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Dusk / Dawn"
+        ],
+        "scores": {
+          "Intersections": 0.1202,
+          "Roundabouts": 0.12,
+          "Ramps / Merges": 0.1199,
+          "At-Grade Rail Crossings": 0.12,
+          "Tolling Stations": 0.1564,
+          "Work Zones": 0.12,
+          "Managed Lanes": 0.1215,
+          "General Roadway Segments": 0.1221,
+          "Freeway/Expressway": 0.165,
+          "Arterial Roadway": 0.1651,
+          "Collector Roadway": 0.1668,
+          "Local Street / Road": 0.1728,
+          "Urban": 0.1653,
+          "Rural": 0.165,
+          "Paved - bituminous / asphalt": 0.2517,
+          "Paved - non-bituminous / concrete": 0.249,
+          "Unpaved": 0.2472,
+          "Undetermined": 0.252,
+          "Solid Line": 0.1107,
+          "Dashed Line": 0.1107,
+          "Double Line": 0.1107,
+          "Edge Line": 0.1109,
+          "Curved Line": 0.1106,
+          "Gore Markings": 0.1135,
+          "Crosswalks": 0.111,
+          "Arrows": 0.1108,
+          "Unmarked Pavement": 0.1111,
+          "Clearly Visible": 0.1659,
+          "Faded / Worn / Not Visible": 0.1759,
+          "Low Contrast": 0.1644,
+          "Partially Missing": 0.1646,
+          "Occluded": 0.1642,
+          "Not Applicable": 0.1649,
+          "Daylight": 0.0979,
+          "Nighttime": 0.1169,
+          "Dusk / Dawn": 0.1262,
+          "Shadow": 0.0927,
+          "Glare": 0.0997,
+          "Rain": 0.0948,
+          "Fog": 0.0923,
+          "Snow": 0.0919,
+          "Wet Pavement": 0.0956,
+          "Icy Road": 0.0921
+        }
+      }
+    },
+    {
+      "sample_id": "culane_42",
+      "file_name": "05182007_0315.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Ramps / Merges",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Rural",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Edge Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime"
+        },
+        "labels": [
+          "Ramps / Merges",
+          "Freeway/Expressway",
+          "Rural",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Edge Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_37_30frame/05182007_0315.MP4",
+      "representative_frame": "/shared/data/culane/driver_37_30frame/05182007_0315.MP4/00000.jpg",
+      "driver": "driver_37_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_37_30frame/05182007_0315.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Nighttime"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ],
+        "scores": {
+          "Intersections": 0.1371,
+          "Roundabouts": 0.1068,
+          "Ramps / Merges": 0.1273,
+          "At-Grade Rail Crossings": 0.103,
+          "Tolling Stations": 0.1047,
+          "Work Zones": 0.1089,
+          "Managed Lanes": 0.1704,
+          "General Roadway Segments": 0.1418,
+          "Freeway/Expressway": 0.1687,
+          "Arterial Roadway": 0.1983,
+          "Collector Roadway": 0.1581,
+          "Local Street / Road": 0.1697,
+          "Urban": 0.1561,
+          "Rural": 0.1492,
+          "Paved - bituminous / asphalt": 0.2412,
+          "Paved - non-bituminous / concrete": 0.1974,
+          "Unpaved": 0.1912,
+          "Undetermined": 0.3703,
+          "Solid Line": 0.1066,
+          "Dashed Line": 0.1143,
+          "Double Line": 0.1064,
+          "Edge Line": 0.1069,
+          "Curved Line": 0.1096,
+          "Gore Markings": 0.1267,
+          "Crosswalks": 0.1018,
+          "Arrows": 0.1116,
+          "Unmarked Pavement": 0.1162,
+          "Clearly Visible": 0.1845,
+          "Faded / Worn / Not Visible": 0.204,
+          "Low Contrast": 0.163,
+          "Partially Missing": 0.1357,
+          "Occluded": 0.152,
+          "Not Applicable": 0.1607,
+          "Daylight": 0.1161,
+          "Nighttime": 0.1326,
+          "Dusk / Dawn": 0.1289,
+          "Shadow": 0.0607,
+          "Glare": 0.1108,
+          "Rain": 0.1236,
+          "Fog": 0.1043,
+          "Snow": 0.0607,
+          "Wet Pavement": 0.106,
+          "Icy Road": 0.0564
+        }
+      }
+    },
+    {
+      "sample_id": "culane_43",
+      "file_name": "05181919_0299.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Solid Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_37_30frame/05181919_0299.MP4",
+      "representative_frame": "/shared/data/culane/driver_37_30frame/05181919_0299.MP4/00000.jpg",
+      "driver": "driver_37_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_37_30frame/05181919_0299.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Intersections"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Crosswalks"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Intersections",
+          "Local Street / Road",
+          "Undetermined",
+          "Crosswalks",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1658,
+          "Roundabouts": 0.1192,
+          "Ramps / Merges": 0.1182,
+          "At-Grade Rail Crossings": 0.1172,
+          "Tolling Stations": 0.1176,
+          "Work Zones": 0.1174,
+          "Managed Lanes": 0.1234,
+          "General Roadway Segments": 0.1212,
+          "Freeway/Expressway": 0.1588,
+          "Arterial Roadway": 0.1678,
+          "Collector Roadway": 0.1659,
+          "Local Street / Road": 0.1758,
+          "Urban": 0.1734,
+          "Rural": 0.1583,
+          "Paved - bituminous / asphalt": 0.2466,
+          "Paved - non-bituminous / concrete": 0.2461,
+          "Unpaved": 0.2451,
+          "Undetermined": 0.2622,
+          "Solid Line": 0.1028,
+          "Dashed Line": 0.1021,
+          "Double Line": 0.1028,
+          "Edge Line": 0.1036,
+          "Curved Line": 0.1021,
+          "Gore Markings": 0.105,
+          "Crosswalks": 0.1752,
+          "Arrows": 0.1028,
+          "Unmarked Pavement": 0.1036,
+          "Clearly Visible": 0.1535,
+          "Faded / Worn / Not Visible": 0.206,
+          "Low Contrast": 0.162,
+          "Partially Missing": 0.1537,
+          "Occluded": 0.1623,
+          "Not Applicable": 0.1626,
+          "Daylight": 0.1323,
+          "Nighttime": 0.0943,
+          "Dusk / Dawn": 0.0962,
+          "Shadow": 0.0963,
+          "Glare": 0.1064,
+          "Rain": 0.0949,
+          "Fog": 0.095,
+          "Snow": 0.0943,
+          "Wet Pavement": 0.096,
+          "Icy Road": 0.0943
+        }
+      }
+    },
+    {
+      "sample_id": "culane_44",
+      "file_name": "05181831_0283.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_37_30frame/05181831_0283.MP4",
+      "representative_frame": "/shared/data/culane/driver_37_30frame/05181831_0283.MP4/00000.jpg",
+      "driver": "driver_37_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_37_30frame/05181831_0283.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Intersections"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Arrows"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Intersections",
+          "Urban",
+          "Undetermined",
+          "Arrows",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1704,
+          "Roundabouts": 0.1201,
+          "Ramps / Merges": 0.117,
+          "At-Grade Rail Crossings": 0.1146,
+          "Tolling Stations": 0.1147,
+          "Work Zones": 0.1149,
+          "Managed Lanes": 0.1243,
+          "General Roadway Segments": 0.124,
+          "Freeway/Expressway": 0.162,
+          "Arterial Roadway": 0.176,
+          "Collector Roadway": 0.1613,
+          "Local Street / Road": 0.1659,
+          "Urban": 0.1768,
+          "Rural": 0.158,
+          "Paved - bituminous / asphalt": 0.2339,
+          "Paved - non-bituminous / concrete": 0.2315,
+          "Unpaved": 0.2306,
+          "Undetermined": 0.304,
+          "Solid Line": 0.1096,
+          "Dashed Line": 0.11,
+          "Double Line": 0.1098,
+          "Edge Line": 0.1099,
+          "Curved Line": 0.1106,
+          "Gore Markings": 0.11,
+          "Crosswalks": 0.1096,
+          "Arrows": 0.118,
+          "Unmarked Pavement": 0.1126,
+          "Clearly Visible": 0.1599,
+          "Faded / Worn / Not Visible": 0.21,
+          "Low Contrast": 0.1685,
+          "Partially Missing": 0.1358,
+          "Occluded": 0.1598,
+          "Not Applicable": 0.166,
+          "Daylight": 0.148,
+          "Nighttime": 0.0853,
+          "Dusk / Dawn": 0.0967,
+          "Shadow": 0.0976,
+          "Glare": 0.1275,
+          "Rain": 0.0881,
+          "Fog": 0.0912,
+          "Snow": 0.0846,
+          "Wet Pavement": 0.0965,
+          "Icy Road": 0.0845
+        }
+      }
+    },
+    {
+      "sample_id": "culane_45",
+      "file_name": "05190613_0331.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_37_30frame/05190613_0331.MP4",
+      "representative_frame": "/shared/data/culane/driver_37_30frame/05190613_0331.MP4/00000.jpg",
+      "driver": "driver_37_30frame",
+      "split": "test",
+      "num_frames": 79,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_37_30frame/05190613_0331.MP4",
+      "lines_txt_count": 79,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Arterial Roadway"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Gore Markings"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Undetermined",
+          "Gore Markings",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1517,
+          "Roundabouts": 0.1006,
+          "Ramps / Merges": 0.1358,
+          "At-Grade Rail Crossings": 0.1037,
+          "Tolling Stations": 0.0989,
+          "Work Zones": 0.101,
+          "Managed Lanes": 0.1506,
+          "General Roadway Segments": 0.1576,
+          "Freeway/Expressway": 0.1533,
+          "Arterial Roadway": 0.2247,
+          "Collector Roadway": 0.1681,
+          "Local Street / Road": 0.1653,
+          "Urban": 0.146,
+          "Rural": 0.1426,
+          "Paved - bituminous / asphalt": 0.2279,
+          "Paved - non-bituminous / concrete": 0.2192,
+          "Unpaved": 0.2149,
+          "Undetermined": 0.338,
+          "Solid Line": 0.1058,
+          "Dashed Line": 0.1088,
+          "Double Line": 0.1082,
+          "Edge Line": 0.1122,
+          "Curved Line": 0.1041,
+          "Gore Markings": 0.1283,
+          "Crosswalks": 0.0984,
+          "Arrows": 0.112,
+          "Unmarked Pavement": 0.1222,
+          "Clearly Visible": 0.1534,
+          "Faded / Worn / Not Visible": 0.2177,
+          "Low Contrast": 0.1798,
+          "Partially Missing": 0.1552,
+          "Occluded": 0.1608,
+          "Not Applicable": 0.133,
+          "Daylight": 0.1698,
+          "Nighttime": 0.0765,
+          "Dusk / Dawn": 0.0812,
+          "Shadow": 0.0969,
+          "Glare": 0.1429,
+          "Rain": 0.094,
+          "Fog": 0.1002,
+          "Snow": 0.0766,
+          "Wet Pavement": 0.0851,
+          "Icy Road": 0.0768
+        }
+      }
+    },
+    {
+      "sample_id": "culane_46",
+      "file_name": "05190703_0347.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Arrows",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Arrows",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_37_30frame/05190703_0347.MP4",
+      "representative_frame": "/shared/data/culane/driver_37_30frame/05190703_0347.MP4/00000.jpg",
+      "driver": "driver_37_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_37_30frame/05190703_0347.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Urban",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1237,
+          "Roundabouts": 0.1222,
+          "Ramps / Merges": 0.123,
+          "At-Grade Rail Crossings": 0.1225,
+          "Tolling Stations": 0.1231,
+          "Work Zones": 0.1227,
+          "Managed Lanes": 0.1357,
+          "General Roadway Segments": 0.127,
+          "Freeway/Expressway": 0.159,
+          "Arterial Roadway": 0.1615,
+          "Collector Roadway": 0.1677,
+          "Local Street / Road": 0.173,
+          "Urban": 0.1808,
+          "Rural": 0.1581,
+          "Paved - bituminous / asphalt": 0.2472,
+          "Paved - non-bituminous / concrete": 0.2451,
+          "Unpaved": 0.2444,
+          "Undetermined": 0.2633,
+          "Solid Line": 0.1112,
+          "Dashed Line": 0.1106,
+          "Double Line": 0.1107,
+          "Edge Line": 0.1122,
+          "Curved Line": 0.1105,
+          "Gore Markings": 0.1114,
+          "Crosswalks": 0.1103,
+          "Arrows": 0.1104,
+          "Unmarked Pavement": 0.1127,
+          "Clearly Visible": 0.1599,
+          "Faded / Worn / Not Visible": 0.1949,
+          "Low Contrast": 0.1681,
+          "Partially Missing": 0.1548,
+          "Occluded": 0.1632,
+          "Not Applicable": 0.1591,
+          "Daylight": 0.13,
+          "Nighttime": 0.0935,
+          "Dusk / Dawn": 0.0953,
+          "Shadow": 0.099,
+          "Glare": 0.1112,
+          "Rain": 0.0947,
+          "Fog": 0.095,
+          "Snow": 0.0934,
+          "Wet Pavement": 0.0943,
+          "Icy Road": 0.0934
+        }
+      }
+    },
+    {
+      "sample_id": "culane_47",
+      "file_name": "05190839_0379.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_37_30frame/05190839_0379.MP4",
+      "representative_frame": "/shared/data/culane/driver_37_30frame/05190839_0379.MP4/00000.jpg",
+      "driver": "driver_37_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_37_30frame/05190839_0379.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Intersections"
+          ],
+          "Roadway Context & Facility Type": [
+            "Local Street / Road"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Intersections",
+          "Local Street / Road",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1335,
+          "Roundabouts": 0.1234,
+          "Ramps / Merges": 0.1204,
+          "At-Grade Rail Crossings": 0.1199,
+          "Tolling Stations": 0.12,
+          "Work Zones": 0.1205,
+          "Managed Lanes": 0.1318,
+          "General Roadway Segments": 0.1304,
+          "Freeway/Expressway": 0.1519,
+          "Arterial Roadway": 0.155,
+          "Collector Roadway": 0.1651,
+          "Local Street / Road": 0.2098,
+          "Urban": 0.1667,
+          "Rural": 0.1516,
+          "Paved - bituminous / asphalt": 0.2436,
+          "Paved - non-bituminous / concrete": 0.2445,
+          "Unpaved": 0.2407,
+          "Undetermined": 0.2712,
+          "Solid Line": 0.1098,
+          "Dashed Line": 0.1098,
+          "Double Line": 0.1098,
+          "Edge Line": 0.1108,
+          "Curved Line": 0.1097,
+          "Gore Markings": 0.1114,
+          "Crosswalks": 0.1127,
+          "Arrows": 0.1102,
+          "Unmarked Pavement": 0.1158,
+          "Clearly Visible": 0.1503,
+          "Faded / Worn / Not Visible": 0.1987,
+          "Low Contrast": 0.1627,
+          "Partially Missing": 0.1488,
+          "Occluded": 0.1714,
+          "Not Applicable": 0.1681,
+          "Daylight": 0.1443,
+          "Nighttime": 0.0874,
+          "Dusk / Dawn": 0.0889,
+          "Shadow": 0.0943,
+          "Glare": 0.1419,
+          "Rain": 0.0887,
+          "Fog": 0.0892,
+          "Snow": 0.0874,
+          "Wet Pavement": 0.0906,
+          "Icy Road": 0.0874
+        }
+      }
+    },
+    {
+      "sample_id": "culane_48",
+      "file_name": "05190751_0363.mp4",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "Intersections",
+          "Freeway/Expressway",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/culane/driver_37_30frame/05190751_0363.MP4",
+      "representative_frame": "/shared/data/culane/driver_37_30frame/05190751_0363.MP4/00000.jpg",
+      "driver": "driver_37_30frame",
+      "split": "test",
+      "num_frames": 180,
+      "ground_truth_path": "/shared/data/culane/laneseg_label_w16_test/driver_37_30frame/05190751_0363.MP4",
+      "lines_txt_count": 180,
+      "gt_type": "culane_segment (per-frame .lines.txt + laneseg masks)",
+      "image_found": true,
+      "gt_found": true,
+      "note": "sheet names a video segment, not a single frame",
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Undetermined"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Unmarked Pavement"
+          ],
+          "Observed Marking Visibility": [
+            "Faded / Worn / Not Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Urban",
+          "Undetermined",
+          "Unmarked Pavement",
+          "Faded / Worn / Not Visible",
+          "Daylight"
+        ],
+        "scores": {
+          "Intersections": 0.1543,
+          "Roundabouts": 0.1067,
+          "Ramps / Merges": 0.1326,
+          "At-Grade Rail Crossings": 0.0964,
+          "Tolling Stations": 0.1003,
+          "Work Zones": 0.1098,
+          "Managed Lanes": 0.1755,
+          "General Roadway Segments": 0.1243,
+          "Freeway/Expressway": 0.1529,
+          "Arterial Roadway": 0.1632,
+          "Collector Roadway": 0.1392,
+          "Local Street / Road": 0.15,
+          "Urban": 0.2687,
+          "Rural": 0.126,
+          "Paved - bituminous / asphalt": 0.2199,
+          "Paved - non-bituminous / concrete": 0.2172,
+          "Unpaved": 0.2139,
+          "Undetermined": 0.349,
+          "Solid Line": 0.1085,
+          "Dashed Line": 0.1098,
+          "Double Line": 0.1054,
+          "Edge Line": 0.1081,
+          "Curved Line": 0.1153,
+          "Gore Markings": 0.1126,
+          "Crosswalks": 0.1053,
+          "Arrows": 0.1091,
+          "Unmarked Pavement": 0.126,
+          "Clearly Visible": 0.1521,
+          "Faded / Worn / Not Visible": 0.2107,
+          "Low Contrast": 0.1684,
+          "Partially Missing": 0.137,
+          "Occluded": 0.1636,
+          "Not Applicable": 0.1683,
+          "Daylight": 0.1676,
+          "Nighttime": 0.0739,
+          "Dusk / Dawn": 0.0918,
+          "Shadow": 0.0886,
+          "Glare": 0.1548,
+          "Rain": 0.0871,
+          "Fog": 0.1018,
+          "Snow": 0.0728,
+          "Wet Pavement": 0.0887,
+          "Icy Road": 0.0731
+        }
+      }
+    }
+  ]
+}

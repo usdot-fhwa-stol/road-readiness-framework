@@ -1,0 +1,843 @@
+{
+  "metadata": {
+    "dataset": "tusimple",
+    "split": "train",
+    "num_samples": 20,
+    "gt_type": "lane_mask_png",
+    "note": "image+GT both guaranteed present",
+    "tagger": {
+      "backend": "vlm",
+      "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+      "num_tagged": 20,
+      "num_skipped": 0
+    }
+  },
+  "samples": [
+    {
+      "sample_id": "tusimple_1",
+      "file_name": "clips/0313-1/6040/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/6040/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/6040/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_2",
+      "file_name": "clips/0313-1/5320/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/5320/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/5320/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_3",
+      "file_name": "clips/0313-1/23700/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/23700/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/23700/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Dashed Line",
+            "Edge Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_4",
+      "file_name": "clips/0313-1/51660/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/51660/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/51660/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Edge Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_5",
+      "file_name": "clips/0313-1/25680/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/25680/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/25680/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway",
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Dashed Line",
+            "Solid Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Solid Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_6",
+      "file_name": "clips/0313-1/36000/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/36000/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/36000/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Dashed Line",
+            "Solid Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Solid Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_7",
+      "file_name": "clips/0313-1/9460/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/9460/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/9460/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Dashed Line",
+            "Solid Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Solid Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_8",
+      "file_name": "clips/0313-1/6180/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/6180/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/6180/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_9",
+      "file_name": "clips/0313-1/10100/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/10100/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/10100/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_10",
+      "file_name": "clips/0313-1/39720/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/39720/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/39720/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway",
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Dashed Line",
+            "Edge Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_11",
+      "file_name": "clips/0313-1/7780/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/7780/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/7780/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway",
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_12",
+      "file_name": "clips/0313-1/31680/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/31680/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/31680/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Dashed Line",
+            "Edge Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_13",
+      "file_name": "clips/0313-1/11980/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/11980/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/11980/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway",
+            "Urban"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_14",
+      "file_name": "clips/0313-1/3300/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/3300/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/3300/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Dashed Line",
+            "Edge Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_15",
+      "file_name": "clips/0313-1/32520/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/32520/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/32520/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Dashed Line",
+            "Edge Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_16",
+      "file_name": "clips/0313-1/47160/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/47160/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/47160/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "Managed Lanes"
+          ],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Managed Lanes",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_17",
+      "file_name": "clips/0313-1/15220/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/15220/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/15220/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [
+            "General Roadway Segments"
+          ],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_18",
+      "file_name": "clips/0313-1/19320/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/19320/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/19320/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Dashed Line",
+            "Edge Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_19",
+      "file_name": "clips/0313-1/9600/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/9600/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/9600/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    },
+    {
+      "sample_id": "tusimple_20",
+      "file_name": "clips/0313-1/3960/20.jpg",
+      "image_path": "/shared/data/TUSimple/train_set/clips/0313-1/3960/20.jpg",
+      "ground_truth_path": "/shared/data/TUSimple/train_set/seg_label/0313-1/3960/20.png",
+      "gt_type": "lane_mask_png",
+      "split": "train",
+      "image_found": true,
+      "gt_found": true,
+      "predicted_tags": {
+        "by_dimension": {
+          "Operational Scenario": [],
+          "Roadway Context & Facility Type": [
+            "Freeway/Expressway"
+          ],
+          "Roadway Surface Type": [
+            "Paved - bituminous / asphalt"
+          ],
+          "Pavement Marking Type & Configuration": [
+            "Solid Line",
+            "Dashed Line"
+          ],
+          "Observed Marking Visibility": [
+            "Clearly Visible"
+          ],
+          "Lighting & Weather": [
+            "Daylight"
+          ]
+        },
+        "labels": [
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ],
+        "scores": {},
+        "_raw": null
+      }
+    }
+  ]
+}
