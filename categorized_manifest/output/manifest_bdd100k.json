@@ -1,0 +1,1668 @@
+{
+  "metadata": {
+    "dataset": "bdd100k",
+    "source_xlsx": "TO_25-203_All_Datasets_Categorized.xlsx",
+    "source_sheet": "BDD100K",
+    "num_samples": 50,
+    "num_image_found": 50,
+    "num_gt_found": 0,
+    "num_image_missing": 0,
+    "num_gt_missing": 50,
+    "summary_dimensions": [
+      "Operational Scenario",
+      "Roadway Context & Facility Type",
+      "Roadway Surface Type",
+      "Pavement Marking Type & Configuration",
+      "Observed Marking Visibility",
+      "Lighting & Weather"
+    ],
+    "tag_vocabulary": [
+      "Intersections",
+      "Roundabouts",
+      "Ramps / Merges",
+      "At-Grade Rail Crossings",
+      "Tolling Stations",
+      "Work Zones",
+      "Managed Lanes",
+      "General Roadway Segments",
+      "Freeway/Expressway",
+      "Arterial Roadway",
+      "Collector Roadway",
+      "Local Street / Road",
+      "Urban",
+      "Rural",
+      "Paved - bituminous / asphalt",
+      "Paved - non-bituminous / concrete",
+      "Unpaved",
+      "Undetermined",
+      "Solid Line",
+      "Dashed Line",
+      "Double Line",
+      "Edge Line",
+      "Curved Line",
+      "Gore Markings",
+      "Crosswalks",
+      "Arrows",
+      "Unmarked Pavement",
+      "Clearly Visible",
+      "Faded / Worn / Not Visible",
+      "Low Contrast",
+      "Partially Missing",
+      "Occluded",
+      "Not Applicable",
+      "Daylight",
+      "Nighttime",
+      "Dusk / Dawn",
+      "Shadow",
+      "Glare",
+      "Rain",
+      "Fog",
+      "Snow",
+      "Wet Pavement",
+      "Icy Road"
+    ]
+  },
+  "samples": [
+    {
+      "sample_id": "bdd100k_1",
+      "file_name": "cabc30fc-e7726578.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Faded / Worn / Not Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabc30fc-e7726578.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_2",
+      "file_name": "cabc30fc-eb673c5a.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Edge Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Double Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabc30fc-eb673c5a.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_3",
+      "file_name": "cabc9045-1b8282ba.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabc9045-1b8282ba.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_4",
+      "file_name": "cabc9045-581f64de.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Edge Line; Curved Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Nighttime; Shadow; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Edge Line",
+          "Curved Line",
+          "Faded / Worn / Not Visible",
+          "Nighttime",
+          "Shadow",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabc9045-581f64de.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_5",
+      "file_name": "cabc9045-b3349548.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections; Ramps / Merges; Managed Lanes",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Shadow"
+        },
+        "labels": [
+          "Intersections",
+          "Ramps / Merges",
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabc9045-b3349548.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_6",
+      "file_name": "cabddb96-ca0ac856.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Double Line",
+          "Clearly Visible",
+          "Daylight",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabddb96-ca0ac856.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_7",
+      "file_name": "cabe1040-5f02711e.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Local Street / Road; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Daylight; Wet Pavement"
+        },
+        "labels": [
+          "Intersections",
+          "Local Street / Road",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Faded / Worn / Not Visible",
+          "Daylight",
+          "Wet Pavement"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabe1040-5f02711e.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_8",
+      "file_name": "cabe1040-c59cb390.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Daylight; Wet Pavement"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Faded / Worn / Not Visible",
+          "Daylight",
+          "Wet Pavement"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabe1040-c59cb390.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_9",
+      "file_name": "cabf7be1-36a39a28.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections; Managed Lanes",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Double Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabf7be1-36a39a28.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_10",
+      "file_name": "cabf7be1-f1a7e00d.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Local Street / Road; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Double Line; Arrows",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Local Street / Road",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Double Line",
+          "Arrows",
+          "Clearly Visible",
+          "Daylight",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabf7be1-f1a7e00d.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_11",
+      "file_name": "cabf9f3c-d58a6760.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cabf9f3c-d58a6760.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_12",
+      "file_name": "cac07407-0396e053.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Work Zones",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "Work Zones",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Double Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cac07407-0396e053.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_13",
+      "file_name": "cac07407-0eb1c8bf.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Double Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cac07407-0eb1c8bf.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_14",
+      "file_name": "cac07407-196cd6f8.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cac07407-196cd6f8.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_15",
+      "file_name": "cac07407-bc0b048a.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Faded / Worn / Not Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cac07407-bc0b048a.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_16",
+      "file_name": "cac07407-fe32e494.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cac07407-fe32e494.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_17",
+      "file_name": "cac32276-2ea56b83.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Faded / Worn / Not Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cac32276-2ea56b83.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_18",
+      "file_name": "cad180c4-d05b49f1.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare; Wet Pavement"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare",
+          "Wet Pavement"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cad180c4-d05b49f1.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_19",
+      "file_name": "cade2aed-db2e9c98.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections; Work Zones",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow; Wet Pavement"
+        },
+        "labels": [
+          "Intersections",
+          "Work Zones",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow",
+          "Wet Pavement"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cade2aed-db2e9c98.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_20",
+      "file_name": "cae49ab7-c87d52c4.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Work Zones",
+          "Roadway Context & Facility Type": "Arterial Roadway; Local Street / Road; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Unmarked Pavement",
+          "Observed Marking Visibility": "Not Applicable",
+          "Lighting & Weather": "Shadow"
+        },
+        "labels": [
+          "Work Zones",
+          "Arterial Roadway",
+          "Local Street / Road",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Unmarked Pavement",
+          "Not Applicable",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cae49ab7-c87d52c4.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_21",
+      "file_name": "cae6c88d-0db9c3ab.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Double Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Dusk / Dawn"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Double Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Dusk / Dawn"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cae6c88d-0db9c3ab.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_22",
+      "file_name": "cae73656-aeb2944f.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cae73656-aeb2944f.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_23",
+      "file_name": "cae842b9-82d52302.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line",
+          "Observed Marking Visibility": "Occluded",
+          "Lighting & Weather": "Daylight; Shadow; Wet Pavement"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Occluded",
+          "Daylight",
+          "Shadow",
+          "Wet Pavement"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cae842b9-82d52302.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_24",
+      "file_name": "caea91fd-e457bf7b.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/caea91fd-e457bf7b.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_25",
+      "file_name": "caeb0fbb-410c10ca.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/caeb0fbb-410c10ca.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_26",
+      "file_name": "caeb782d-4a20b7c4.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Local Street / Road; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Snow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Local Street / Road",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Snow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/caeb782d-4a20b7c4.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_27",
+      "file_name": "caee33ed-136d6b7c.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections; Ramps / Merges",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Curved Line; Arrows",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "Intersections",
+          "Ramps / Merges",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Curved Line",
+          "Arrows",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/caee33ed-136d6b7c.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_28",
+      "file_name": "caee33ed-bb44010a.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Glare; Wet Pavement"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Glare",
+          "Wet Pavement"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/caee33ed-bb44010a.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_29",
+      "file_name": "caf380ad-52f6a603.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Edge Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Edge Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/caf380ad-52f6a603.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_30",
+      "file_name": "caf73e65-16760e37.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Local Street / Road; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Local Street / Road",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Double Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/caf73e65-16760e37.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_31",
+      "file_name": "caf92153-8fdace82.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/caf92153-8fdace82.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_32",
+      "file_name": "caf92153-cfcdf92a.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Daylight",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/caf92153-cfcdf92a.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_33",
+      "file_name": "cafb3b52-f34e5454.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Double Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cafb3b52-f34e5454.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_34",
+      "file_name": "cafb3e6f-22f2007e.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Local Street / Road; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Local Street / Road",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cafb3e6f-22f2007e.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_35",
+      "file_name": "cafca327-47cae51f.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Nighttime"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cafca327-47cae51f.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_36",
+      "file_name": "caff5d9a-35754dcf.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/caff5d9a-35754dcf.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_37",
+      "file_name": "cb0287d1-207cdf5c.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Local Street / Road; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Local Street / Road",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cb0287d1-207cdf5c.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_38",
+      "file_name": "cb0287d1-622df962.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Unmarked Pavement",
+          "Observed Marking Visibility": "Not Applicable",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Unmarked Pavement",
+          "Not Applicable",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cb0287d1-622df962.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_39",
+      "file_name": "cb031b03-0f3ed476.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Double Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Double Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cb031b03-0f3ed476.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_40",
+      "file_name": "cb031b03-cc89642d.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cb031b03-cc89642d.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_41",
+      "file_name": "cb05eaa9-f2430836.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Nighttime"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cb05eaa9-f2430836.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_42",
+      "file_name": "cb063b6c-158d56f6.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Edge Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Double Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cb063b6c-158d56f6.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_43",
+      "file_name": "cb078020-ab5a89f2.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Solid Line",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Daylight",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cb078020-ab5a89f2.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_44",
+      "file_name": "cb0bdd89-5bdf8abc.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Local Street / Road; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Local Street / Road",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cb0bdd89-5bdf8abc.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_45",
+      "file_name": "cb0e6066-8c6456bf.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Work Zones",
+          "Roadway Context & Facility Type": "Local Street / Road; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt; Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow; Snow"
+        },
+        "labels": [
+          "Work Zones",
+          "Local Street / Road",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Paved - non-bituminous / concrete",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow",
+          "Snow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cb0e6066-8c6456bf.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_46",
+      "file_name": "cb1294f1-3faf01b9.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Crosswalks",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cb1294f1-3faf01b9.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_47",
+      "file_name": "cb1294f1-fba3ff7d.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections; Ramps / Merges",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Undetermined",
+          "Pavement Marking Type & Configuration": "Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "Intersections",
+          "Ramps / Merges",
+          "Arterial Roadway",
+          "Urban",
+          "Undetermined",
+          "Crosswalks",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cb1294f1-fba3ff7d.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_48",
+      "file_name": "cb13d27e-aed37c4c.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare; Wet Pavement"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Crosswalks",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare",
+          "Wet Pavement"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cb13d27e-aed37c4c.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_49",
+      "file_name": "cb1f05ca-28b96d3e.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Clearly Visible",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cb1f05ca-28b96d3e.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    },
+    {
+      "sample_id": "bdd100k_50",
+      "file_name": "cb22c820-f094952f.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Work Zones",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt; Unpaved",
+          "Pavement Marking Type & Configuration": "Solid Line; Arrows",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "Work Zones",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Unpaved",
+          "Solid Line",
+          "Arrows",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/bdd100k/images/test/cb22c820-f094952f.jpg",
+      "split": "test",
+      "ground_truth_path": null,
+      "gt_type": "lane_mask_png",
+      "image_found": true,
+      "gt_found": false,
+      "note": "test split has no ll_seg lane masks"
+    }
+  ]
+}

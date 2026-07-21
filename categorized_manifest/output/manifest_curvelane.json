@@ -1,0 +1,1601 @@
+{
+  "metadata": {
+    "dataset": "curvelane",
+    "source_xlsx": "TO_25-203_All_Datasets_Categorized.xlsx",
+    "source_sheet": "CurveLane",
+    "num_samples": 49,
+    "num_image_found": 49,
+    "num_gt_found": 49,
+    "num_image_missing": 0,
+    "num_gt_missing": 0,
+    "summary_dimensions": [
+      "Operational Scenario",
+      "Roadway Context & Facility Type",
+      "Roadway Surface Type",
+      "Pavement Marking Type & Configuration",
+      "Observed Marking Visibility",
+      "Lighting & Weather"
+    ],
+    "tag_vocabulary": [
+      "Intersections",
+      "Roundabouts",
+      "Ramps / Merges",
+      "At-Grade Rail Crossings",
+      "Tolling Stations",
+      "Work Zones",
+      "Managed Lanes",
+      "General Roadway Segments",
+      "Freeway/Expressway",
+      "Arterial Roadway",
+      "Collector Roadway",
+      "Local Street / Road",
+      "Urban",
+      "Rural",
+      "Paved - bituminous / asphalt",
+      "Paved - non-bituminous / concrete",
+      "Unpaved",
+      "Undetermined",
+      "Solid Line",
+      "Dashed Line",
+      "Double Line",
+      "Edge Line",
+      "Curved Line",
+      "Gore Markings",
+      "Crosswalks",
+      "Arrows",
+      "Unmarked Pavement",
+      "Clearly Visible",
+      "Faded / Worn / Not Visible",
+      "Low Contrast",
+      "Partially Missing",
+      "Occluded",
+      "Not Applicable",
+      "Daylight",
+      "Nighttime",
+      "Dusk / Dawn",
+      "Shadow",
+      "Glare",
+      "Rain",
+      "Fog",
+      "Snow",
+      "Wet Pavement",
+      "Icy Road"
+    ]
+  },
+  "samples": [
+    {
+      "sample_id": "curvelane_1",
+      "file_name": "ffffcd23465e090e03c0095c5effe77a.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Managed Lanes",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Fog"
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight",
+          "Fog"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/ffffcd23465e090e03c0095c5effe77a.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/ffffcd23465e090e03c0095c5effe77a.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_2",
+      "file_name": "ffffcb254d20f46ac08c8cf46466f942.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Faded / Worn / Not Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/ffffcb254d20f46ac08c8cf46466f942.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/ffffcb254d20f46ac08c8cf46466f942.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_3",
+      "file_name": "fffe1d98bbd73bec32507b7ebeffa5a6.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Edge Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Edge Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/fffe1d98bbd73bec32507b7ebeffa5a6.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/fffe1d98bbd73bec32507b7ebeffa5a6.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_4",
+      "file_name": "fffd62919380b9e8891881b9328089ec.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Unmarked Pavement",
+          "Observed Marking Visibility": "Not Applicable",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Unmarked Pavement",
+          "Not Applicable",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/fffd62919380b9e8891881b9328089ec.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/fffd62919380b9e8891881b9328089ec.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_5",
+      "file_name": "fffc361b3993fabb46aa03be8a522195.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Rain"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Double Line",
+          "Clearly Visible",
+          "Daylight",
+          "Rain"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/fffc361b3993fabb46aa03be8a522195.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/fffc361b3993fabb46aa03be8a522195.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_6",
+      "file_name": "fffadbe4d8ec8d3b963d5015f2e81850.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt; Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Paved - non-bituminous / concrete",
+          "Solid Line",
+          "Clearly Visible",
+          "Nighttime"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/fffadbe4d8ec8d3b963d5015f2e81850.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/fffadbe4d8ec8d3b963d5015f2e81850.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_7",
+      "file_name": "fffacde59a871fa75df3310552778fac.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt; Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Crosswalks",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible; Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Paved - non-bituminous / concrete",
+          "Crosswalks",
+          "Clearly Visible",
+          "Faded / Worn / Not Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/fffacde59a871fa75df3310552778fac.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/fffacde59a871fa75df3310552778fac.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_8",
+      "file_name": "fff9b631d653bebbd7aff752c9b61f15.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Ramps / Merges",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt; Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime"
+        },
+        "labels": [
+          "Ramps / Merges",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Paved - non-bituminous / concrete",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/fff9b631d653bebbd7aff752c9b61f15.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/fff9b631d653bebbd7aff752c9b61f15.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_9",
+      "file_name": "fff82417afd42556e4d14986b48fa750.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Arrows",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Arrows",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/fff82417afd42556e4d14986b48fa750.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/fff82417afd42556e4d14986b48fa750.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_10",
+      "file_name": "0a0f523e99b425c78150682d97d01e23.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Crosswalks",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Daylight; Dusk / Dawn"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Crosswalks",
+          "Faded / Worn / Not Visible",
+          "Daylight",
+          "Dusk / Dawn"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/0a0f523e99b425c78150682d97d01e23.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/0a0f523e99b425c78150682d97d01e23.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_11",
+      "file_name": "0a1a2037fe30831249fc6ec480f4f9a1.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/0a1a2037fe30831249fc6ec480f4f9a1.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/0a1a2037fe30831249fc6ec480f4f9a1.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_12",
+      "file_name": "0a1b13ac2a1291e71980a96c85b10432.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Glare; Fog"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight",
+          "Glare",
+          "Fog"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/0a1b13ac2a1291e71980a96c85b10432.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/0a1b13ac2a1291e71980a96c85b10432.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_13",
+      "file_name": "0a1b19a229d84fe4c5116a55e0d4c22c.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Curved Line",
+          "Observed Marking Visibility": "Partially Missing; Occluded",
+          "Lighting & Weather": "Daylight; Rain; Wet Pavement"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Curved Line",
+          "Partially Missing",
+          "Occluded",
+          "Daylight",
+          "Rain",
+          "Wet Pavement"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/0a1b19a229d84fe4c5116a55e0d4c22c.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/0a1b19a229d84fe4c5116a55e0d4c22c.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_14",
+      "file_name": "0a1b168d92a076d1734c6b63be328be4.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Arrows",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Arrows",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/0a1b168d92a076d1734c6b63be328be4.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/0a1b168d92a076d1734c6b63be328be4.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_15",
+      "file_name": "00a1b9881b7b6dfc9b2f42eb07a73ca2.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/00a1b9881b7b6dfc9b2f42eb07a73ca2.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/00a1b9881b7b6dfc9b2f42eb07a73ca2.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_16",
+      "file_name": "0a1c64a926aac5e7857e813c96ca4ea2.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Low Contrast",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Low Contrast",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/0a1c64a926aac5e7857e813c96ca4ea2.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/0a1c64a926aac5e7857e813c96ca4ea2.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_17",
+      "file_name": "0a01dea3e9bb21772a829de7f4eb6d57.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Ramps / Merges",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Curved Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Nighttime"
+        },
+        "labels": [
+          "Ramps / Merges",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Curved Line",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/0a01dea3e9bb21772a829de7f4eb6d57.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/0a01dea3e9bb21772a829de7f4eb6d57.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_18",
+      "file_name": "0a1e6d0e55fae3d9766b08ebdc798239.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Arrows",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Arrows",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/0a1e6d0e55fae3d9766b08ebdc798239.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/0a1e6d0e55fae3d9766b08ebdc798239.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_19",
+      "file_name": "0a1e8d165cf64dd589ec21e3cc70475a.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Managed Lanes",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/0a1e8d165cf64dd589ec21e3cc70475a.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/0a1e8d165cf64dd589ec21e3cc70475a.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_20",
+      "file_name": "ffffcd23465e090e03c0095c5effe77a.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Managed Lanes",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Fog"
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight",
+          "Fog"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/ffffcd23465e090e03c0095c5effe77a.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/ffffcd23465e090e03c0095c5effe77a.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_21",
+      "file_name": "ffffcb254d20f46ac08c8cf46466f942.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Faded / Worn / Not Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/ffffcb254d20f46ac08c8cf46466f942.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/ffffcb254d20f46ac08c8cf46466f942.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_22",
+      "file_name": "fffe1d98bbd73bec32507b7ebeffa5a6.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Edge Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Edge Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/fffe1d98bbd73bec32507b7ebeffa5a6.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/fffe1d98bbd73bec32507b7ebeffa5a6.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_23",
+      "file_name": "fffd62919380b9e8891881b9328089ec.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Unmarked Pavement",
+          "Observed Marking Visibility": "Not Applicable",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Unmarked Pavement",
+          "Not Applicable",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/fffd62919380b9e8891881b9328089ec.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/fffd62919380b9e8891881b9328089ec.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_24",
+      "file_name": "fffc361b3993fabb46aa03be8a522195.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Double Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Rain"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Double Line",
+          "Clearly Visible",
+          "Daylight",
+          "Rain"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/fffc361b3993fabb46aa03be8a522195.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/fffc361b3993fabb46aa03be8a522195.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_25",
+      "file_name": "fffadbe4d8ec8d3b963d5015f2e81850.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt; Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Paved - non-bituminous / concrete",
+          "Solid Line",
+          "Clearly Visible",
+          "Nighttime"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/fffadbe4d8ec8d3b963d5015f2e81850.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/fffadbe4d8ec8d3b963d5015f2e81850.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_26",
+      "file_name": "fffacde59a871fa75df3310552778fac.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt; Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Crosswalks",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible; Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Paved - non-bituminous / concrete",
+          "Crosswalks",
+          "Clearly Visible",
+          "Faded / Worn / Not Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/fffacde59a871fa75df3310552778fac.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/fffacde59a871fa75df3310552778fac.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_27",
+      "file_name": "fff9b631d653bebbd7aff752c9b61f15.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Ramps / Merges",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt; Paved - non-bituminous / concrete",
+          "Pavement Marking Type & Configuration": "Dashed Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime"
+        },
+        "labels": [
+          "Ramps / Merges",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Paved - non-bituminous / concrete",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/fff9b631d653bebbd7aff752c9b61f15.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/fff9b631d653bebbd7aff752c9b61f15.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_28",
+      "file_name": "fff82417afd42556e4d14986b48fa750.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line; Arrows",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Arrows",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/fff82417afd42556e4d14986b48fa750.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/fff82417afd42556e4d14986b48fa750.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_29",
+      "file_name": "fff7bef98881404b5f198f7658cad20a.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Edge Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Dusk / Dawn; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Edge Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Daylight",
+          "Dusk / Dawn",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/fff7bef98881404b5f198f7658cad20a.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/fff7bef98881404b5f198f7658cad20a.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_30",
+      "file_name": "ffe5b0a8164e56c70f9ae51d8438a966.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Nighttime"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/ffe5b0a8164e56c70f9ae51d8438a966.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/ffe5b0a8164e56c70f9ae51d8438a966.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_31",
+      "file_name": "ffe4b38d9046062fa1606c6e80b11f8a.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Ramps / Merges; Managed Lanes",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "Ramps / Merges",
+          "Managed Lanes",
+          "Freeway/Expressway",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/ffe4b38d9046062fa1606c6e80b11f8a.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/ffe4b38d9046062fa1606c6e80b11f8a.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_32",
+      "file_name": "ffe41c37b68fe7305077557cf04098d8.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Dusk / Dawn; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Dusk / Dawn",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/ffe41c37b68fe7305077557cf04098d8.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/ffe41c37b68fe7305077557cf04098d8.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_33",
+      "file_name": "ffe3ba233571ee84c8995150eff19d3f.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Managed Lanes",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Edge Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Edge Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/ffe3ba233571ee84c8995150eff19d3f.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/ffe3ba233571ee84c8995150eff19d3f.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_34",
+      "file_name": "ffe2e696392bfd04c3c43193a0481e8b.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Ramps / Merges",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Edge Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime; Glare"
+        },
+        "labels": [
+          "Ramps / Merges",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Edge Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/ffe2e696392bfd04c3c43193a0481e8b.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/ffe2e696392bfd04c3c43193a0481e8b.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_35",
+      "file_name": "ffe2951bdf4cf60fcbfc03401f8a1eb6.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/ffe2951bdf4cf60fcbfc03401f8a1eb6.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/ffe2951bdf4cf60fcbfc03401f8a1eb6.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_36",
+      "file_name": "ffe28390647ebe0ebd704148f1341b70.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Faded / Worn / Not Visible",
+          "Lighting & Weather": "Nighttime"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Faded / Worn / Not Visible",
+          "Nighttime"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/ffe28390647ebe0ebd704148f1341b70.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/ffe28390647ebe0ebd704148f1341b70.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_37",
+      "file_name": "ffe27da2e0e231e28b34604576018a5e.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Solid Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/ffe27da2e0e231e28b34604576018a5e.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/ffe27da2e0e231e28b34604576018a5e.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_38",
+      "file_name": "ffdf89ae4bf3a8616160199abf9b7506.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Edge Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Nighttime"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Edge Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Nighttime"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/ffdf89ae4bf3a8616160199abf9b7506.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/ffdf89ae4bf3a8616160199abf9b7506.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_39",
+      "file_name": "ffdf59d5b8a53aac923f5a1498060a96.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections; Managed Lanes",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Crosswalks",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "Intersections",
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Crosswalks",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/ffdf59d5b8a53aac923f5a1498060a96.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/ffdf59d5b8a53aac923f5a1498060a96.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_40",
+      "file_name": "21affc23d38daa72509cedb77f7d69db.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Edge Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Edge Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/21affc23d38daa72509cedb77f7d69db.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/21affc23d38daa72509cedb77f7d69db.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_41",
+      "file_name": "21af36d1424e5d52272df0113940d79e.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Dusk / Dawn"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Dusk / Dawn"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/21af36d1424e5d52272df0113940d79e.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/21af36d1424e5d52272df0113940d79e.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_42",
+      "file_name": "21ae5826fd583caa6fa02fbfc56a8060.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Unmarked Pavement",
+          "Observed Marking Visibility": "Not Applicable",
+          "Lighting & Weather": "Daylight; Nighttime; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Unmarked Pavement",
+          "Not Applicable",
+          "Daylight",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/21ae5826fd583caa6fa02fbfc56a8060.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/21ae5826fd583caa6fa02fbfc56a8060.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_43",
+      "file_name": "21aba7ec9482a96cba52df74df0237a2.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Arrows",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Arrows",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/21aba7ec9482a96cba52df74df0237a2.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/21aba7ec9482a96cba52df74df0237a2.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_44",
+      "file_name": "21ab257a4c435503d389e7ac00e89b2d.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections; Managed Lanes",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Arrows",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Rain"
+        },
+        "labels": [
+          "Intersections",
+          "Managed Lanes",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Arrows",
+          "Clearly Visible",
+          "Daylight",
+          "Rain"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/21ab257a4c435503d389e7ac00e89b2d.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/21ab257a4c435503d389e7ac00e89b2d.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_45",
+      "file_name": "21aa6ff21047ce5d9bc6b2e081638ad9.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Solid Line; Arrows",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Shadow"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Solid Line",
+          "Arrows",
+          "Clearly Visible",
+          "Daylight",
+          "Shadow"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/21aa6ff21047ce5d9bc6b2e081638ad9.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/21aa6ff21047ce5d9bc6b2e081638ad9.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_46",
+      "file_name": "21a54fd6b003456d2b7e106ac8752a83.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/21a54fd6b003456d2b7e106ac8752a83.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/21a54fd6b003456d2b7e106ac8752a83.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_47",
+      "file_name": "21a4f1455d82aa0a7ee9def44a888d9a.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "Intersections",
+          "Roadway Context & Facility Type": "Arterial Roadway; Urban",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Unmarked Pavement",
+          "Observed Marking Visibility": "Not Applicable",
+          "Lighting & Weather": "Daylight; Nighttime; Glare"
+        },
+        "labels": [
+          "Intersections",
+          "Arterial Roadway",
+          "Urban",
+          "Paved - bituminous / asphalt",
+          "Unmarked Pavement",
+          "Not Applicable",
+          "Daylight",
+          "Nighttime",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/21a4f1455d82aa0a7ee9def44a888d9a.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/21a4f1455d82aa0a7ee9def44a888d9a.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_48",
+      "file_name": "21a49e960ef1138c58bda0f8ed59be3a.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Fog"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Clearly Visible",
+          "Daylight",
+          "Fog"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/21a49e960ef1138c58bda0f8ed59be3a.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/21a49e960ef1138c58bda0f8ed59be3a.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    },
+    {
+      "sample_id": "curvelane_49",
+      "file_name": "21a3c4f064e026f10832061ab22eb7cd.jpg",
+      "tags": {
+        "summary": {
+          "Operational Scenario": "General Roadway Segments",
+          "Roadway Context & Facility Type": "Freeway/Expressway; Arterial Roadway",
+          "Roadway Surface Type": "Paved - bituminous / asphalt",
+          "Pavement Marking Type & Configuration": "Dashed Line; Curved Line",
+          "Observed Marking Visibility": "Clearly Visible",
+          "Lighting & Weather": "Daylight; Glare"
+        },
+        "labels": [
+          "General Roadway Segments",
+          "Freeway/Expressway",
+          "Arterial Roadway",
+          "Paved - bituminous / asphalt",
+          "Dashed Line",
+          "Curved Line",
+          "Clearly Visible",
+          "Daylight",
+          "Glare"
+        ]
+      },
+      "image_path": "/shared/data/Curvelanes/train/images/21a3c4f064e026f10832061ab22eb7cd.jpg",
+      "split": "train",
+      "ground_truth_path": "/shared/data/Curvelanes/train/labels/21a3c4f064e026f10832061ab22eb7cd.lines.json",
+      "gt_type": "lines_json",
+      "image_found": true,
+      "gt_found": true,
+      "note": ""
+    }
+  ]
+}
