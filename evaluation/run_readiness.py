@@ -283,6 +283,46 @@ def _dry_run(n: int = 50):
     return samples, pred_masks, gt_masks, images_rgb, lane_probs
 
 
+def _run_manifest_predictions(gt_manifest: str, pred_manifest: str, max_samples: Optional[int] = None):
+    """Load aligned GT samples and prediction geometry without model inference."""
+
+    from lane_eval.manifest import ManifestDataset, PredictionManifestReader
+
+    dataset = ManifestDataset(gt_manifest)
+    predictions = PredictionManifestReader(pred_manifest)
+    total = min(len(dataset), max_samples) if max_samples else len(dataset)
+    samples, pred_masks, gt_masks, images_rgb, lane_probs, prediction_inputs = [], [], [], [], [], []
+    for index in range(total):
+        sample = dataset[index]
+        prediction = predictions.get(sample.image_id)
+        if prediction is None:
+            continue
+        image_bgr = cv2.imread(str(sample.image_path))
+        if image_bgr is None:
+            continue
+        image_rgb = cv2.cvtColor(image_bgr, cv2.COLOR_BGR2RGB)
+        height, width = image_rgb.shape[:2]
+        gt_mask = sample.target.mask
+        if gt_mask is None:
+            gt_mask = np.zeros((height, width), dtype=np.uint8)
+        pred_mask = prediction.mask
+        if pred_mask is None:
+            pred_mask = np.zeros((height, width), dtype=np.uint8)
+        samples.append(sample)
+        pred_masks.append(pred_mask)
+        gt_masks.append(gt_mask)
+        images_rgb.append(image_rgb)
+        lane_probs.append(prediction.prob)
+        prediction_inputs.append(
+            {
+                "lanes": prediction.lanes,
+                "lane_json": prediction.meta.get("lane_json"),
+                "geometry_source": prediction.meta.get("geometry_source"),
+            }
+        )
+    return samples, pred_masks, gt_masks, images_rgb, lane_probs, prediction_inputs
+
+
 def _record_stratum_value(record: dict, dim: str) -> Optional[str]:
     meta = record.get("metadata") or {}
     if dim == "time":
@@ -328,15 +368,39 @@ def _write_csv(path: str, records: list[dict]) -> None:
         writer.writerows(rows)
 
 
-def _compute_all(args, samples, pred_masks, gt_masks, images_rgb, lane_probs) -> tuple[dict, list[dict]]:
+def _compute_all(
+    args,
+    samples,
+    pred_masks,
+    gt_masks,
+    images_rgb,
+    lane_probs,
+    prediction_inputs=None,
+) -> tuple[dict, list[dict]]:
     from tqdm import tqdm
     from evaluation.readiness_metrics import METRIC_VERSION, build_metric_record, summarize_records
 
     dataset = args.dataset or "dry_run"
     print("Building per-image metric records...")
     records = []
-    for sample, pred, img, prob in tqdm(zip(samples, pred_masks, images_rgb, lane_probs), total=len(samples)):
-        records.append(build_metric_record(sample, pred, img, dataset=dataset, split=args.split, model_name=args.model_name, lane_prob=prob))
+    if prediction_inputs is None:
+        prediction_inputs = [{} for _ in samples]
+    iterator = zip(samples, pred_masks, images_rgb, lane_probs, prediction_inputs)
+    for sample, pred, img, prob, prediction_input in tqdm(iterator, total=len(samples)):
+        records.append(
+            build_metric_record(
+                sample,
+                pred,
+                img,
+                dataset=dataset,
+                split=args.split,
+                model_name=args.model_name,
+                lane_prob=prob,
+                pred_lanes=prediction_input.get("lanes"),
+                pred_lane_json=prediction_input.get("lane_json"),
+                pred_geometry_source=prediction_input.get("geometry_source"),
+            )
+        )
 
     overall = summarize_records(records, min_corr_samples=args.min_stratum_samples)
     strata = {}
@@ -370,15 +434,15 @@ def _compute_all(args, samples, pred_masks, gt_masks, images_rgb, lane_probs) ->
         "dataset": dataset,
         "split": args.split,
         "model_name": args.model_name,
-        "confidence_available": bool(any(r.get("D8_confidence_mean") is not None for r in records)),
-        "d7_available": False,
+        "confidence_available": bool(any(r.get("D7_confidence_mean") is not None for r in records)),
+        "d7_available": bool(any(r.get("D7_confidence_mean") is not None for r in records)),
         "overall": overall,
         "strata": strata,
         "warnings_limitations": [
             "Image-based proxy only; not a field-certified road-readiness standard.",
-            "D7 temporal jitter is unavailable for single-frame evaluation.",
-            "D8 is None unless lane probability was extracted from model logits.",
-            "Dark-region sensitivity is not true occlusion robustness without object occlusion masks.",
+            "D7 confidence is None unless lane probability was extracted from model logits.",
+            "Video-based temporal jitter is not computed; this is a single-frame evaluation.",
+            "D5 occlusion/visibility gap requires human 'Observed Marking Visibility' tags and is only reported at the group level (not per image).",
         ],
     }
     return report, records
@@ -388,6 +452,8 @@ def parse_args():
     p = argparse.ArgumentParser(description="Lane-marking machine-readability assessment with YOLOPX")
     p.add_argument("--yolopx-repo", default=None, help="Path to YOLOPX repo root")
     p.add_argument("--weights", default=None, help="Path to YOLOPX .pth checkpoint")
+    p.add_argument("--manifest", default=None, help="Universal GT manifest for prediction-manifest scoring")
+    p.add_argument("--pred-manifest", default=None, help="Prediction manifest carrying masks and optional native geometry")
     p.add_argument("--device", default="cuda:0")
     p.add_argument("--img-size", type=int, default=640)
     p.add_argument("--batch-size", type=int, default=8)
@@ -407,6 +473,7 @@ def parse_args():
     p.add_argument("--output", default="outputs/readiness/report.json")
     p.add_argument("--per-image-output", default=None, help="Optional JSONL path for one metric record per image")
     p.add_argument("--per-image-csv", default=None, help="Optional flat CSV path for scalar per-image metrics")
+    p.add_argument("--output-manifest", default=None, help="Dir: write an output manifest (input manifest + per-sample core/D/I/R metrics) + CSV + overlay images")
     p.add_argument("--save-failures", action="store_true")
     p.add_argument("--failures-dir", default="outputs/readiness/failures")
     p.add_argument("--save-good", action="store_true")
@@ -419,12 +486,23 @@ def parse_args():
 
 def main():
     args = parse_args()
+    prediction_inputs = None
     if args.dry_run:
         print(f"Dry-run mode: generating {args.dry_run_n} synthetic samples...")
         samples, pred_masks, gt_masks, images_rgb, lane_probs = _dry_run(args.dry_run_n)
+    elif args.manifest or args.pred_manifest:
+        if not args.manifest or not args.pred_manifest:
+            print("ERROR: --manifest and --pred-manifest must be supplied together")
+            sys.exit(1)
+        loaded = _run_manifest_predictions(args.manifest, args.pred_manifest, args.max_samples)
+        samples, pred_masks, gt_masks, images_rgb, lane_probs, prediction_inputs = loaded
+        if args.dataset is None:
+            from lane_eval.manifest import ManifestDataset
+
+            args.dataset = ManifestDataset(args.manifest).name
     else:
         if not args.yolopx_repo or not args.weights or not args.dataset:
-            print("ERROR: --yolopx-repo, --weights, and --dataset are required unless --dry-run")
+            print("ERROR: model arguments are required unless --dry-run or manifest scoring is used")
             sys.exit(1)
         samples, pred_masks, gt_masks, images_rgb, lane_probs = _run_inference(args)
 
@@ -433,7 +511,15 @@ def main():
         sys.exit(1)
 
     print(f"\nRunning readiness metrics on {len(samples)} aligned records...")
-    report, records = _compute_all(args, samples, pred_masks, gt_masks, images_rgb, lane_probs)
+    report, records = _compute_all(
+        args,
+        samples,
+        pred_masks,
+        gt_masks,
+        images_rgb,
+        lane_probs,
+        prediction_inputs=prediction_inputs,
+    )
 
     out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -443,6 +529,13 @@ def main():
         _write_jsonl(args.per_image_output, records)
     if args.per_image_csv:
         _write_csv(args.per_image_csv, records)
+    if args.output_manifest:
+        from evaluation.eval_output_manifest import write_output_manifest
+        write_output_manifest(
+            args.manifest, records, report.get("overall", {}), args.output_manifest,
+            model=args.model_name, dataset=args.dataset, split=args.split,
+            samples=samples, images_rgb=images_rgb, pred_masks=pred_masks, gt_masks=gt_masks,
+        )
 
     l4 = report["overall"]["layer4"]
     r3 = l4["R3"]
@@ -457,7 +550,7 @@ def main():
     print(f"  R2 detectability  : {l4['R2']:.1f} / 100" if l4.get("R2") is not None else "  R2 detectability  : unavailable")
     print(f"  R3 bottleneck     : {r3.get('name')} (strength={r3.get('strength')})")
     print(f"  R4 class          : {r4.get('status')}")
-    print(f"  Confidence D8     : {'available' if report['confidence_available'] else 'unavailable'}")
+    print(f"  Confidence D7     : {'available' if report['confidence_available'] else 'unavailable'}")
     print(f"Saved summary -> {out_path}")
     if args.per_image_output:
         print(f"Saved per-image JSONL -> {args.per_image_output}")
