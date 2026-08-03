@@ -49,7 +49,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--in-manifest", required=True, type=Path)
     ap.add_argument("--out-manifest", required=True, type=Path)
-    ap.add_argument("--backend", choices=["siglip", "vlm", "internvl"], default="siglip")
+    ap.add_argument("--backend", choices=["siglip", "vlm", "internvl", "phi4"], default="siglip")
     ap.add_argument("--model", default=None, help="override HF model id for the backend")
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--load-4bit", action="store_true", help="load VLM in 4-bit (bnb nf4) for big models")
@@ -65,7 +65,10 @@ def main():
     if args.limit:
         samples = samples[: args.limit]
 
-    model_id = args.model or (VLM_DEFAULT if args.backend == "vlm" else SIGLIP_DEFAULT)
+    # None lets make_backend pick each backend's own default (internvl/phi4 have
+    # their own); only siglip/vlm get an explicit default here.
+    _default = {"siglip": SIGLIP_DEFAULT, "vlm": VLM_DEFAULT}.get(args.backend)
+    model_id = args.model or _default
     print(f"loading backend={args.backend} model={model_id} device={args.device} "
           f"4bit={args.load_4bit} ...")
     backend = make_backend(args.backend, model_id, args.device, load_4bit=args.load_4bit)

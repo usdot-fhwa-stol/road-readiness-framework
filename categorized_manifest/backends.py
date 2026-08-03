@@ -91,20 +91,33 @@ def _select_from_scores(sigmoid_scores):
 # --------------------------------------------------------------------------- #
 def _build_vlm_prompt():
     lines = [
-        "You are labeling a single forward-facing dashcam road image for a "
+        "You are labeling ONE forward-facing dashcam road image for a "
         "road-readiness dataset.",
-        "For EACH of the 6 dimensions below, select ALL tags that apply "
-        "(multi-label). Select at least one tag per dimension, using ONLY the "
-        "allowed values listed - never invent tags.",
+        "For EACH of the 6 dimensions below, choose ALL tags that are CLEARLY "
+        "supported by what is visible in the image (multi-label).",
         "",
-        "Dimensions and allowed tags:",
+        "Rules:",
+        "- Use ONLY the exact tag strings listed (copy them verbatim, including "
+        "spaces and slashes). Never invent or abbreviate tags.",
+        "- Choose a tag only when there is clear visual evidence for it. Do not "
+        "guess; when unsure, prefer fewer tags.",
+        "- Select at least one tag per dimension. If nothing clearly applies, use "
+        "the dimension's catch-all where one exists (Operational Scenario -> "
+        '"General Roadway Segments"; Roadway Surface Type -> "Undetermined"; '
+        'Observed Marking Visibility -> "Not Applicable").',
+        "",
+        "Dimensions and allowed tags (meaning of each tag in parentheses):",
     ]
     for dim, tags in TAXONOMY.items():
-        lines.append(f"- {dim}: {', '.join(tags)}")
+        lines.append(f"{dim}:")
+        for tag, desc in tags.items():
+            short = desc.replace("a forward-facing dashcam photo ", "").strip()
+            lines.append(f'  - "{tag}" ({short})')
     lines += [
         "",
         "Respond with ONLY a JSON object mapping each dimension name (exactly as "
-        "written above) to a list of chosen tags. No prose, no code fences.",
+        "written above) to a list of the chosen exact tag strings. No prose, no "
+        "explanations, no code fences.",
     ]
     return "\n".join(lines)
 
@@ -135,17 +148,23 @@ class VlmBackend:
                 model_id, max_pixels=max_pixels, trust_remote_code=True)
         except TypeError:
             self.processor = AutoProcessor.from_pretrained(model_id, trust_remote_code=True)
+        # left padding is REQUIRED for correct batched generation (continuations
+        # must align at the right edge of the padded input).
+        tok = getattr(self.processor, "tokenizer", None)
+        if tok is not None:
+            tok.padding_side = "left"
         self.prompt = _build_vlm_prompt()
         self._valid = {dim: set(tags) for dim, tags in TAXONOMY.items()}
 
-    @torch.no_grad()
-    def _generate(self, image):
-        messages = [{"role": "user", "content": [
+    def _messages(self, image):
+        return [{"role": "user", "content": [
             {"type": "image", "image": image},
             {"type": "text", "text": self.prompt}]}]
-        # unified path: tokenize + embed images straight from the messages
+
+    @torch.no_grad()
+    def _generate(self, image):
         inputs = self.processor.apply_chat_template(
-            messages, add_generation_prompt=True, tokenize=True,
+            self._messages(image), add_generation_prompt=True, tokenize=True,
             return_dict=True, return_tensors="pt").to(self.model.device)
         gen = self.model.generate(**inputs, max_new_tokens=512, do_sample=False)
         trimmed = gen[:, inputs["input_ids"].shape[1]:]
@@ -155,24 +174,57 @@ class VlmBackend:
         raw = self._generate(image)
         return _labels_from_json(raw, self._valid)
 
+    @torch.no_grad()
+    def _generate_batch(self, images):
+        # one chat per image; padding=True left-pads the text so all rows share
+        # an input length and generated continuations line up for trimming.
+        batch = [self._messages(im) for im in images]
+        inputs = self.processor.apply_chat_template(
+            batch, add_generation_prompt=True, tokenize=True, return_dict=True,
+            return_tensors="pt", padding=True).to(self.model.device)
+        gen = self.model.generate(**inputs, max_new_tokens=512, do_sample=False)
+        trimmed = gen[:, inputs["input_ids"].shape[1]:]
+        return self.processor.batch_decode(trimmed, skip_special_tokens=True)
+
+    def predict_batch(self, images):
+        return [_labels_from_json(r, self._valid)
+                for r in self._generate_batch(images)]
+
+
+def _norm_tag(s):
+    """Normalize a tag string for tolerant matching: unify slash spacing, collapse
+    whitespace, lowercase. So 'Faded/Worn/Not Visible' == 'Faded / Worn / Not
+    Visible' and minor casing/spacing drift no longer silently drops a valid tag."""
+    s = re.sub(r"\s*/\s*", " / ", str(s).strip())
+    return re.sub(r"\s+", " ", s).lower()
+
 
 def _labels_from_json(raw, valid_by_dim):
     """Parse a model's JSON response into the predicted_tags dict, keeping only
-    tags in the taxonomy. Shared by all generative backends."""
+    tags in the taxonomy (tolerant, normalized matching). Shared by all
+    generative backends. Records any tokens that matched no taxonomy tag under
+    `_unmatched` for auditing."""
     parsed = _extract_json(raw)
-    by_dim, flat = {}, []
+    by_dim, flat, unmatched = {}, [], []
     for dim, valid in valid_by_dim.items():
+        norm2canon = {_norm_tag(t): t for t in valid}
         chosen = []
         got = parsed.get(dim, []) if isinstance(parsed, dict) else []
         if isinstance(got, str):
             got = [got]
         for t in got or []:
-            if t in valid and t not in chosen:
-                chosen.append(t)
+            canon = norm2canon.get(_norm_tag(t))
+            if canon and canon not in chosen:
+                chosen.append(canon)
+            elif canon is None and str(t).strip():
+                unmatched.append(str(t))
         by_dim[dim] = chosen
         flat.extend(chosen)
-    return {"by_dimension": by_dim, "labels": flat, "scores": {},
-            "_raw": raw if not flat else None}
+    out = {"by_dimension": by_dim, "labels": flat, "scores": {},
+           "_raw": raw if not flat else None}
+    if unmatched:
+        out["_unmatched"] = unmatched
+    return out
 
 
 # --------------------------------------------------------------------------- #
@@ -240,6 +292,48 @@ class InternVLNativeBackend:
         return _labels_from_json(raw, self._valid)
 
 
+class Phi4Backend:
+    """Backend for microsoft/Phi-4-multimodal-instruct. It ships a custom
+    Phi4MMConfig (remote code) and is NOT in the AutoModelForImageTextToText
+    registry, so it needs AutoModelForCausalLM + its own <|image_1|> prompt
+    format rather than the unified chat-template path."""
+
+    def __init__(self, model_id="microsoft/Phi-4-multimodal-instruct",
+                 device="cuda", attn="eager"):
+        from transformers import (AutoModelForCausalLM, AutoProcessor,
+                                  GenerationConfig)
+        self.device = device
+        self.model_id = model_id
+        self.processor = AutoProcessor.from_pretrained(
+            model_id, trust_remote_code=True)
+        # NOTE: no device_map / low_cpu_mem_usage -- Phi-4's custom audio encoder
+        # calls Tensor.item() during __init__, which breaks under meta-tensor
+        # init. Materialize normally on CPU, then move to the GPU.
+        self.model = AutoModelForCausalLM.from_pretrained(
+            model_id, torch_dtype=torch.bfloat16, trust_remote_code=True,
+            _attn_implementation=attn, low_cpu_mem_usage=False).eval().to(device)
+        try:
+            self.gen_cfg = GenerationConfig.from_pretrained(model_id)
+        except Exception:
+            self.gen_cfg = None
+        self.prompt = _build_vlm_prompt()
+        self._valid = {dim: set(tags) for dim, tags in TAXONOMY.items()}
+
+    @torch.no_grad()
+    def predict(self, image):
+        text = f"<|user|><|image_1|>{self.prompt}<|end|><|assistant|>"
+        inputs = self.processor(
+            text=text, images=image, return_tensors="pt").to(self.model.device)
+        gen = self.model.generate(
+            **inputs, max_new_tokens=512, do_sample=False,
+            generation_config=self.gen_cfg)
+        trimmed = gen[:, inputs["input_ids"].shape[1]:]
+        raw = self.processor.batch_decode(
+            trimmed, skip_special_tokens=True,
+            clean_up_tokenization_spaces=False)[0]
+        return _labels_from_json(raw, self._valid)
+
+
 def _extract_json(text):
     """Pull the first JSON object out of a model response."""
     text = text.strip()
@@ -268,4 +362,6 @@ def make_backend(name, model_id=None, device="cuda", load_4bit=False):
         return VlmBackend(model_id or VLM_DEFAULT, device, load_4bit=load_4bit)
     if name == "internvl":
         return InternVLNativeBackend(model_id or "OpenGVLab/InternVL3-8B", device)
+    if name == "phi4":
+        return Phi4Backend(model_id or "microsoft/Phi-4-multimodal-instruct", device)
     raise ValueError(f"unknown backend: {name}")
