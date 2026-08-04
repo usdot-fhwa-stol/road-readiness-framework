@@ -160,7 +160,13 @@ def main():
                 args.mask_thickness,
             )
 
-            writer.add(sample.image_id, sample.image_path, pred_mask)
+            writer.add(
+                sample.image_id,
+                sample.image_path,
+                pred_mask,
+                polylines=lanes_original,
+                prediction_meta={"coordinate_space": "original_image"},
+            )
 
             if idx in overlay_indices and overlay_dir is not None:
                 safe_id = str(sample.image_id).replace('/', '_').replace('\\\\', '_')

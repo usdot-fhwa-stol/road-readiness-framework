@@ -16,8 +16,33 @@ import cv2
 import numpy as np
 from scipy.stats import pearsonr, spearmanr
 
+from evaluation.lane_continuity import (
+    LaneContinuityConfig,
+    analyze_lane_pattern_continuity,
+    extract_guidance_lanes_from_mask,
+    lanes_from_lane_json,
+    prepare_guidance_lanes,
+)
+from evaluation.lane_width_stability import (
+    LaneWidthConfig,
+    analyze_lane_width_stability,
+)
+from evaluation.lane_geometry_complexity import (
+    GeometryComplexityConfig,
+    analyze_lane_geometry_complexity,
+)
+from evaluation.lane_wear import analyze_lane_wear
+from evaluation.lane_width_simple import analyze_lane_width_simple
 EPS = 1e-6
-METRIC_VERSION = "readiness_metrics_v2_pattern_aware"
+# v8 repoints canonical I1/I4 and all of D1-D7 at the single draft-Table-16/
+# Table-15-aligned engines (evaluation/lane_wear.py, evaluation/lane_width_simple.py,
+# evaluation/d_metrics.py) so there is exactly one place each metric is computed.
+# lane_continuity.py/lane_width_stability.py (the earlier "heavy" I1/I4 engines)
+# are kept only as internal geometry/context plumbing that I5 still depends on --
+# their own top-level scores are no longer reported as I1/I4. Operational
+# I1_pred/I4_pred (scored against predicted, not GT, geometry) have been dropped;
+# they were never part of the draft spec. I5/I5_pred are unaffected.
+METRIC_VERSION = "readiness_metrics_v8_draft_table16_consolidated"
 
 
 def safe_binary_mask(mask: Any) -> np.ndarray:
@@ -406,38 +431,97 @@ def _component_quality_scores(image_rgb: np.ndarray, gt_mask: np.ndarray, road_m
     return scores
 
 
+def _select_i1_guidance(
+    image_shape: tuple[int, int],
+    mask: Any,
+    *,
+    native_lanes: Optional[Iterable[Any]] = None,
+    lane_json: Optional[dict] = None,
+    config: Optional[LaneContinuityConfig] = None,
+    source_prefix: str,
+) -> tuple[list[Any], Optional[str]]:
+    """Select the highest-priority credible geometry representation."""
+
+    cfg = config or LaneContinuityConfig()
+    native_candidates = [] if native_lanes is None else list(native_lanes)
+    candidates = [
+        (native_candidates, f"native_{source_prefix}_polyline"),
+        (lanes_from_lane_json(lane_json), f"{source_prefix}_lane_json"),
+    ]
+    for candidate, source in candidates:
+        if candidate and prepare_guidance_lanes(candidate, image_shape, config=cfg):
+            return candidate, source
+    mask_lanes = extract_guidance_lanes_from_mask(mask, config=cfg)
+    if mask_lanes and prepare_guidance_lanes(mask_lanes, image_shape, config=cfg):
+        return mask_lanes, f"{source_prefix}_mask_grouped_centerline"
+    return [], None
+
+
+def compute_i1_pattern_continuity_details(
+    image_rgb: np.ndarray,
+    gt_mask: np.ndarray,
+    lanes: Optional[List[np.ndarray]] = None,
+    meta: Optional[dict] = None,
+    road_mask: Optional[np.ndarray] = None,
+    object_mask: Optional[np.ndarray] = None,
+    homography: Optional[np.ndarray] = None,
+    config: Optional[LaneContinuityConfig] = None,
+    debug: bool = False,
+) -> dict:
+    """Return detailed canonical I1 using GT only as spatial guidance."""
+
+    image_shape = tuple(np.asarray(image_rgb).shape[:2])
+    lane_json = (meta or {}).get("lane_json") if isinstance(meta, dict) else None
+    guidance, detail_source = _select_i1_guidance(
+        image_shape,
+        gt_mask,
+        native_lanes=lanes,
+        lane_json=lane_json,
+        config=config,
+        source_prefix="gt",
+    )
+    result = analyze_lane_pattern_continuity(
+        image_rgb,
+        guidance,
+        geometry_source="ground_truth",
+        road_mask=road_mask,
+        object_mask=object_mask,
+        trusted_pattern_hints=meta,
+        homography=homography,
+        config=config,
+        debug=debug,
+    )
+    result["geometry_detail_source"] = detail_source
+    result["pattern_type"] = result.get("intended_pattern", "unknown")
+    if detail_source is None:
+        result["unavailable_reason"] = "no_credible_ground_truth_guidance_geometry"
+    return _json_safe(result)
+
+
 def compute_i1_pattern_continuity(image_rgb: np.ndarray, gt_mask: np.ndarray, lanes: Optional[List[np.ndarray]] = None, meta: Optional[dict] = None, road_mask: Optional[np.ndarray] = None) -> Optional[float]:
-    mask = safe_binary_mask(gt_mask)
-    if mask.size == 0 or _mask_area(mask) == 0:
-        return None
-    info = infer_marking_pattern(mask, lanes=lanes, meta=meta)
-    quality = safe_mean(_component_quality_scores(image_rgb, mask, road_mask=road_mask))
-    quality = 0.0 if quality is None else quality
-    if info["pattern_type"] == "dashed":
-        regularity = _finite_or_none((info.get("dash_geometry") or {}).get("regularity_score"))
-        if regularity is None:
-            regularity = 0.55 if info["component_count"] >= 2 else 0.0
-        score = 0.58 * quality + 0.42 * regularity
-    elif info["pattern_type"] == "solid":
-        h, w = mask.shape
-        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (_odd(max(3, min(9, w // 160))), _odd(max(31, min(101, h // 8)), 31)))
-        closed = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
-        area_ratio = float(_mask_area(mask) / (_mask_area(closed) + EPS))
-        instance_count = max(int(info.get("instance_count_estimate") or 1), 1)
-        component_count = max(int(info.get("component_count") or 1), 1)
-        continuity = float(np.clip(0.70 * area_ratio + 0.30 * np.clip(instance_count / component_count, 0.0, 1.0), 0.0, 1.0))
-        score = 0.50 * quality + 0.50 * continuity
-    else:
-        regularity = _finite_or_none((info.get("dash_geometry") or {}).get("regularity_score"))
-        if regularity is None:
-            regularity = float(np.clip(info["instance_count_estimate"] / max(info["component_count"], 1), 0.0, 1.0))
-        score = 0.60 * quality + 0.40 * regularity
-    return float(np.clip(score, 0.0, 1.0))
+    """Backward-compatible scalar wrapper for canonical GT-guided I1."""
+
+    details = compute_i1_pattern_continuity_details(
+        image_rgb,
+        gt_mask,
+        lanes=lanes,
+        meta=meta,
+        road_mask=road_mask,
+    )
+    return _finite_or_none(details.get("continuity_score"))
+
+
+def compute_i4_legacy_thickness_stability(gt_mask: np.ndarray, lanes: Optional[List[np.ndarray]] = None, meta: Optional[dict] = None) -> Optional[float]:
+    """Legacy paint-stripe thickness consistency; this is not lane width."""
+
+    _ = lanes, meta
+    return _thickness_stats(gt_mask)["score"]
 
 
 def compute_i4_thickness_stability(gt_mask: np.ndarray, lanes: Optional[List[np.ndarray]] = None, meta: Optional[dict] = None) -> Optional[float]:
-    _ = lanes, meta
-    return _thickness_stats(gt_mask)["score"]
+    """Deprecated compatibility alias for the explicitly named legacy metric."""
+
+    return compute_i4_legacy_thickness_stability(gt_mask, lanes=lanes, meta=meta)
 
 
 def _polyline_curvature_complexity(lanes: List[np.ndarray], height: int, width: int) -> Optional[float]:
@@ -492,7 +576,17 @@ def _mask_curvature_complexity(mask: np.ndarray) -> Optional[float]:
     return None if len(centers) < 3 else float(np.clip(np.std(centers) / max(binary.shape[1], 1), 0.0, 1.0))
 
 
-def compute_i5_geometry_complexity(gt_mask: np.ndarray, lanes: Optional[List[np.ndarray]] = None) -> Optional[float]:
+def compute_i5_legacy_quadratic_proxy(gt_mask: np.ndarray, lanes: Optional[List[np.ndarray]] = None) -> Optional[float]:
+    """Legacy raw x(y) quadratic-fit curvature proxy; this is not physical curvature.
+
+    Preserved unchanged (not deprecated in behavior) so historical values under
+    ``I5_legacy_quadratic_proxy`` remain reproducible. It is a normalized
+    image-space heuristic, not a robust differential-geometry curvature
+    estimate, and it is superseded by
+    :func:`evaluation.lane_geometry_complexity.analyze_lane_geometry_complexity`
+    for the canonical/operational ``I5`` fields.
+    """
+
     mask = safe_binary_mask(gt_mask)
     if mask.size == 0:
         return None
@@ -503,6 +597,51 @@ def compute_i5_geometry_complexity(gt_mask: np.ndarray, lanes: Optional[List[np.
     return _mask_curvature_complexity(mask)
 
 
+def compute_i5_geometry_complexity(gt_mask: np.ndarray, lanes: Optional[List[np.ndarray]] = None) -> Optional[float]:
+    """Deprecated compatibility alias for the explicitly named legacy metric."""
+
+    return compute_i5_legacy_quadratic_proxy(gt_mask, lanes=lanes)
+
+
+def compute_i5_geometry_complexity_details(
+    gt_mask: np.ndarray,
+    lanes: Optional[List[np.ndarray]] = None,
+    meta: Optional[dict] = None,
+    image_shape: Optional[tuple[int, int]] = None,
+    road_mask: Optional[np.ndarray] = None,
+    object_mask: Optional[np.ndarray] = None,
+    homography: Optional[np.ndarray] = None,
+    camera_model: Optional[dict] = None,
+    calibration_meta: Optional[dict] = None,
+    config: Optional[GeometryComplexityConfig] = None,
+    debug: bool = False,
+) -> dict:
+    """Detailed canonical GT-guided I5, selecting geometry like I1/I4 do."""
+
+    mask = safe_binary_mask(gt_mask)
+    shape = tuple(image_shape) if image_shape is not None else mask.shape
+    lane_json = (meta or {}).get("lane_json") if isinstance(meta, dict) else None
+    guidance, detail_source = _select_i1_guidance(
+        shape, mask, native_lanes=lanes, lane_json=lane_json, source_prefix="gt"
+    )
+    result = analyze_lane_geometry_complexity(
+        guidance,
+        image_shape=shape,
+        geometry_source="ground_truth",
+        road_mask=road_mask,
+        object_mask=object_mask,
+        homography=homography,
+        camera_model=camera_model,
+        calibration_meta=calibration_meta,
+        config=config,
+        debug=debug,
+    )
+    result["geometry_detail_source"] = detail_source
+    if detail_source is None:
+        result["unavailable_reason"] = "no_credible_ground_truth_guidance_geometry"
+    return _json_safe(result)
+
+
 def compute_i6_marking_instances(gt_mask: np.ndarray, lanes: Optional[List[np.ndarray]] = None, meta: Optional[dict] = None) -> dict:
     _ = meta
     raw_count = _component_count(gt_mask)
@@ -511,177 +650,40 @@ def compute_i6_marking_instances(gt_mask: np.ndarray, lanes: Optional[List[np.nd
     return _json_safe({"I6_marking_instance_count": int(instance_count), "I6_raw_component_count": int(raw_count), "I6_topology_complexity": topology})
 
 
-def compute_tolerant_precision_recall_f1(pred_mask: np.ndarray, gt_mask: np.ndarray, tolerance_px: int = 5) -> dict:
-    pred = safe_binary_mask(pred_mask)
-    gt = _resize_mask_if_needed(gt_mask, pred.shape) if pred.size else safe_binary_mask(gt_mask)
-    if pred.size == 0 and gt.size != 0:
-        pred = np.zeros_like(gt)
-    if gt.size == 0 and pred.size != 0:
-        gt = np.zeros_like(pred)
-    pred_bool = pred > 0
-    gt_bool = gt > 0
-    pred_area = int(np.count_nonzero(pred_bool))
-    gt_area = int(np.count_nonzero(gt_bool))
-    if pred_area == 0 and gt_area == 0:
-        return {"precision": None, "recall": None, "f1": None, "pred_area": 0, "gt_area": 0, "reason": "no_predicted_or_gt_marking_pixels"}
-    if pred_area == 0:
-        return {"precision": None, "recall": 0.0 if gt_area > 0 else None, "f1": 0.0 if gt_area > 0 else None, "pred_area": pred_area, "gt_area": gt_area, "reason": "empty_prediction"}
-    if gt_area == 0:
-        return {"precision": 0.0, "recall": None, "f1": 0.0, "pred_area": pred_area, "gt_area": gt_area, "reason": "empty_ground_truth"}
-    dist_to_pred = cv2.distanceTransform((~pred_bool).astype(np.uint8), cv2.DIST_L2, 3)
-    dist_to_gt = cv2.distanceTransform((~gt_bool).astype(np.uint8), cv2.DIST_L2, 3)
-    recall = float(np.mean(dist_to_pred[gt_bool] <= tolerance_px))
-    precision = float(np.mean(dist_to_gt[pred_bool] <= tolerance_px))
-    f1 = float(2.0 * precision * recall / (precision + recall + EPS))
-    return {"precision": precision, "recall": recall, "f1": f1, "pred_area": pred_area, "gt_area": gt_area, "reason": None}
-
-
-def compute_d1_valid_detection_single(pred_mask: np.ndarray, gt_mask: np.ndarray, tolerance_px: int = 5, min_recall: float = 0.30, min_precision: float = 0.30, min_pred_area: int = 20) -> int:
-    t = compute_tolerant_precision_recall_f1(pred_mask, gt_mask, tolerance_px=tolerance_px)
-    precision = t.get("precision")
-    recall = t.get("recall")
-    pred_area = int(t.get("pred_area") or 0)
-    if precision is None or recall is None:
-        return 0
-    return int(pred_area >= min_pred_area and recall >= min_recall and precision >= min_precision)
-
-
-def compute_d2_instance_agreement_single(pred_mask: np.ndarray, gt_mask: np.ndarray, gt_lanes: Optional[List[np.ndarray]] = None, pred_lanes: Optional[List[np.ndarray]] = None) -> Optional[float]:
-    gt_count = len(_valid_lanes(gt_lanes)) if gt_lanes else _estimate_marking_instances(gt_mask)
-    pred_count = len(_valid_lanes(pred_lanes)) if pred_lanes else _estimate_marking_instances(pred_mask)
-    if gt_count == 0 and pred_count == 0:
-        return None
-    if gt_count == 0:
-        return 0.0
-    return float(1.0 - min(abs(pred_count - gt_count) / max(gt_count, 1), 1.0))
-
-
-def compute_d3_iou_single(pred_mask: np.ndarray, gt_mask: np.ndarray) -> Optional[float]:
-    pred = safe_binary_mask(pred_mask)
-    gt = _resize_mask_if_needed(gt_mask, pred.shape) if pred.size else safe_binary_mask(gt_mask)
-    if pred.size == 0 and gt.size != 0:
-        pred = np.zeros_like(gt)
-    if gt.size == 0 and pred.size != 0:
-        gt = np.zeros_like(pred)
-    if pred.size == 0 and gt.size == 0:
-        return None
-    union = int(np.count_nonzero((pred > 0) | (gt > 0)))
-    if union == 0:
-        return None
-    tp = int(np.count_nonzero((pred > 0) & (gt > 0)))
-    return float(tp / (union + EPS))
-
-
-def compute_d3_tolerant_f1_single(pred_mask: np.ndarray, gt_mask: np.ndarray, tolerance_px: int = 5) -> Optional[float]:
-    return _finite_or_none(compute_tolerant_precision_recall_f1(pred_mask, gt_mask, tolerance_px)["f1"])
-
-
-def _band_slice(height: int, band: str) -> slice:
-    if band == "far":
-        return slice(0, height // 3)
-    if band == "mid":
-        return slice(height // 3, 2 * height // 3)
-    if band == "near":
-        return slice(2 * height // 3, height)
-    raise ValueError(f"Unknown band: {band}")
-
-
-def compute_d4_band_metrics_single(pred_mask: np.ndarray, gt_mask: np.ndarray, band: str, tolerance_px: int = 5) -> dict:
-    pred = safe_binary_mask(pred_mask)
-    gt = _resize_mask_if_needed(gt_mask, pred.shape) if pred.size else safe_binary_mask(gt_mask)
-    if pred.size == 0 and gt.size != 0:
-        pred = np.zeros_like(gt)
-    if gt.size == 0 and pred.size != 0:
-        gt = np.zeros_like(pred)
-    if pred.size == 0:
-        return {"iou": None, "tolerant_f1": None, "reason": "empty_masks"}
-    ys = _band_slice(pred.shape[0], band)
-    pred_band = pred[ys, :]
-    gt_band = gt[ys, :]
-    if _mask_area(gt_band) == 0:
-        return {"iou": None, "tolerant_f1": None, "reason": "no_gt_markings_in_band"}
-    return {"iou": compute_d3_iou_single(pred_band, gt_band), "tolerant_f1": compute_d3_tolerant_f1_single(pred_band, gt_band, tolerance_px), "reason": None}
-
-
-def _region_iou(pred: np.ndarray, gt: np.ndarray, region: np.ndarray) -> Optional[float]:
-    if int(np.count_nonzero((gt > 0) & region)) == 0:
-        return None
-    union = int(np.count_nonzero(((pred > 0) | (gt > 0)) & region))
-    if union == 0:
-        return None
-    tp = int(np.count_nonzero((pred > 0) & (gt > 0) & region))
-    return float(tp / (union + EPS))
-
-
-def compute_d5_dark_region_iou_gap_single(pred_mask: np.ndarray, gt_mask: np.ndarray, image_rgb: np.ndarray, min_gt_pixels: int = 20) -> Optional[float]:
-    pred = safe_binary_mask(pred_mask)
-    gt = _resize_mask_if_needed(gt_mask, pred.shape) if pred.size else safe_binary_mask(gt_mask)
-    if pred.size == 0 and gt.size != 0:
-        pred = np.zeros_like(gt)
-    if gt.size == 0 or _mask_area(gt) == 0:
-        return None
-    gray = _to_gray_float(image_rgb)
-    if gray.shape != gt.shape:
-        gray = cv2.resize(gray, (gt.shape[1], gt.shape[0]), interpolation=cv2.INTER_LINEAR)
-    dark = gray < min(100.0, float(np.percentile(gray, 35)))
-    normal = ~dark
-    if np.count_nonzero((gt > 0) & dark) < min_gt_pixels or np.count_nonzero((gt > 0) & normal) < min_gt_pixels:
-        return None
-    iou_dark = _region_iou(pred, gt, dark)
-    iou_normal = _region_iou(pred, gt, normal)
-    if iou_dark is None or iou_normal is None:
-        return None
-    return float(iou_normal - iou_dark)
-
-
-def compute_d6_missed_marking_ratio_single(pred_mask: np.ndarray, gt_mask: np.ndarray) -> Optional[float]:
-    pred = safe_binary_mask(pred_mask)
-    gt = _resize_mask_if_needed(gt_mask, pred.shape) if pred.size else safe_binary_mask(gt_mask)
-    if pred.size == 0 and gt.size != 0:
-        pred = np.zeros_like(gt)
-    gt_area = int(np.count_nonzero(gt > 0))
-    if gt_area == 0:
-        return None
-    fn = int(np.count_nonzero((pred == 0) & (gt > 0)))
-    return float(fn / (gt_area + EPS))
-
-
-def compute_d8_confidence_mean_single(pred_mask: np.ndarray, lane_prob: Optional[np.ndarray]) -> Optional[float]:
-    if lane_prob is None:
-        return None
-    prob = np.asarray(lane_prob, dtype=np.float32)
-    if prob.size == 0:
-        return None
-    pred = _resize_mask_if_needed(pred_mask, prob.shape)
-    prob = np.clip(prob, 0.0, 1.0)
-    pred_pixels = pred > 0
-    if not np.any(pred_pixels):
-        return 0.0
-    return float(np.mean(prob[pred_pixels]))
+# D1-D7 (Detection Performance Indicators) are computed exclusively by
+# evaluation.d_metrics.build_d_record (draft Table-16-aligned); see its use in
+# build_metric_record above. The former per-image D1-D8 reimplementations here
+# have been removed in favor of that single engine.
 
 
 def compute_r1_marking_readability_score(metric_dict: dict) -> Optional[float]:
+    legacy_thickness = metric_dict.get(
+        "I4_legacy_thickness_stability",
+        metric_dict.get("I4_thickness_stability"),
+    )
+    if legacy_thickness is None and "I4_lane_width_stability" not in metric_dict:
+        # Historical v2/v3 records stored the thickness proxy only as I4.
+        legacy_thickness = metric_dict.get("I4")
     values = {
         "I1_pattern_continuity": metric_dict.get("I1_pattern_continuity", metric_dict.get("I1")),
         "I2_local_contrast": metric_dict.get("I2_local_contrast", metric_dict.get("I2")),
         "I3_boundary_sharpness": metric_dict.get("I3_boundary_sharpness", metric_dict.get("I3")),
-        "I4_thickness_stability": metric_dict.get("I4_thickness_stability", metric_dict.get("I4")),
+        "I4_legacy_thickness_stability": legacy_thickness,
     }
-    score = weighted_mean_ignore_none(values, {"I1_pattern_continuity": 0.35, "I2_local_contrast": 0.35, "I3_boundary_sharpness": 0.20, "I4_thickness_stability": 0.10})
+    score = weighted_mean_ignore_none(values, {"I1_pattern_continuity": 0.35, "I2_local_contrast": 0.35, "I3_boundary_sharpness": 0.20, "I4_legacy_thickness_stability": 0.10})
     return None if score is None else float(score * 100.0)
 
 
 def compute_r2_reference_detectability_score(metric_dict: dict) -> Optional[float]:
-    near_key = "D4_near_f1_r5" if metric_dict.get("D4_near_f1_r5") is not None else "D4_near_iou"
-    d6 = _finite_or_none(metric_dict.get("D6_missed_marking_ratio", metric_dict.get("D6")))
+    d6 = _finite_or_none(metric_dict.get("D6_image_missed_ratio", metric_dict.get("D6")))
     values = {
-        "D3_tolerant_f1_r5": metric_dict.get("D3_tolerant_f1_r5"),
+        "D3_f1": metric_dict.get("D3_f1"),
         "D3_iou": metric_dict.get("D3_iou", metric_dict.get("D3")),
-        near_key: metric_dict.get(near_key),
+        "D4_near_iou": metric_dict.get("D4_near_iou", metric_dict.get("D4")),
         "D6_detected_ratio": None if d6 is None else float(np.clip(1.0 - d6, 0.0, 1.0)),
-        "D8_confidence_mean": metric_dict.get("D8_confidence_mean", metric_dict.get("D8")),
+        "D7_confidence_mean": metric_dict.get("D7_confidence_mean", metric_dict.get("D7")),
     }
-    score = weighted_mean_ignore_none(values, {"D3_tolerant_f1_r5": 0.35, "D3_iou": 0.20, near_key: 0.20, "D6_detected_ratio": 0.20, "D8_confidence_mean": 0.05})
+    score = weighted_mean_ignore_none(values, {"D3_f1": 0.35, "D3_iou": 0.20, "D4_near_iou": 0.20, "D6_detected_ratio": 0.20, "D7_confidence_mean": 0.05})
     return None if score is None else float(score * 100.0)
 
 
@@ -701,6 +703,20 @@ def compute_r4_machine_readability_class(r1: Optional[float], r2: Optional[float
     return _json_safe({"status": status, "reason": reason, "R1": r1, "R2": r2, "bottleneck": r3, "warning": "Image-based proxy only; not a field-certified road-readiness standard."})
 
 
+def _lane_width_context_from_details(width_details: dict) -> Optional[dict]:
+    """Derive an I5 ``lane_width_context`` from the same source's own I4 result.
+
+    Only used for uncalibrated measurement spaces, and always built from the
+    matching geometry source (canonical I4 for canonical I5, prediction I4 for
+    I5_pred) so I5_pred never sees ground-truth lane width.
+    """
+
+    pairs = width_details.get("pair_diagnostics") or []
+    widths = [w for w in (_finite_or_none(pair.get("median_width")) for pair in pairs) if w is not None]
+    median = safe_mean(widths)
+    return None if median is None else {"median_width": median}
+
+
 def _merged_metadata(sample: Any) -> tuple[dict, dict, dict]:
     sample_meta = dict(getattr(sample, "meta", {}) or {})
     target = getattr(sample, "target", None)
@@ -708,8 +724,31 @@ def _merged_metadata(sample: Any) -> tuple[dict, dict, dict]:
     return sample_meta, target_meta, {**target_meta, **sample_meta}
 
 
-def build_metric_record(sample: Any, pred_mask: np.ndarray, image_rgb: np.ndarray, dataset: Optional[str] = None, split: Optional[str] = None, model_name: str = "yolopx", lane_prob: Optional[np.ndarray] = None, drivable_mask: Optional[np.ndarray] = None, object_mask: Optional[np.ndarray] = None) -> dict:
-    _ = object_mask
+def build_metric_record(
+    sample: Any,
+    pred_mask: np.ndarray,
+    image_rgb: np.ndarray,
+    dataset: Optional[str] = None,
+    split: Optional[str] = None,
+    model_name: str = "yolopx",
+    lane_prob: Optional[np.ndarray] = None,
+    drivable_mask: Optional[np.ndarray] = None,
+    object_mask: Optional[np.ndarray] = None,
+    pred_lanes: Optional[List[np.ndarray]] = None,
+    pred_lane_json: Optional[dict] = None,
+    pred_geometry_source: Optional[str] = None,
+    i1_config: Optional[LaneContinuityConfig] = None,
+    homography: Optional[np.ndarray] = None,
+    i1_debug: bool = False,
+    camera_model: Optional[dict] = None,
+    calibration_meta: Optional[dict] = None,
+    i4_config: Optional[LaneWidthConfig] = None,
+    i4_debug: bool = False,
+    i5_config: Optional[GeometryComplexityConfig] = None,
+    i5_debug: bool = False,
+) -> dict:
+    """Build one metric record with source-separated canonical/operational I1/I4/I5."""
+
     target = getattr(sample, "target", None)
     gt_mask = safe_binary_mask(getattr(target, "mask", None))
     image_h, image_w = image_rgb.shape[:2]
@@ -723,52 +762,258 @@ def build_metric_record(sample: Any, pred_mask: np.ndarray, image_rgb: np.ndarra
         prob = cv2.resize(prob, (gt_mask.shape[1], gt_mask.shape[0]), interpolation=cv2.INTER_LINEAR)
     lanes = getattr(target, "lanes", None)
     sample_meta, target_meta, metadata = _merged_metadata(sample)
-    pattern_info = infer_marking_pattern(gt_mask, lanes=lanes, meta=metadata)
+    shared_homography = homography if homography is not None else sample_meta.get(
+        "image_to_road_homography",
+        sample_meta.get("homography"),
+    )
+    shared_camera_model = camera_model if camera_model is not None else sample_meta.get("camera_model")
+    shared_calibration_meta = (
+        calibration_meta
+        if calibration_meta is not None
+        else sample_meta.get("calibration_meta", sample_meta.get("calibration"))
+    )
     thick = _thickness_stats(gt_mask)
     i6 = compute_i6_marking_instances(gt_mask, lanes=lanes, meta=metadata)
-    tolerant = compute_tolerant_precision_recall_f1(pred, gt_mask, tolerance_px=5)
-    d4 = {band: compute_d4_band_metrics_single(pred, gt_mask, band, tolerance_px=5) for band in ("near", "mid", "far")}
-    i1 = compute_i1_pattern_continuity(image_rgb, gt_mask, lanes=lanes, meta=metadata, road_mask=drivable_mask)
+    canonical_meta = dict(target_meta)
+
+    canonical_width_guidance, canonical_width_detail_source = _select_i1_guidance(
+        (image_h, image_w),
+        gt_mask,
+        native_lanes=lanes,
+        lane_json=canonical_meta.get("lane_json"),
+        config=i1_config,
+        source_prefix="gt",
+    )
+
+    canonical_wear_details = analyze_lane_wear(image_rgb, canonical_width_guidance)
+    i1 = _finite_or_none(canonical_wear_details.get("I1"))
+
+    canonical_width_simple_details = analyze_lane_width_simple(
+        canonical_width_guidance, image_shape=(image_h, image_w)
+    )
+    i4 = _finite_or_none(canonical_width_simple_details.get("I4"))
+
+    # analyze_lane_width_stability (the earlier "heavy" I4 engine) stays wired in
+    # here purely as context: I5 needs its perspective-normalized width profile to
+    # scale curvature, even though its own score is no longer reported as I4 --
+    # evaluation/lane_width_simple.py is the single reported I4 engine now.
+    canonical_width_details = analyze_lane_width_stability(
+        canonical_width_guidance,
+        image_shape=(image_h, image_w),
+        geometry_source="ground_truth",
+        image_rgb=image_rgb,
+        road_mask=None,
+        object_mask=None,
+        homography=shared_homography,
+        camera_model=shared_camera_model,
+        calibration_meta=shared_calibration_meta,
+        config=i4_config,
+        debug=i4_debug,
+    )
+    canonical_width_details["geometry_detail_source"] = canonical_width_detail_source
+
+    prediction_guidance, prediction_detail_source = _select_i1_guidance(
+        (image_h, image_w),
+        pred,
+        native_lanes=pred_lanes,
+        lane_json=pred_lane_json,
+        config=i1_config,
+        source_prefix="pred",
+    )
+    width_source_defaults = {
+        "native_pred_polyline": "native_polyline",
+        "pred_lane_json": "lane_json",
+        "pred_mask_grouped_centerline": "mask_derived",
+    }
+    prediction_width_source = pred_geometry_source or width_source_defaults.get(
+        prediction_detail_source,
+        prediction_detail_source or "unavailable",
+    )
+    # Same context-only use as canonical_width_details above, this time feeding
+    # I5_pred. Operational I1_pred/I4_pred (scored against predicted, not GT,
+    # geometry) are not part of the draft spec and are no longer computed.
+    prediction_width_details = analyze_lane_width_stability(
+        prediction_guidance,
+        image_shape=(image_h, image_w),
+        geometry_source=prediction_width_source,
+        image_rgb=image_rgb,
+        road_mask=drivable_mask,
+        object_mask=object_mask,
+        homography=shared_homography,
+        camera_model=shared_camera_model,
+        calibration_meta=shared_calibration_meta,
+        config=i4_config,
+        debug=i4_debug,
+    )
+    prediction_width_details["geometry_detail_source"] = prediction_detail_source
+    if prediction_detail_source is None:
+        prediction_width_details["unavailable_reason"] = "no_credible_prediction_boundary_geometry"
+
     i2 = compute_i2_local_contrast(image_rgb, gt_mask, road_mask=drivable_mask)
     i3 = compute_i3_boundary_sharpness(image_rgb, gt_mask, road_mask=drivable_mask)
-    i4 = thick["score"]
-    i5 = compute_i5_geometry_complexity(gt_mask, lanes=lanes)
-    d3 = compute_d3_iou_single(pred, gt_mask)
-    d5 = compute_d5_dark_region_iou_gap_single(pred, gt_mask, image_rgb)
-    d6 = compute_d6_missed_marking_ratio_single(pred, gt_mask)
-    d8 = compute_d8_confidence_mean_single(pred, prob)
+    legacy_i5 = compute_i5_legacy_quadratic_proxy(gt_mask, lanes=lanes)
+
+    canonical_geometry_details = analyze_lane_geometry_complexity(
+        canonical_width_guidance,
+        image_shape=(image_h, image_w),
+        geometry_source="ground_truth",
+        # Canonical I5 never consumes processor-derived road/object masks.
+        road_mask=None,
+        object_mask=None,
+        homography=shared_homography,
+        camera_model=shared_camera_model,
+        calibration_meta=shared_calibration_meta,
+        lane_width_context=_lane_width_context_from_details(canonical_width_details),
+        config=i5_config,
+        debug=i5_debug,
+    )
+    canonical_geometry_details["geometry_detail_source"] = canonical_width_detail_source
+    i5 = _finite_or_none(canonical_geometry_details.get("alignment_complexity"))
+
+    prediction_geometry_details = analyze_lane_geometry_complexity(
+        prediction_guidance,
+        image_shape=(image_h, image_w),
+        geometry_source=prediction_width_source,
+        road_mask=drivable_mask,
+        object_mask=object_mask,
+        homography=shared_homography,
+        camera_model=shared_camera_model,
+        calibration_meta=shared_calibration_meta,
+        # I5_pred must never see GT-derived lane width.
+        lane_width_context=_lane_width_context_from_details(prediction_width_details),
+        config=i5_config,
+        debug=i5_debug,
+    )
+    prediction_geometry_details["geometry_detail_source"] = prediction_detail_source
+    if prediction_detail_source is None:
+        prediction_geometry_details["unavailable_reason"] = "no_credible_prediction_boundary_geometry"
+    i5_pred = _finite_or_none(prediction_geometry_details.get("alignment_complexity"))
+
+    from evaluation.d_metrics import build_d_record  # local import: d_metrics imports mask utils back from here
+
+    visibility_tag = ((sample_meta.get("tags") or {}).get("summary") or {}).get("Observed Marking Visibility")
+    d_record = build_d_record(
+        sample_id=str(getattr(sample, "image_id", "")),
+        pred_mask=pred,
+        gt_mask=gt_mask,
+        gt_lane_json=canonical_meta.get("lane_json"),
+        pred_lanes=pred_lanes,
+        lane_prob=prob,
+        visibility_tag=visibility_tag,
+        image_path=str(getattr(sample, "image_path", "")),
+    )
     record = {
         "metric_version": METRIC_VERSION, "dataset": dataset, "split": split, "model_name": model_name,
         "image_id": getattr(sample, "image_id", None), "image_path": str(getattr(sample, "image_path", "")),
         "width": int(getattr(sample, "width", image_w) or image_w), "height": int(getattr(sample, "height", image_h) or image_h),
         "sample_meta": sample_meta, "target_meta": target_meta, "metadata": metadata,
         "gt_nonzero": int(np.count_nonzero(gt_mask > 0)), "pred_nonzero": int(np.count_nonzero(pred > 0)),
-        "I1": i1, "I1_pattern_continuity": i1, "I1_percent": None if i1 is None else float(i1 * 100.0), "I1_pattern_type": pattern_info.get("pattern_type"), "I1_pattern_info": pattern_info,
+        "I1": i1,
+        "I1_pattern_continuity": i1,
+        "I1_percent": None if i1 is None else float(i1 * 100.0),
+        "I1_condition": canonical_wear_details.get("condition"),
+        "I1_worn_fraction": canonical_wear_details.get("worn_fraction"),
+        "I1_faded_fraction": canonical_wear_details.get("faded_fraction"),
+        "I1_geometry_source": "ground_truth",
+        "I1_geometry_detail_source": canonical_width_detail_source,
+        "I1_valid_lane_count": canonical_wear_details.get("valid_lane_count"),
+        "I1_lane_count": canonical_wear_details.get("lane_count"),
+        "I1_lane_diagnostics": canonical_wear_details.get("lanes", []),
+        "I1_unavailable_reason": canonical_wear_details.get("unavailable_reason"),
         "I2": i2, "I2_local_contrast": i2,
         "I3": i3, "I3_boundary_sharpness": i3,
-        "I4": i4, "I4_thickness_stability": i4, "I4_mean_thickness_px": thick["mean_thickness_px"], "I4_thickness_cv": thick["thickness_cv"],
-        "I5": i5, "I5_geometry_complexity": i5,
+        "I4": i4,
+        "I4_lane_width_stability": i4,
+        "I4_geometry_source": "ground_truth",
+        "I4_geometry_detail_source": canonical_width_detail_source,
+        "I4_pair_count": len(canonical_width_simple_details.get("pairs") or []),
+        "I4_pair_diagnostics": canonical_width_simple_details.get("pairs", []),
+        "I4_unavailable_reason": canonical_width_simple_details.get("unavailable_reason"),
+        "I4_legacy_thickness_stability": thick["score"],
+        "I4_legacy_mean_thickness_px": thick["mean_thickness_px"],
+        "I4_legacy_thickness_cv": thick["thickness_cv"],
+        "I4_legacy_num_segments": thick["num_segments"],
+        "I5": i5,
+        "I5_geometry_complexity": i5,
+        "I5_alignment_complexity": canonical_geometry_details.get("alignment_complexity"),
+        "I5_topology_complexity": canonical_geometry_details.get("topology_complexity"),
+        "I5_profile_class": canonical_geometry_details.get("profile_class"),
+        "I5_complexity_confidence": canonical_geometry_details.get("complexity_confidence"),
+        "I5_geometry_source": "ground_truth",
+        "I5_geometry_detail_source": canonical_width_detail_source,
+        "I5_measurement_space": canonical_geometry_details.get("measurement_space"),
+        "I5_metric_scale_available": canonical_geometry_details.get("metric_scale_available"),
+        "I5_bendiness": canonical_geometry_details.get("bendiness"),
+        "I5_mean_abs_curvature": canonical_geometry_details.get("mean_abs_curvature"),
+        "I5_p95_abs_curvature": canonical_geometry_details.get("p95_abs_curvature"),
+        "I5_curvature_variation": canonical_geometry_details.get("curvature_variation"),
+        "I5_p95_curvature_gradient": canonical_geometry_details.get("p95_curvature_gradient"),
+        "I5_reversal_count": canonical_geometry_details.get("reversal_count"),
+        "I5_reversal_density": canonical_geometry_details.get("reversal_density"),
+        "I5_total_abs_heading_change": canonical_geometry_details.get("total_abs_heading_change"),
+        "I5_tortuosity": canonical_geometry_details.get("tortuosity"),
+        "I5_primitive_count": canonical_geometry_details.get("primitive_count"),
+        "I5_valid_lane_count": canonical_geometry_details.get("valid_lane_count"),
+        "I5_unknown_lane_count": canonical_geometry_details.get("unknown_lane_count"),
+        "I5_lane_diagnostics": canonical_geometry_details.get("lane_diagnostics", []),
+        "I5_transform_diagnostics": canonical_geometry_details.get("transform_diagnostics"),
+        "I5_aggregation_method": canonical_geometry_details.get("aggregation_method"),
+        "I5_unavailable_reason": canonical_geometry_details.get("unavailable_reason"),
+        "I5_pred": i5_pred,
+        "I5_pred_geometry_complexity": i5_pred,
+        "I5_pred_alignment_complexity": prediction_geometry_details.get("alignment_complexity"),
+        "I5_pred_topology_complexity": prediction_geometry_details.get("topology_complexity"),
+        "I5_pred_profile_class": prediction_geometry_details.get("profile_class"),
+        "I5_pred_complexity_confidence": prediction_geometry_details.get("complexity_confidence"),
+        "I5_pred_geometry_source": prediction_geometry_details.get("geometry_source"),
+        "I5_pred_geometry_detail_source": prediction_detail_source,
+        "I5_pred_measurement_space": prediction_geometry_details.get("measurement_space"),
+        "I5_pred_metric_scale_available": prediction_geometry_details.get("metric_scale_available"),
+        "I5_pred_lane_diagnostics": prediction_geometry_details.get("lane_diagnostics", []),
+        "I5_pred_unavailable_reason": prediction_geometry_details.get("unavailable_reason"),
+        "I5_legacy_quadratic_proxy": legacy_i5,
         "I6": i6["I6_marking_instance_count"], **i6,
-        "D1": compute_d1_valid_detection_single(pred, gt_mask, tolerance_px=5), "D1_valid_detection": compute_d1_valid_detection_single(pred, gt_mask, tolerance_px=5),
-        "D2": compute_d2_instance_agreement_single(pred, gt_mask, gt_lanes=lanes), "D2_instance_agreement": compute_d2_instance_agreement_single(pred, gt_mask, gt_lanes=lanes),
-        "D3": d3, "D3_iou": d3, "D3_tolerant_precision_r5": tolerant.get("precision"), "D3_tolerant_recall_r5": tolerant.get("recall"), "D3_tolerant_f1_r5": _finite_or_none(tolerant.get("f1")),
-        "D4_near_iou": d4["near"]["iou"], "D4_mid_iou": d4["mid"]["iou"], "D4_far_iou": d4["far"]["iou"],
-        "D4_near_f1_r5": d4["near"]["tolerant_f1"], "D4_mid_f1_r5": d4["mid"]["tolerant_f1"], "D4_far_f1_r5": d4["far"]["tolerant_f1"],
-        "D4_band_reasons": {band: d4[band]["reason"] for band in d4 if d4[band]["reason"]},
-        "D5": d5, "D5_dark_region_iou_gap": d5, "D5_metric_type": "dark_region_sensitivity",
-        "D6": d6, "D6_missed_marking_ratio": d6,
-        "D7": None, "D7_temporal_jitter": None, "D7_reason": "unavailable_single_frame_evaluation",
-        "D8": d8, "D8_confidence_mean": d8, "D8_available": d8 is not None,
+        "D1": d_record["D1_detection"], "D1_detection": d_record["D1_detection"],
+        "D2": d_record["D2_count_match"], "D2_count_match": d_record["D2_count_match"],
+        "D2_gt_lane_count": d_record["D2_gt_lane_count"], "D2_pred_lane_count": d_record["D2_pred_lane_count"],
+        "D2_pred_count_source": d_record["D2_pred_count_source"],
+        "D3": d_record["D3_iou"], "D3_iou": d_record["D3_iou"], "D3_f1": d_record["D3_f1"],
+        "D3_precision": d_record["D3_precision"], "D3_recall": d_record["D3_recall"],
+        "D3_tp": d_record["D3_tp"], "D3_fp": d_record["D3_fp"], "D3_fn": d_record["D3_fn"],
+        "D4": d_record["D4_near_iou"], "D4_near_iou": d_record["D4_near_iou"],
+        "D5_visibility_tag": d_record["visibility_tag"], "D5_visibility_group": d_record["D5_visibility_group"],
+        "D6": d_record["D6_image_missed_ratio"], "D6_image_missed_ratio": d_record["D6_image_missed_ratio"],
+        "D6_gt_pixels": d_record["D6_gt_pixels"], "D6_fn_pixels": d_record["D6_fn_pixels"],
+        "D7": d_record["D7_confidence_mean"], "D7_confidence_mean": d_record["D7_confidence_mean"],
+        "D_stroke_standardized": d_record.get("stroke_standardized"),
+        "D_pred_stroke_px": d_record.get("pred_stroke_px"), "D_gt_stroke_px": d_record.get("gt_stroke_px"),
+        "D_gt_eligible": d_record.get("gt_eligible"),
     }
     record["R1"] = compute_r1_marking_readability_score(record)
     record["R1_marking_readability_score"] = record["R1"]
     record["R2"] = compute_r2_reference_detectability_score(record)
     record["R2_reference_detectability_score"] = record["R2"]
-    record["unavailable_reasons"] = {"D7_temporal_jitter": "unavailable_single_frame_evaluation"}
-    if d8 is None:
-        record["unavailable_reasons"]["D8_confidence_mean"] = "lane_probability_unavailable"
+    record["unavailable_reasons"] = {}
+    if d_record["D7_confidence_mean"] is None:
+        record["unavailable_reasons"]["D7_confidence_mean"] = "lane_probability_unavailable"
     if record["gt_nonzero"] == 0:
         record["unavailable_reasons"]["gt_metrics"] = "empty_ground_truth_mask"
+    if i1 is None:
+        record["unavailable_reasons"]["I1_pattern_continuity"] = canonical_wear_details.get(
+            "unavailable_reason"
+        ) or "insufficient_canonical_i1_evidence"
+    if i4 is None:
+        record["unavailable_reasons"]["I4_lane_width_stability"] = canonical_width_simple_details.get(
+            "unavailable_reason"
+        ) or "insufficient_canonical_lane_width_evidence"
+    if i5 is None:
+        record["unavailable_reasons"]["I5_alignment_complexity"] = canonical_geometry_details.get(
+            "unavailable_reason"
+        ) or "insufficient_canonical_geometry_evidence"
+    if i5_pred is None:
+        record["unavailable_reasons"]["I5_pred_alignment_complexity"] = prediction_geometry_details.get(
+            "unavailable_reason"
+        ) or "insufficient_prediction_geometry_evidence"
     return _json_safe(record)
 
 
@@ -805,6 +1050,222 @@ def _association_detail(records: list[dict], x_key: str, y_key: str, min_samples
         return detail
     detail.update({"pearson": _finite_or_none(pearson), "pearson_p": _finite_or_none(pearson_p), "spearman": _finite_or_none(spearman), "spearman_p": _finite_or_none(spearman_p)})
     return detail
+
+
+def _bootstrap_mean_difference_ci(
+    low_values: np.ndarray, high_values: np.ndarray, n_boot: int = 1000, seed: int = 13
+) -> tuple[float, float]:
+    """Percentile bootstrap CI for a difference of independent group means."""
+
+    rng = np.random.default_rng(seed)
+    diffs = np.empty(n_boot, dtype=np.float64)
+    for i in range(n_boot):
+        low_sample = rng.choice(low_values, size=low_values.size, replace=True)
+        high_sample = rng.choice(high_values, size=high_values.size, replace=True)
+        diffs[i] = float(np.mean(low_sample) - np.mean(high_sample))
+    return float(np.percentile(diffs, 2.5)), float(np.percentile(diffs, 97.5))
+
+
+def _tertile_effect_detail(records: list[dict], x_key: str, y_key: str, min_samples: int) -> dict:
+    """Bottom-vs-top tertile performance difference with a bootstrap CI."""
+
+    x, y = _paired_values(records, x_key, y_key)
+    detail = {"x": x_key, "y": y_key, "n": int(len(x)), "effect": None, "reason": None}
+    if len(x) < min_samples:
+        detail["reason"] = f"insufficient_samples_n_lt_{min_samples}"
+        return detail
+    if float(np.std(x)) <= EPS:
+        detail["reason"] = "zero_variance"
+        return detail
+    order = np.argsort(x)
+    y_sorted = y[order]
+    third = max(1, len(x) // 3)
+    bottom, top = y_sorted[:third], y_sorted[-third:]
+    if bottom.size == 0 or top.size == 0:
+        detail["reason"] = "empty_tertile_group"
+        return detail
+    ci_low, ci_high = _bootstrap_mean_difference_ci(bottom, top)
+    detail.update(
+        {
+            "n_bottom": int(bottom.size),
+            "n_top": int(top.size),
+            "bottom_tertile_mean": float(np.mean(bottom)),
+            "top_tertile_mean": float(np.mean(top)),
+            "effect": float(np.mean(bottom) - np.mean(top)),
+            "bootstrap_ci_95": [ci_low, ci_high],
+        }
+    )
+    return detail
+
+
+def _stratified_associations(records: list[dict], group_key: str, x_key: str, y_key: str, min_samples: int) -> dict:
+    """Per-stratum Spearman association, grouping by a record-level field."""
+
+    groups: dict[str, list[dict]] = defaultdict(list)
+    for record in records:
+        value = record.get(group_key)
+        if value is not None:
+            groups[str(value)].append(record)
+    return {value: _association_detail(items, x_key, y_key, min_samples) for value, items in groups.items()}
+
+
+def _c4_adjusted_regression(records: list[dict], min_samples: int) -> dict:
+    """Optional OLS with dataset/model fixed effects; association only, never causal.
+
+    Restricted to the single measurement space with the most samples so
+    calibrated-metric and image-proxy I5 values are never combined in one
+    regression without explicit stratification.
+    """
+
+    min_n = max(min_samples * 3, 30)
+    rows = []
+    for record in records:
+        y = _finite_or_none(record.get("D3_f1"))
+        x5 = _finite_or_none(record.get("I5_alignment_complexity"))
+        if y is None or x5 is None:
+            continue
+        rows.append(
+            {
+                "y": y,
+                "I5_alignment_complexity": x5,
+                "I1_pattern_continuity": _finite_or_none(record.get("I1_pattern_continuity")) or 0.0,
+                "I2_local_contrast": _finite_or_none(record.get("I2_local_contrast")) or 0.0,
+                "I3_boundary_sharpness": _finite_or_none(record.get("I3_boundary_sharpness")) or 0.0,
+                "dataset": str(record.get("dataset")),
+                "model_name": str(record.get("model_name")),
+                "measurement_space": str(record.get("I5_measurement_space")),
+            }
+        )
+    if len(rows) < min_n:
+        return {"available": False, "n": len(rows), "reason": f"insufficient_samples_n_lt_{min_n}"}
+    spaces = [row["measurement_space"] for row in rows]
+    majority_space = max(set(spaces), key=spaces.count)
+    filtered = [row for row in rows if row["measurement_space"] == majority_space]
+    excluded = len(rows) - len(filtered)
+    if len(filtered) < min_n:
+        return {
+            "available": False,
+            "n": len(filtered),
+            "reason": "insufficient_same_measurement_space_samples",
+            "measurement_space": majority_space,
+            "excluded_other_measurement_space": excluded,
+        }
+    datasets = sorted({row["dataset"] for row in filtered})
+    models = sorted({row["model_name"] for row in filtered})
+    names = ["intercept", "I5_alignment_complexity", "I1_pattern_continuity", "I2_local_contrast", "I3_boundary_sharpness"]
+    columns = [
+        np.ones(len(filtered)),
+        np.asarray([row["I5_alignment_complexity"] for row in filtered]),
+        np.asarray([row["I1_pattern_continuity"] for row in filtered]),
+        np.asarray([row["I2_local_contrast"] for row in filtered]),
+        np.asarray([row["I3_boundary_sharpness"] for row in filtered]),
+    ]
+    for dataset_name in datasets[1:]:
+        columns.append(np.asarray([1.0 if row["dataset"] == dataset_name else 0.0 for row in filtered]))
+        names.append(f"dataset__{dataset_name}")
+    for model_value in models[1:]:
+        columns.append(np.asarray([1.0 if row["model_name"] == model_value else 0.0 for row in filtered]))
+        names.append(f"model__{model_value}")
+    design = np.column_stack(columns)
+    if design.shape[0] <= design.shape[1]:
+        return {"available": False, "n": len(filtered), "reason": "insufficient_degrees_of_freedom_for_fixed_effects"}
+    y = np.asarray([row["y"] for row in filtered], dtype=np.float64)
+    coefficients = np.linalg.lstsq(design, y, rcond=None)[0]
+    fitted = design @ coefficients
+    ss_res = float(np.sum((y - fitted) ** 2))
+    ss_tot = float(np.sum((y - np.mean(y)) ** 2))
+    r_squared = None if ss_tot <= EPS else float(1.0 - ss_res / ss_tot)
+    return _json_safe(
+        {
+            "available": True,
+            "n": len(filtered),
+            "measurement_space": majority_space,
+            "excluded_other_measurement_space": excluded,
+            "predictors": names,
+            "coefficients": {name: float(value) for name, value in zip(names, coefficients)},
+            "r_squared": r_squared,
+            "note": "Association only, adjusted for dataset/model fixed effects and I1-I3; not a causal effect estimate.",
+        }
+    )
+
+
+def compute_c4_geometry_sensitivity_detail(records: list[dict], min_samples: int = 10) -> dict:
+    """Canonical-I5-only geometry-sensitivity analysis for C4.
+
+    Uses ``I5_alignment_complexity``/``I5_geometry_complexity`` (ground-truth
+    geometry) exclusively; ``I5_pred`` never enters C4, so a model's own
+    prediction geometry is never used as the predictor of that same model's
+    detection metrics.
+    """
+
+    x_key = "I5_alignment_complexity"
+    primary = _association_detail(records, x_key, "D3_f1", min_samples)
+    iou = _association_detail(records, x_key, "D3_iou", min_samples)
+    detected_ratio = _association_detail(
+        records, x_key, "D6_image_missed_ratio", min_samples, transform_y=lambda v: 1.0 - v
+    )
+    tertile = _tertile_effect_detail(records, x_key, "D3_f1", min_samples)
+
+    x_legacy, y_legacy = _paired_values(records, "I5_geometry_complexity", "D3_f1")
+    legacy_median_split = {"n": int(len(x_legacy)), "detection_metric": "D3_f1", "effect": None, "reason": None}
+    if len(x_legacy) < min_samples:
+        legacy_median_split["reason"] = f"insufficient_samples_n_lt_{min_samples}"
+    elif float(np.std(x_legacy)) <= EPS:
+        legacy_median_split["reason"] = "zero_variance"
+    else:
+        med = float(np.median(x_legacy))
+        low = y_legacy[x_legacy <= med]
+        high = y_legacy[x_legacy > med]
+        if len(low) and len(high):
+            legacy_median_split.update(
+                {
+                    "n_low": int(len(low)),
+                    "n_high": int(len(high)),
+                    "low_complexity_mean": float(np.mean(low)),
+                    "high_complexity_mean": float(np.mean(high)),
+                    "effect": float(np.mean(low) - np.mean(high)),
+                }
+            )
+        else:
+            legacy_median_split["reason"] = "empty_low_or_high_complexity_group"
+
+    per_component = {
+        "bendiness": _association_detail(records, "I5_bendiness", "D3_f1", min_samples),
+        "p95_curvature": _association_detail(records, "I5_p95_abs_curvature", "D3_f1", min_samples),
+        "curvature_variation": _association_detail(records, "I5_curvature_variation", "D3_f1", min_samples),
+        "reversal_density": _association_detail(records, "I5_reversal_density", "D3_f1", min_samples),
+        "topology_complexity": _association_detail(records, "I5_topology_complexity", "D3_f1", min_samples),
+    }
+    strata = {
+        "by_model": _stratified_associations(records, "model_name", x_key, "D3_f1", min_samples),
+        "by_dataset": _stratified_associations(records, "dataset", x_key, "D3_f1", min_samples),
+        "by_measurement_space": _stratified_associations(
+            records, "I5_measurement_space", x_key, "D3_f1", min_samples
+        ),
+    }
+    total = len(records)
+    with_geometry = int(sum(1 for r in records if _finite_or_none(r.get(x_key)) is not None))
+    return _json_safe(
+        {
+            "n_total_records": total,
+            "n_with_canonical_geometry": with_geometry,
+            "primary": primary,
+            "iou": iou,
+            "detected_ratio": detected_ratio,
+            "tertile_effect": tertile,
+            "legacy_median_split": legacy_median_split,
+            "per_component": per_component,
+            "strata": strata,
+            "adjusted_regression": _c4_adjusted_regression(records, min_samples),
+            "effect": legacy_median_split.get("effect"),
+            "reason": legacy_median_split.get("reason"),
+            "caveat": (
+                "Associations only; do not interpret as a causal effect of geometry "
+                "complexity on detector performance. Uncalibrated (image-proxy) I5 "
+                "values are only comparable within a homogeneous dataset/camera group."
+            ),
+        }
+    )
 
 
 def compute_condition_degradation(records: list[dict], condition_key: str, baseline_value: Optional[str] = None, min_samples: int = 10) -> list[dict]:
@@ -844,32 +1305,19 @@ def _choose_condition_key(records: list[dict]) -> Optional[str]:
 
 
 def compute_correlations_from_records(records: list[dict], min_samples: int = 10) -> dict:
-    c1 = _association_detail(records, "I1_pattern_continuity", "D3_tolerant_f1_r5", min_samples)
-    c1_miss = _association_detail(records, "I1_pattern_continuity", "D6_missed_marking_ratio", min_samples, transform_y=lambda v: 1.0 - v)
+    c1 = _association_detail(records, "I1_pattern_continuity", "D3_f1", min_samples)
+    c1_miss = _association_detail(records, "I1_pattern_continuity", "D6_image_missed_ratio", min_samples, transform_y=lambda v: 1.0 - v)
     c2_iou = _association_detail(records, "I2_local_contrast", "D3_iou", min_samples)
-    c2_f1 = _association_detail(records, "I2_local_contrast", "D3_tolerant_f1_r5", min_samples)
-    c3_f1 = _association_detail(records, "I3_boundary_sharpness", "D3_tolerant_f1_r5", min_samples)
+    c2_f1 = _association_detail(records, "I2_local_contrast", "D3_f1", min_samples)
+    c3_f1 = _association_detail(records, "I3_boundary_sharpness", "D3_f1", min_samples)
     c3_iou = _association_detail(records, "I3_boundary_sharpness", "D3_iou", min_samples)
-    x, y = _paired_values(records, "I5_geometry_complexity", "D3_tolerant_f1_r5")
-    c4_detail = {"n": int(len(x)), "detection_metric": "D3_tolerant_f1_r5", "effect": None, "reason": None}
-    if len(x) < min_samples:
-        c4_detail["reason"] = f"insufficient_samples_n_lt_{min_samples}"
-    elif float(np.std(x)) <= EPS:
-        c4_detail["reason"] = "zero_variance"
-    else:
-        med = float(np.median(x))
-        low = y[x <= med]
-        high = y[x > med]
-        if len(low) and len(high):
-            c4_detail.update({"n_low": int(len(low)), "n_high": int(len(high)), "low_complexity_mean": float(np.mean(low)), "high_complexity_mean": float(np.mean(high)), "effect": float(np.mean(low) - np.mean(high))})
-        else:
-            c4_detail["reason"] = "empty_low_or_high_complexity_group"
+    c4_detail = compute_c4_geometry_sensitivity_detail(records, min_samples=min_samples)
     condition_key = _choose_condition_key(records)
     c5 = compute_condition_degradation(records, condition_key, min_samples=min_samples) if condition_key else []
     return _json_safe({
         "C1": c1.get("spearman"), "C1_pattern_continuity_to_detectability": c1.get("spearman"), "C1_detail": {"primary": c1, "missed_marking_detected_ratio": c1_miss},
-        "C2": c2_iou.get("spearman"), "C2_contrast_to_iou": c2_iou.get("spearman"), "C2_detail": {"D3_iou": c2_iou, "D3_tolerant_f1_r5": c2_f1},
-        "C3": c3_f1.get("spearman"), "C3_sharpness_to_detectability": c3_f1.get("spearman"), "C3_detail": {"D3_tolerant_f1_r5": c3_f1, "D3_iou": c3_iou},
+        "C2": c2_iou.get("spearman"), "C2_contrast_to_iou": c2_iou.get("spearman"), "C2_detail": {"D3_iou": c2_iou, "D3_f1": c2_f1},
+        "C3": c3_f1.get("spearman"), "C3_sharpness_to_detectability": c3_f1.get("spearman"), "C3_detail": {"D3_f1": c3_f1, "D3_iou": c3_iou},
         "C4": c4_detail.get("effect"), "C4_geometry_sensitivity": c4_detail.get("effect"), "C4_detail": c4_detail,
         "C5": c5, "C5_condition_degradation_ranking": c5, "C5_detail": {"condition_key": condition_key, "ranking": c5, "reason": None if c5 else "insufficient_condition_metadata_or_samples"},
     })
@@ -894,8 +1342,8 @@ def compute_r3_bottleneck(summary_or_correlations: dict) -> dict:
     add("low pattern continuity", 1.0 - (layer1.get("I1_pattern_continuity") or layer1.get("I1") or 1.0), "descriptive worst-score fallback")
     add("low local contrast", 1.0 - (layer1.get("I2_local_contrast") or layer1.get("I2") or 1.0), "descriptive worst-score fallback")
     add("low boundary sharpness", 1.0 - (layer1.get("I3_boundary_sharpness") or layer1.get("I3") or 1.0), "descriptive worst-score fallback")
-    add("high missed marking ratio", layer2.get("D6_missed_marking_ratio") or layer2.get("D6"), "descriptive worst-score fallback")
-    add("dark-region degradation", layer2.get("D5_dark_region_iou_gap") or layer2.get("D5"), "descriptive worst-score fallback")
+    add("high missed marking ratio", layer2.get("D6_image_missed_ratio") or layer2.get("D6"), "descriptive worst-score fallback")
+    add("occlusion/visibility robustness gap", layer2.get("D5_visibility_degraded_gap"), "descriptive worst-score fallback")
     if not candidates:
         return {"name": "unavailable", "strength": None, "evidence": "no computable correlation or descriptive metric", "reason": "insufficient_samples_or_metric_variance"}
     candidates.sort(key=lambda item: item["strength"], reverse=True)
@@ -908,40 +1356,71 @@ def compute_r3_bottleneck(summary_or_correlations: dict) -> dict:
 def summarize_records(records: list[dict], min_corr_samples: int = 10) -> dict:
     records = [_json_safe(r) for r in records]
     scalar_keys = [
-        "I1", "I1_pattern_continuity", "I2", "I2_local_contrast", "I3", "I3_boundary_sharpness", "I4", "I4_thickness_stability", "I4_mean_thickness_px", "I4_thickness_cv", "I5", "I5_geometry_complexity", "I6", "I6_marking_instance_count", "I6_raw_component_count", "I6_topology_complexity",
-        "D1", "D1_valid_detection", "D2", "D2_instance_agreement", "D3", "D3_iou", "D3_tolerant_precision_r5", "D3_tolerant_recall_r5", "D3_tolerant_f1_r5", "D4_near_iou", "D4_mid_iou", "D4_far_iou", "D4_near_f1_r5", "D4_mid_f1_r5", "D4_far_f1_r5", "D5", "D5_dark_region_iou_gap", "D6", "D6_missed_marking_ratio", "D8", "D8_confidence_mean", "R1", "R1_marking_readability_score", "R2", "R2_reference_detectability_score",
+        "I1", "I1_pattern_continuity", "I1_worn_fraction", "I1_faded_fraction",
+        "I2", "I2_local_contrast", "I3", "I3_boundary_sharpness",
+        "I4", "I4_lane_width_stability", "I4_pair_count",
+        "I4_legacy_thickness_stability", "I4_legacy_mean_thickness_px", "I4_legacy_thickness_cv", "I4_legacy_num_segments",
+        "I5", "I5_geometry_complexity", "I5_alignment_complexity", "I5_topology_complexity",
+        "I5_complexity_confidence", "I5_bendiness", "I5_mean_abs_curvature", "I5_p95_abs_curvature",
+        "I5_curvature_variation", "I5_p95_curvature_gradient", "I5_reversal_count", "I5_reversal_density",
+        "I5_total_abs_heading_change", "I5_tortuosity", "I5_primitive_count",
+        "I5_valid_lane_count", "I5_unknown_lane_count", "I5_legacy_quadratic_proxy",
+        "I5_pred", "I5_pred_geometry_complexity", "I5_pred_alignment_complexity", "I5_pred_topology_complexity",
+        "I5_pred_complexity_confidence",
+        "I6", "I6_marking_instance_count", "I6_raw_component_count", "I6_topology_complexity",
+        "D1", "D1_detection", "D2", "D2_count_match", "D3", "D3_iou", "D3_f1", "D3_precision", "D3_recall",
+        "D4", "D4_near_iou", "D6", "D6_image_missed_ratio", "D7", "D7_confidence_mean",
+        "R1", "R1_marking_readability_score", "R2", "R2_reference_detectability_score",
     ]
     means = {key: safe_mean(r.get(key) for r in records) for key in scalar_keys}
+
+    # D6 (Detection Gap Ratio) must be pixel-weighted across the group -- sum(FN)
+    # / sum(GT) -- not a mean of per-image ratios, per draft Table 16.
+    eligible = [r for r in records if r.get("D_gt_eligible")]
+    gt_px = sum(r.get("D6_gt_pixels") or 0 for r in eligible)
+    fn_px = sum(r.get("D6_fn_pixels") or 0 for r in eligible)
+    d6_weighted = float(fn_px / gt_px) if gt_px else None
+    means["D6"] = d6_weighted
+    means["D6_image_missed_ratio"] = d6_weighted
+
+    # D5 (Occlusion/Visibility Robustness Gap) is inherently a group-level
+    # comparison (clear vs. occluded/degraded visibility groups), reusing
+    # evaluation.d_metrics's own grouping logic on these same per-image records.
+    from evaluation.d_metrics import _gap as _d5_group_gap
+
+    d5_occlusion_gap = _d5_group_gap(eligible, "clear", {"occluded"})
+    d5_visibility_degraded_gap = _d5_group_gap(eligible, "clear", {"occluded", "degraded"})
+
     layer1_keys = [k for k in scalar_keys if k.startswith("I")]
     layer2_keys = [k for k in scalar_keys if k.startswith("D")]
     layer1 = {key: means.get(key) for key in layer1_keys}
     layer2 = {key: means.get(key) for key in layer2_keys}
-    layer2.update({"D7": None, "D7_temporal_jitter": None, "D7_reason": "unavailable_single_frame_evaluation"})
+    layer2.update({
+        "D5_occlusion_robustness_gap": d5_occlusion_gap,
+        "D5_visibility_degraded_gap": d5_visibility_degraded_gap,
+    })
     r1 = compute_r1_marking_readability_score(layer1)
     r2 = compute_r2_reference_detectability_score(layer2)
     layer3 = compute_correlations_from_records(records, min_samples=min_corr_samples)
     r3 = compute_r3_bottleneck({"layer1_avg": layer1, "layer2": layer2, "layer3": layer3})
     r4 = compute_r4_machine_readability_class(r1, r2, r3)
+    confidence_available = bool(any(r.get("D7_confidence_mean") is not None for r in records))
     return _json_safe({
         "metric_version": METRIC_VERSION, "num_records": len(records),
         "gt_nonzero_images": int(sum(1 for r in records if (r.get("gt_nonzero") or 0) > 0)),
         "pred_nonzero_images": int(sum(1 for r in records if (r.get("pred_nonzero") or 0) > 0)),
-        "confidence_available": bool(any(r.get("D8_confidence_mean") is not None for r in records)), "d7_available": False,
+        "confidence_available": confidence_available, "d7_available": confidence_available,
         "metrics_mean": means, "layer1_avg": layer1, "layer2": layer2, "layer3": layer3,
         "layer4": {"R1": r1, "R1_marking_readability_score": r1, "R2": r2, "R2_reference_detectability_score": r2, "R3": r3, "R3_bottleneck": r3, "R4": r4, "R4_machine_readability_class": r4},
     })
 
 
 # Legacy wrappers.
-def _pseudo_image_from_mask(gt_mask: np.ndarray) -> np.ndarray:
-    mask = safe_binary_mask(gt_mask)
-    img = np.full((*mask.shape, 3), 50, dtype=np.uint8)
-    img[mask > 0] = 220
-    return img
-
-
 def compute_i1_continuity(gt_mask: np.ndarray) -> Optional[float]:
-    return compute_i1_pattern_continuity(_pseudo_image_from_mask(gt_mask), gt_mask)
+    """Return unavailable because mask-only input has no physical-paint evidence."""
+
+    _ = gt_mask
+    return None
 
 
 def compute_i2_contrast(image: np.ndarray, gt_mask: np.ndarray) -> Optional[float]:
@@ -952,11 +1431,47 @@ def compute_i3_sharpness(image: np.ndarray, gt_mask: np.ndarray) -> Optional[flo
     return compute_i3_boundary_sharpness(image, gt_mask)
 
 
-def compute_i4_width_stability(gt_mask: np.ndarray) -> Optional[float]:
-    return compute_i4_thickness_stability(gt_mask)
+def compute_i4_width_stability(
+    gt_mask: np.ndarray,
+    lanes: Optional[List[np.ndarray]] = None,
+    homography: Optional[np.ndarray] = None,
+) -> Optional[float]:
+    """Scalar canonical lane-width profile stability from GT geometry only."""
+
+    mask = safe_binary_mask(gt_mask)
+    guidance = list(lanes or []) or extract_guidance_lanes_from_mask(mask)
+    return _finite_or_none(
+        analyze_lane_width_stability(
+            guidance,
+            image_shape=mask.shape,
+            geometry_source="ground_truth",
+            homography=homography,
+        ).get("lane_width_stability")
+    )
+
+
+def compute_i5_alignment_complexity(
+    gt_mask: np.ndarray,
+    lanes: Optional[List[np.ndarray]] = None,
+    homography: Optional[np.ndarray] = None,
+) -> Optional[float]:
+    """Scalar canonical alignment-complexity from GT geometry only (new engine)."""
+
+    mask = safe_binary_mask(gt_mask)
+    guidance = list(lanes or []) or extract_guidance_lanes_from_mask(mask)
+    return _finite_or_none(
+        analyze_lane_geometry_complexity(
+            guidance,
+            image_shape=mask.shape,
+            geometry_source="ground_truth",
+            homography=homography,
+        ).get("alignment_complexity")
+    )
 
 
 def compute_i5_curvature(gt_mask: np.ndarray) -> Optional[float]:
+    """Legacy scalar wrapper; returns the unchanged quadratic-proxy value."""
+
     return compute_i5_geometry_complexity(gt_mask)
 
 
@@ -964,38 +1479,8 @@ def compute_i6_lane_count(gt_mask: np.ndarray) -> int:
     return int(compute_i6_marking_instances(gt_mask)["I6_marking_instance_count"])
 
 
-def compute_d1_detection_rate(pred_masks: List[np.ndarray], gt_masks: Optional[List[np.ndarray]] = None) -> Optional[float]:
-    if not pred_masks:
-        return None
-    if gt_masks is None:
-        return safe_mean(1.0 if _mask_area(pm) > 0 else 0.0 for pm in pred_masks)
-    return safe_mean(compute_d1_valid_detection_single(pm, gm) for pm, gm in zip(pred_masks, gt_masks))
-
-
-def compute_d2_lane_count_accuracy(pred_masks: List[np.ndarray], gt_masks: List[np.ndarray]) -> Optional[float]:
-    return safe_mean(compute_d2_instance_agreement_single(pm, gm) for pm, gm in zip(pred_masks, gt_masks))
-
-
-def compute_d3_iou(pred_masks: List[np.ndarray], gt_masks: List[np.ndarray]) -> Optional[float]:
-    return safe_mean(compute_d3_iou_single(pm, gm) for pm, gm in zip(pred_masks, gt_masks))
-
-
-def compute_d4_near_field_iou(pred_masks: List[np.ndarray], gt_masks: List[np.ndarray]) -> Optional[float]:
-    return safe_mean(compute_d4_band_metrics_single(pm, gm, "near")["iou"] for pm, gm in zip(pred_masks, gt_masks))
-
-
-def compute_d5_occlusion_gap(pred_masks: List[np.ndarray], gt_masks: List[np.ndarray], images: List[np.ndarray]) -> Optional[float]:
-    return safe_mean(compute_d5_dark_region_iou_gap_single(pm, gm, img) for pm, gm, img in zip(pred_masks, gt_masks, images))
-
-
-def compute_d6_detection_gap(pred_masks: List[np.ndarray], gt_masks: List[np.ndarray]) -> Optional[float]:
-    return safe_mean(compute_d6_missed_marking_ratio_single(pm, gm) for pm, gm in zip(pred_masks, gt_masks))
-
-
-def compute_d8_confidence_mean(pred_masks: Optional[List[np.ndarray]] = None, lane_probs: Optional[List[np.ndarray]] = None) -> Optional[float]:
-    if pred_masks is None or lane_probs is None:
-        return None
-    return safe_mean(compute_d8_confidence_mean_single(pm, prob) for pm, prob in zip(pred_masks, lane_probs))
+# Group-level D1-D8 convenience wrappers removed: D-metrics are computed
+# exclusively via evaluation.d_metrics.build_d_record now (see build_metric_record).
 
 
 def compute_c1_continuity_correlation(infra_list: List[dict], detection_list: List[dict]) -> Optional[float]:
@@ -1096,76 +1581,3 @@ def filter_by_traffic(samples, traffic: str):
         return "low"
     return [s for s in samples if infer(s) == traffic]
 
-
-class ReadinessMetrics:
-    """V2 per-image lane-marking readability/detectability metrics."""
-
-    def build_metric_record(self, *args, **kwargs) -> dict:
-        return build_metric_record(*args, **kwargs)
-
-    def summarize_records(self, records: list[dict], min_corr_samples: int = 10) -> dict:
-        return summarize_records(records, min_corr_samples=min_corr_samples)
-
-    def compute_infrastructure(self, image: np.ndarray, gt_mask: np.ndarray, lanes: Optional[List[np.ndarray]] = None, meta: Optional[dict] = None, road_mask: Optional[np.ndarray] = None) -> dict:
-        i1 = compute_i1_pattern_continuity(image, gt_mask, lanes=lanes, meta=meta, road_mask=road_mask)
-        i2 = compute_i2_local_contrast(image, gt_mask, road_mask=road_mask)
-        i3 = compute_i3_boundary_sharpness(image, gt_mask, road_mask=road_mask)
-        thick = _thickness_stats(gt_mask)
-        i5 = compute_i5_geometry_complexity(gt_mask, lanes=lanes)
-        i6 = compute_i6_marking_instances(gt_mask, lanes=lanes, meta=meta)
-        return _json_safe({"I1": i1, "I1_pattern_continuity": i1, "I2": i2, "I2_local_contrast": i2, "I3": i3, "I3_boundary_sharpness": i3, "I4": thick["score"], "I4_thickness_stability": thick["score"], "I4_mean_thickness_px": thick["mean_thickness_px"], "I4_thickness_cv": thick["thickness_cv"], "I5": i5, "I5_geometry_complexity": i5, "I6": i6["I6_marking_instance_count"], **i6})
-
-    def compute_detection(self, pred_masks: List[np.ndarray], gt_masks: List[np.ndarray], images: List[np.ndarray], lane_probs: Optional[List[Optional[np.ndarray]]] = None) -> dict:
-        lane_probs = lane_probs or [None] * len(pred_masks)
-        rows = []
-        for pred, gt, img, prob in zip(pred_masks, gt_masks, images, lane_probs):
-            tolerant = compute_tolerant_precision_recall_f1(pred, gt)
-            d4 = {band: compute_d4_band_metrics_single(pred, gt, band) for band in ("near", "mid", "far")}
-            d1 = compute_d1_valid_detection_single(pred, gt)
-            d2 = compute_d2_instance_agreement_single(pred, gt)
-            d3 = compute_d3_iou_single(pred, gt)
-            d5 = compute_d5_dark_region_iou_gap_single(pred, gt, img)
-            d6 = compute_d6_missed_marking_ratio_single(pred, gt)
-            d8 = compute_d8_confidence_mean_single(pred, prob)
-            rows.append({"D1": d1, "D1_valid_detection": d1, "D2": d2, "D2_instance_agreement": d2, "D3": d3, "D3_iou": d3, "D3_tolerant_precision_r5": tolerant.get("precision"), "D3_tolerant_recall_r5": tolerant.get("recall"), "D3_tolerant_f1_r5": tolerant.get("f1"), "D4_near_iou": d4["near"]["iou"], "D4_mid_iou": d4["mid"]["iou"], "D4_far_iou": d4["far"]["iou"], "D4_near_f1_r5": d4["near"]["tolerant_f1"], "D4_mid_f1_r5": d4["mid"]["tolerant_f1"], "D4_far_f1_r5": d4["far"]["tolerant_f1"], "D5": d5, "D5_dark_region_iou_gap": d5, "D6": d6, "D6_missed_marking_ratio": d6, "D7": None, "D7_temporal_jitter": None, "D8": d8, "D8_confidence_mean": d8})
-        if not rows:
-            return {}
-        result = {key: safe_mean(row.get(key) for row in rows) for key in rows[0].keys()}
-        result.update({"D7": None, "D7_temporal_jitter": None, "D7_reason": "unavailable_single_frame_evaluation"})
-        return _json_safe(result)
-
-    def compute_correlations(self, infra_list: List[dict], detection_list: List[dict], infra_by_condition: Optional[dict] = None, detection_by_condition: Optional[dict] = None) -> dict:
-        result = compute_correlations_from_records([{**i, **d} for i, d in zip(infra_list, detection_list)], min_samples=10)
-        if infra_by_condition or detection_by_condition:
-            result["C5_legacy"] = compute_c5_degradation_ranking(infra_by_condition or {}, detection_by_condition or {})
-        return result
-
-    def compute_verdict(self, infra: dict, detection: dict, correlation: dict) -> dict:
-        r1 = compute_r1_marking_readability_score(infra)
-        r2 = compute_r2_reference_detectability_score(detection)
-        r3 = compute_r3_bottleneck({"layer1_avg": infra, "layer2": detection, "layer3": correlation})
-        return {"R1": r1, "R2": r2, "R3": r3, "R4": compute_r4_machine_readability_class(r1, r2, r3)}
-
-    def evaluate_stratified(self, samples, pred_masks: List[np.ndarray], weather: Optional[str] = None, context: Optional[str] = None, time: Optional[str] = None, traffic: Optional[str] = None, min_samples: int = 10) -> Optional[dict]:
-        pairs = list(zip(samples, pred_masks))
-        if weather:
-            allowed = {id(s) for s in filter_by_weather([x[0] for x in pairs], weather)}; pairs = [(s, p) for s, p in pairs if id(s) in allowed]
-        if context:
-            allowed = {id(s) for s in filter_by_context([x[0] for x in pairs], context)}; pairs = [(s, p) for s, p in pairs if id(s) in allowed]
-        if time:
-            allowed = {id(s) for s in filter_by_time([x[0] for x in pairs], time)}; pairs = [(s, p) for s, p in pairs if id(s) in allowed]
-        if traffic:
-            allowed = {id(s) for s in filter_by_traffic([x[0] for x in pairs], traffic)}; pairs = [(s, p) for s, p in pairs if id(s) in allowed]
-        if len(pairs) < min_samples:
-            return None
-        records = []
-        for sample, pred in pairs:
-            img_bgr = cv2.imread(str(getattr(sample, "image_path", "")))
-            if img_bgr is None:
-                continue
-            records.append(build_metric_record(sample, pred, cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)))
-        if len(records) < min_samples:
-            return None
-        summary = summarize_records(records)
-        summary["records"] = records
-        return summary

@@ -36,7 +36,7 @@ what the number does and does not mean.
 | I2 | [I2_local_contrast.md](I2_local_contrast.md) | Marking-vs-adjacent-road intensity contrast | yes |
 | I3 | [I3_boundary_sharpness.md](I3_boundary_sharpness.md) | Edge crispness of marking boundaries | yes |
 | I4 | [I4_thickness_stability.md](I4_thickness_stability.md) | Consistency of marking width across segments | no |
-| I5 | [I5_geometry_complexity.md](I5_geometry_complexity.md) | Lane curvature / geometric difficulty (context) | no |
+| I5 | [I5_geometry_complexity.md](I5_geometry_complexity.md) | Classical differential-geometry alignment complexity + topology (context) | no |
 | I6 | [I6_marking_instances.md](I6_marking_instances.md) | Number of marking instances + topology (context) | no |
 
 ## Layer 2 — Reference detectability (D metrics)

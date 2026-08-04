@@ -2,9 +2,9 @@
 
 This is the output side of the shared, model-agnostic manifest adapter (used by
 both YOLOPX and HybridNets). For each processed image it
-records both prediction representations the manifest spec asks for: a predicted
-lane-mask PNG link and a predicted lane_json (derived from the mask via the
-existing mask_to_lanes converter — no new geometry).
+records a predicted lane-mask PNG link and a compatible lane_json. Native float
+polylines are retained when a model provides them; mask-only callers continue
+to derive lane_json through the legacy converter.
 
 Output JSON mirrors the input manifest:
     {
@@ -23,7 +23,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 
-from ..converters import mask_to_lane_json
+from ..converters import mask_to_lane_json, polylines_to_lane_json
 
 
 def _safe(name) -> str:
@@ -43,7 +43,44 @@ class PredictionManifestWriter:
             self.mask_dir.mkdir(parents=True, exist_ok=True)
         self.samples: list[dict] = []
 
-    def add(self, sample_id, image_path, pred_mask: np.ndarray, lane_json=None) -> None:
+    @staticmethod
+    def _serialize_polylines(polylines) -> tuple[list[list[dict]], list[np.ndarray]]:
+        serialized: list[list[dict]] = []
+        arrays: list[np.ndarray] = []
+        source = [] if polylines is None else polylines
+        for lane in source:
+            rows = []
+            for point in lane:
+                if isinstance(point, dict):
+                    x, y = point.get("x"), point.get("y")
+                else:
+                    try:
+                        x, y = point[:2]
+                    except (TypeError, ValueError):
+                        continue
+                try:
+                    x_float, y_float = float(x), float(y)
+                except (TypeError, ValueError):
+                    continue
+                if np.isfinite(x_float) and np.isfinite(y_float):
+                    rows.append({"x": x_float, "y": y_float})
+            if len(rows) >= 2:
+                serialized.append(rows)
+                arrays.append(np.asarray([[p["x"], p["y"]] for p in rows], dtype=np.float64))
+        return serialized, arrays
+
+    def add(
+        self,
+        sample_id,
+        image_path,
+        pred_mask: np.ndarray,
+        lane_json=None,
+        *,
+        polylines=None,
+        prediction_meta=None,
+    ) -> None:
+        """Add one prediction while preserving the original three-argument API."""
+
         pred = (np.asarray(pred_mask) > 0).astype(np.uint8)
         h, w = pred.shape[:2]
 
@@ -52,18 +89,37 @@ class PredictionManifestWriter:
             mask_path = str(self.mask_dir / f"{_safe(sample_id)}.png")
             cv2.imwrite(mask_path, pred * 255)
 
-        # Prefer the model's own lane geometry when the caller supplies it (e.g.
-        # a lane-line detector like CLRerNet, whose native lane_json is exact and
-        # independent of the rasterisation thickness). Fall back to deriving it
-        # from the mask for mask-based models (YOLOPX/HybridNets).
-        if lane_json is None:
+        serialized_polylines, polyline_arrays = self._serialize_polylines(polylines)
+        if serialized_polylines:
+            geometry_source = "native_polyline"
+            if lane_json is None:
+                lane_json = polylines_to_lane_json(
+                    polyline_arrays,
+                    height=h,
+                    width=w,
+                    step=self.h_step,
+                )
+        elif lane_json is not None:
+            geometry_source = "lane_json"
+        else:
+            geometry_source = "mask_derived"
             lane_json = mask_to_lane_json(pred, step=self.h_step)
+
+        prediction = {
+            "mask_path": mask_path,
+            "lane_json": lane_json,
+            "geometry_source": geometry_source,
+        }
+        if serialized_polylines:
+            prediction["polylines"] = serialized_polylines
+        if prediction_meta:
+            prediction["meta"] = dict(prediction_meta)
         self.samples.append({
             "sample_id": sample_id,
             "image_path": image_path,
             "width": w,
             "height": h,
-            "prediction": {"mask_path": mask_path, "lane_json": lane_json},
+            "prediction": prediction,
         })
 
     def write(self) -> Path:
@@ -72,6 +128,7 @@ class PredictionManifestWriter:
                 "model": self.model,
                 "dataset": self.dataset,
                 "num_samples": len(self.samples),
+                "prediction_manifest_version": 2,
             },
             "samples": self.samples,
         }
