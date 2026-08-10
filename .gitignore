@@ -83,3 +83,5 @@ __pycache__/
 *.pyc
 
 docs/i_metrics_redesign_rationale.md
+.rr_audit_tmp/
+pilot_output/*

@@ -26,7 +26,11 @@ from typing import Optional
 import cv2
 import numpy as np
 
-from evaluation.d_metrics import NEAR_FIELD_FRACTION, lanes_from_lane_json
+from evaluation.d_metrics import (
+    NEAR_FIELD_TOP_FRACTION,
+    NEAR_FIELD_BOTTOM_FRACTION,
+    lanes_from_lane_json,
+)
 
 _TP_COLOR = (60, 200, 60)     # BGR green
 _FN_COLOR = (40, 40, 230)     # BGR red
@@ -184,17 +188,21 @@ def render_sample_panels(
         max_side,
         legend=[("TP (agree)", _TP_COLOR), ("FN (missed GT)", _FN_COLOR), ("FP (false pred)", _FP_COLOR)])); n += 1
 
-    # D4 -- near-field IoU: same error map, far field dimmed
-    top = int(round(h * (1.0 - NEAR_FIELD_FRACTION)))
+    # D4 -- near-field IoU: same error map; far field AND the assumed-hood band dimmed
+    top = int(round(h * NEAR_FIELD_TOP_FRACTION))
+    bottom = int(round(h * NEAR_FIELD_BOTTOM_FRACTION))
     d4_img = d3_img.copy()
-    d4_img[:top] = (0.30 * d4_img[:top]).astype(np.uint8)
+    d4_img[:top] = (0.30 * d4_img[:top]).astype(np.uint8)          # far field
+    d4_img[bottom:] = (0.30 * d4_img[bottom:]).astype(np.uint8)    # assumed hood
     cv2.line(d4_img, (0, top), (w, top), (255, 255, 255), 2)
-    cv2.putText(d4_img, "near-field region", (10, min(h - 10, top + 30)),
+    cv2.line(d4_img, (0, bottom), (w, bottom), (255, 255, 255), 2)
+    cv2.putText(d4_img, "near band", (10, min(h - 10, top + 30)),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2, cv2.LINE_AA)
     _save(out_dir / f"{sid}__D4.jpg", _panel(
         base, d4_img,
         [f"D4 Near-Field IoU = {_fmt(record.get('D4_near_iou'))}   (full-image D3 = {_fmt(record.get('D3_iou'))})",
-         f"lower {int(NEAR_FIELD_FRACTION*100)}% of image rows; not a physical distance"],
+         f"rows {int(NEAR_FIELD_TOP_FRACTION*100)}%-{int(NEAR_FIELD_BOTTOM_FRACTION*100)}% down; bottom "
+         f"{int((1.0-NEAR_FIELD_BOTTOM_FRACTION)*100)}% (hood) excluded; not a physical distance"],
         max_side,
         legend=[("TP", _TP_COLOR), ("FN", _FN_COLOR), ("FP", _FP_COLOR)])); n += 1
 

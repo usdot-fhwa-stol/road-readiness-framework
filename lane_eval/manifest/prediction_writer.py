@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Optional
 
 import cv2
 import numpy as np
@@ -44,11 +45,23 @@ class PredictionManifestWriter:
         self.samples: list[dict] = []
 
     @staticmethod
-    def _serialize_polylines(polylines) -> tuple[list[list[dict]], list[np.ndarray]]:
+    def _serialize_polylines(
+        polylines, scores=None
+    ) -> tuple[list[list[dict]], list[np.ndarray], Optional[list[Optional[float]]]]:
+        """Serialize native polylines, keeping per-curve scores index-aligned.
+
+        A lane with fewer than two finite points is dropped; when scores are
+        supplied its score is dropped in lockstep so ``prediction["scores"][i]``
+        always refers to ``prediction["polylines"][i]``. Returns
+        ``(serialized_polylines, arrays, serialized_scores)`` where
+        ``serialized_scores`` is ``None`` when no scores were supplied.
+        """
         serialized: list[list[dict]] = []
         arrays: list[np.ndarray] = []
-        source = [] if polylines is None else polylines
-        for lane in source:
+        source = [] if polylines is None else list(polylines)
+        score_source = None if scores is None else list(scores)
+        serialized_scores: Optional[list[Optional[float]]] = None if scores is None else []
+        for idx, lane in enumerate(source):
             rows = []
             for point in lane:
                 if isinstance(point, dict):
@@ -67,7 +80,14 @@ class PredictionManifestWriter:
             if len(rows) >= 2:
                 serialized.append(rows)
                 arrays.append(np.asarray([[p["x"], p["y"]] for p in rows], dtype=np.float64))
-        return serialized, arrays
+                if serialized_scores is not None:
+                    raw = score_source[idx] if score_source is not None and idx < len(score_source) else None
+                    try:
+                        val = float(raw)
+                    except (TypeError, ValueError):
+                        val = None
+                    serialized_scores.append(val if (val is not None and np.isfinite(val)) else None)
+        return serialized, arrays, serialized_scores
 
     def add(
         self,
@@ -77,9 +97,16 @@ class PredictionManifestWriter:
         lane_json=None,
         *,
         polylines=None,
+        scores=None,
         prediction_meta=None,
     ) -> None:
-        """Add one prediction while preserving the original three-argument API."""
+        """Add one prediction while preserving the original three-argument API.
+
+        ``scores`` is an optional sequence of per-curve confidence values aligned
+        with ``polylines`` (e.g. CLRerNet's per-lane score). It is preserved
+        verbatim in the manifest so downstream diagnostics can read genuine model
+        confidence rather than fabricating one from a mask.
+        """
 
         pred = (np.asarray(pred_mask) > 0).astype(np.uint8)
         h, w = pred.shape[:2]
@@ -89,7 +116,9 @@ class PredictionManifestWriter:
             mask_path = str(self.mask_dir / f"{_safe(sample_id)}.png")
             cv2.imwrite(mask_path, pred * 255)
 
-        serialized_polylines, polyline_arrays = self._serialize_polylines(polylines)
+        serialized_polylines, polyline_arrays, serialized_scores = self._serialize_polylines(
+            polylines, scores
+        )
         if serialized_polylines:
             geometry_source = "native_polyline"
             if lane_json is None:
@@ -112,6 +141,8 @@ class PredictionManifestWriter:
         }
         if serialized_polylines:
             prediction["polylines"] = serialized_polylines
+            if serialized_scores is not None:
+                prediction["scores"] = serialized_scores
         if prediction_meta:
             prediction["meta"] = dict(prediction_meta)
         self.samples.append({

@@ -13,8 +13,9 @@ replacing the earlier readiness_metrics variants where they diverged:
                                  flagged as approximate per the draft caveat.
   D3 Segmentation IoU         -- per-image TP/(TP+FP+FN), summarized over the
                                  image group.
-  D4 Near-Field IoU           -- D3 restricted to the lower half of the image
-                                 (documented region; no metric-distance claim).
+  D4 Near-Field IoU           -- D3 restricted to the near image band (rows
+                                 80%-95% down, above the assumed ego-vehicle hood;
+                                 documented region; no metric-distance claim).
   D5 Occlusion Robustness Gap -- mean IoU(nonoccluded) - mean IoU(occluded)
                                  using the human "Observed Marking Visibility"
                                  tags, NOT dark-pixel thresholds. Reported only
@@ -34,6 +35,7 @@ from typing import Any, List, Optional
 import cv2
 import numpy as np
 
+from evaluation import marking_support
 from evaluation.readiness_metrics import (
     _resize_mask_if_needed,
     _valid_lanes,
@@ -43,9 +45,16 @@ from evaluation.readiness_metrics import (
 
 D_METRIC_VERSION = "d_metrics_v1_draft_table16"
 
-NEAR_FIELD_FRACTION = 0.5  # documented lower-image region for D4: lower half
+# D4 near-field region = the "lower/near" image band, ABOVE the assumed hood.
+# y/H in [NEAR_FIELD_TOP_FRACTION, NEAR_FIELD_BOTTOM_FRACTION); the bottom
+# HOOD_IGNORE_FRACTION of rows is excluded (assumed ego-vehicle hood). Bounds are
+# derived from the shared band layout in marking_support so the legacy near-field
+# D4 and the D4' band profile stay consistent.
+NEAR_FIELD_TOP_FRACTION = 1.0 - (marking_support.NEAR_BAND_FRACTION + marking_support.HOOD_IGNORE_FRACTION)  # 0.80
+NEAR_FIELD_BOTTOM_FRACTION = 1.0 - marking_support.HOOD_IGNORE_FRACTION  # 0.95
 MIN_COMPONENT_AREA = 30    # px; suppresses speckle when counting mask components
 MIN_GROUP_FOR_D5 = 3       # both visibility groups need >= this many images
+D3PRIME_STEP_PX = 1.0      # polyline densification spacing for centerline points
 
 # "Observed Marking Visibility" tag -> D5 grouping. Tags may be ';'-joined.
 _OCCLUDED_TAGS = {"occluded", "partially missing"}
@@ -149,14 +158,26 @@ def compute_d3_iou(pred_mask: Any, gt_mask: Any) -> dict:
     }
 
 
-def compute_d4_near_field_iou(pred_mask: Any, gt_mask: Any, fraction: float = NEAR_FIELD_FRACTION) -> dict:
-    """Draft D4: the D3 IoU restricted to the documented lower image region."""
+def compute_d4_near_field_iou(
+    pred_mask: Any,
+    gt_mask: Any,
+    top_fraction: float = NEAR_FIELD_TOP_FRACTION,
+    bottom_fraction: float = NEAR_FIELD_BOTTOM_FRACTION,
+) -> dict:
+    """Draft D4: the D3 IoU restricted to the near image band, above the hood.
+
+    The near band is ``y/H in [top_fraction, bottom_fraction)`` — by default rows
+    80%-95% down the image. The bottom ``1 - bottom_fraction`` of rows (assumed
+    ego-vehicle hood) is excluded; this is an image region, not a physical distance.
+    """
     pred, gt = _aligned_masks(pred_mask, gt_mask)
     if pred.size == 0:
-        return {"D4_near_iou": None, "D4_region_top_row": None}
-    top = int(round(pred.shape[0] * (1.0 - fraction)))
-    d3 = compute_d3_iou(pred[top:, :], gt[top:, :])
-    return {"D4_near_iou": d3["D3_iou"], "D4_region_top_row": top}
+        return {"D4_near_iou": None, "D4_region_top_row": None, "D4_region_bottom_row": None}
+    h = pred.shape[0]
+    top = int(round(h * top_fraction))
+    bottom = int(round(h * bottom_fraction))
+    d3 = compute_d3_iou(pred[top:bottom, :], gt[top:bottom, :])
+    return {"D4_near_iou": d3["D3_iou"], "D4_region_top_row": top, "D4_region_bottom_row": bottom}
 
 
 def compute_d6_image_counts(pred_mask: Any, gt_mask: Any) -> dict:
@@ -169,6 +190,82 @@ def compute_d6_image_counts(pred_mask: Any, gt_mask: Any) -> dict:
         "D6_fn_pixels": fn_px,
         "D6_image_missed_ratio": float(fn_px / gt_px) if gt_px else None,
     }
+
+
+def _centerline_points(
+    mask: Any,
+    lanes: Optional[List[np.ndarray]],
+    step_px: float = D3PRIME_STEP_PX,
+) -> tuple[np.ndarray, str]:
+    """Reduce a marking representation to a centerline point cloud (x, y).
+
+    Prefers native polylines (CLRerNet: densified, NOT thick-rasterized). Falls
+    back to skeletonizing a dense mask (YOLOPX). Returns ``(points, source)``.
+    """
+    valid = _valid_lanes(lanes) if lanes else []
+    if valid:
+        return marking_support.polylines_to_points(valid, step_px), "native_polyline"
+    m = safe_binary_mask(mask)
+    if m.size and np.any(m):
+        return marking_support.mask_to_points(m), "mask_skeleton"
+    return np.zeros((0, 2), dtype=np.float64), "empty"
+
+
+def compute_d3_prime(
+    delta: float,
+    width: int,
+    height: int,
+    pred_mask: Any = None,
+    gt_mask: Any = None,
+    pred_lanes: Optional[List[np.ndarray]] = None,
+    gt_lanes: Optional[List[np.ndarray]] = None,
+    step_px: float = D3PRIME_STEP_PX,
+    bands: bool = True,
+) -> dict:
+    """D3' marking-support localization on an un-thickened centerline basis.
+
+    Replaces the dilated pixel IoU of D3/D4/D6 with resolution-free,
+    isotropically-normalized nearest-neighbour precision/recall/F1 and
+    median/p95 localization error at a frozen tolerance ``delta`` (fraction of
+    the image diagonal; see :mod:`evaluation.marking_support`). ``delta`` must be
+    frozen on a calibration split, never tuned here.
+
+    The prediction and GT are each reduced to centerline points (native polyline
+    when available, else mask skeleton) at original-pixel scale, then
+    canonicalized before scoring, so nothing is thickened and no metric-distance
+    claim is made. Per-band (upper/middle/lower) scores replace "near-field IoU".
+    """
+    pred_xy, pred_src = _centerline_points(pred_mask, pred_lanes, step_px)
+    gt_xy, gt_src = _centerline_points(gt_mask, gt_lanes, step_px)
+
+    core = marking_support.localization_scores(
+        marking_support.to_canonical(pred_xy, width, height),
+        marking_support.to_canonical(gt_xy, width, height),
+        delta,
+    )
+    out = {
+        "D3p_support_f1": core["support_f1"],
+        "D3p_support_precision": core["support_precision"],
+        "D3p_support_recall": core["support_recall"],
+        "D3p_loc_err_median": core["loc_err_median"],
+        "D3p_loc_err_p95": core["loc_err_p95"],
+        "D3p_n_pred_points": core["n_pred_points"],
+        "D3p_n_gt_points": core["n_gt_points"],
+        "D3p_pred_source": pred_src,
+        "D3p_gt_source": gt_src,
+        "D3p_delta": float(delta),
+        # D6' — unsupported-marking response = fraction of reference marking with
+        # no prediction within delta = 1 - recall (folded in, not shipped apart).
+        "D6p_unsupported_marking_ratio": (
+            None if core["support_recall"] is None else float(1.0 - core["support_recall"])
+        ),
+    }
+    if bands:
+        band = marking_support.band_localization(pred_xy, gt_xy, width, height, delta)
+        for label, scores in band.items():
+            out[f"D4p_{label}_f1"] = scores["support_f1"]
+            out[f"D4p_{label}_recall"] = scores["support_recall"]
+    return out
 
 
 def compute_d7_confidence(lane_prob: Optional[np.ndarray], pred_mask: Any) -> dict:
@@ -243,7 +340,18 @@ def build_d_record(
     visibility_tag: Optional[str] = None,
     image_path: Optional[str] = None,
     match_stroke_width: bool = True,
+    delta: Optional[float] = None,
+    gt_lanes: Optional[List[np.ndarray]] = None,
 ) -> dict:
+    """Build one per-image D record.
+
+    ``delta`` opts in to the D3' centerline-localization metric
+    (:func:`compute_d3_prime`). It is the frozen tolerance as a fraction of the
+    image diagonal and MUST come from a designated calibration split. When
+    ``delta`` is ``None`` (default) the D3' fields are omitted and the record is
+    exactly the legacy Table-16 record — so no published number changes until a
+    calibration split is declared. The two bases are additive, never blended.
+    """
     record: dict = {"sample_id": sample_id, "image_path": image_path}
     # D1/D2 use the raw output; the width standardization below only affects the
     # pixel-agreement measures (D3/D4/D6), matching the chapter-3 representation.
@@ -260,6 +368,25 @@ def build_d_record(
     record.update(compute_d7_confidence(lane_prob, pred_mask))
     record.update(visibility_group(visibility_tag))
     record["gt_eligible"] = int(record["D6_gt_pixels"] > 0)
+    if delta is not None:
+        # Derive image size from whichever mask carries a shape; fall back to GT.
+        shape = None
+        for m in (pred_mask, gt_mask):
+            arr = np.asarray(m) if m is not None else None
+            if arr is not None and arr.ndim >= 2 and arr.size:
+                shape = arr.shape[:2]
+                break
+        if shape is not None:
+            h, w = int(shape[0]), int(shape[1])
+            if gt_lanes is None and gt_lane_json is not None:
+                gt_lanes = lanes_from_lane_json(gt_lane_json) or None
+            record.update(
+                compute_d3_prime(
+                    delta=delta, width=w, height=h,
+                    pred_mask=pred_mask, gt_mask=gt_mask,
+                    pred_lanes=pred_lanes, gt_lanes=gt_lanes,
+                )
+            )
     return record
 
 
@@ -280,6 +407,37 @@ def _gap(records: list[dict], reference_group: str, comparison_groups: set[str])
     return result
 
 
+def _summarize_d3_prime(eligible: list[dict]) -> Optional[dict]:
+    """Aggregate the D3' centerline-localization fields, if any record carries
+    them (i.e. build_d_record was called with a frozen delta). Per-image first,
+    None excluded (never coerced to 0). Returns None when D3' was not computed."""
+    have = [r for r in eligible if "D3p_support_f1" in r]
+    if not have:
+        return None
+    f1 = [r["D3p_support_f1"] for r in have if r.get("D3p_support_f1") is not None]
+    prec = [r["D3p_support_precision"] for r in have if r.get("D3p_support_precision") is not None]
+    rec = [r["D3p_support_recall"] for r in have if r.get("D3p_support_recall") is not None]
+    err_med = [r["D3p_loc_err_median"] for r in have if r.get("D3p_loc_err_median") is not None]
+    err_p95 = [r["D3p_loc_err_p95"] for r in have if r.get("D3p_loc_err_p95") is not None]
+    unsup = [r["D6p_unsupported_marking_ratio"] for r in have
+             if r.get("D6p_unsupported_marking_ratio") is not None]
+    deltas = {float(r["D3p_delta"]) for r in have if r.get("D3p_delta") is not None}
+    out = {
+        "D3p_num_scored": len(have),
+        "D3p_delta": (deltas.pop() if len(deltas) == 1 else sorted(deltas)),
+        "D3p_support_f1_mean": safe_mean(f1),
+        "D3p_support_precision_mean": safe_mean(prec),
+        "D3p_support_recall_mean": safe_mean(rec),
+        "D3p_loc_err_median_mean": safe_mean(err_med),
+        "D3p_loc_err_p95_mean": safe_mean(err_p95),
+        "D6p_unsupported_marking_ratio_mean": safe_mean(unsup),
+    }
+    for label in ("upper", "middle", "lower"):
+        vals = [r[f"D4p_{label}_f1"] for r in have if r.get(f"D4p_{label}_f1") is not None]
+        out[f"D4p_{label}_f1_mean"] = safe_mean(vals)
+    return out
+
+
 def summarize_d_records(records: list[dict]) -> dict:
     eligible = [r for r in records if r["gt_eligible"]]
     d3 = [r["D3_iou"] for r in eligible if r["D3_iou"] is not None]
@@ -289,7 +447,8 @@ def summarize_d_records(records: list[dict]) -> dict:
     fn_px = sum(r["D6_fn_pixels"] for r in eligible)
     d7 = [r["D7_confidence_mean"] for r in records if r["D7_confidence_mean"] is not None]
     n_standardized = sum(1 for r in records if r.get("stroke_standardized"))
-    return {
+    d3_prime = _summarize_d3_prime(eligible)
+    summary = {
         "metric_version": D_METRIC_VERSION,
         "num_processed_images": len(records),
         "num_annotation_eligible": len(eligible),
@@ -316,9 +475,19 @@ def summarize_d_records(records: list[dict]) -> dict:
             "(thin rasterized outputs dilated to the reference stroke width, "
             "per the chapter-3 common evaluation representation).",
             "D1 counts output presence only; it does not gate on accuracy (draft Table 16).",
-            f"D4 near-field region = lower {int(NEAR_FIELD_FRACTION*100)}% of image rows; not a physical distance.",
+            f"D4 near-field region = image rows {int(NEAR_FIELD_TOP_FRACTION*100)}%-{int(NEAR_FIELD_BOTTOM_FRACTION*100)}% down "
+            f"(bottom {int(marking_support.HOOD_IGNORE_FRACTION*100)}% excluded as assumed ego-vehicle hood); not a physical distance.",
             "D5 uses human 'Observed Marking Visibility' tags, not dark-pixel thresholds.",
             "D2 counts from merged masks (connected_components source) are approximate per the draft caveat.",
             "D6 is pixel-weighted across the group (sum FN / sum GT), not a mean of per-image ratios.",
         ],
     }
+    if d3_prime is not None:
+        summary["D3_prime"] = d3_prime
+        summary["notes"].append(
+            "D3' (D3p_*/D4p_*/D6p_*) is the un-thickened centerline-localization "
+            "basis at a frozen delta (fraction of image diagonal); it does NOT "
+            "dilate predictions and is reported alongside, never blended with, "
+            "the legacy stroke-standardized D3/D4/D6."
+        )
+    return summary

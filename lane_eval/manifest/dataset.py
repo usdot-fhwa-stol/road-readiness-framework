@@ -112,9 +112,21 @@ class PredictionManifestReader:
         return len(self._samples)
 
     @staticmethod
-    def _native_polylines(prediction: dict) -> list[np.ndarray]:
-        lanes = []
-        for lane in prediction.get("polylines", []) or []:
+    def _native_polylines(
+        prediction: dict,
+    ) -> tuple[list[np.ndarray], Optional[list[Optional[float]]]]:
+        """Read native polylines and their per-curve scores, kept index-aligned.
+
+        A lane with fewer than two finite points is skipped, and its score is
+        skipped in lockstep, so the returned ``scores`` (when present) line up
+        with the returned ``lanes``. ``scores`` is ``None`` when the manifest
+        carries no ``scores`` field.
+        """
+        raw_scores = prediction.get("scores")
+        has_scores = isinstance(raw_scores, (list, tuple))
+        lanes: list[np.ndarray] = []
+        scores: Optional[list[Optional[float]]] = [] if has_scores else None
+        for idx, lane in enumerate(prediction.get("polylines", []) or []):
             points = []
             for point in lane:
                 if isinstance(point, dict):
@@ -132,7 +144,14 @@ class PredictionManifestReader:
                     points.append([x_float, y_float])
             if len(points) >= 2:
                 lanes.append(np.asarray(points, dtype=np.float64))
-        return lanes
+                if scores is not None:
+                    raw = raw_scores[idx] if idx < len(raw_scores) else None
+                    try:
+                        val = float(raw)
+                    except (TypeError, ValueError):
+                        val = None
+                    scores.append(val if (val is not None and np.isfinite(val)) else None)
+        return lanes, scores
 
     def _read_entry(self, entry: dict) -> LanePrediction:
         prediction = entry.get("prediction", {})
@@ -146,7 +165,7 @@ class PredictionManifestReader:
                 loaded = cv2.imread(str(resolved_mask_path), cv2.IMREAD_GRAYSCALE)
                 if loaded is not None:
                     mask = (loaded > 0).astype(np.uint8)
-        lanes = self._native_polylines(prediction)
+        lanes, scores = self._native_polylines(prediction)
         geometry_source = prediction.get("geometry_source")
         if geometry_source is None:
             if lanes:
@@ -165,7 +184,14 @@ class PredictionManifestReader:
                 "mask_path": str(resolved_mask_path) if resolved_mask_path else mask_path,
             }
         )
-        return LanePrediction(mask=mask, lanes=lanes or None, meta=meta)
+        pred_scores = None
+        if scores is not None and lanes and any(s is not None for s in scores):
+            pred_scores = np.asarray(
+                [np.nan if s is None else s for s in scores], dtype=np.float64
+            )
+        return LanePrediction(
+            mask=mask, lanes=lanes or None, scores=pred_scores, meta=meta
+        )
 
     def __getitem__(self, index: int) -> LanePrediction:
         return self._read_entry(self._samples[index])

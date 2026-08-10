@@ -578,6 +578,16 @@ for the full algorithm.
 
 This group evaluates the quality and usability of the standardized processor outputs. **D1 is calculated across all applicable processed images; D2 through D6 are calculated only where compatible reference annotations and processor outputs are available.** Images without compatible annotations may be retained for visual review and qualitative reporting but are excluded from annotation-based quantitative measures.
 
+> **This section documents the live Table-16 engine as it runs today.** The audited,
+> construct-valid successor methodology is [d_metrics_methodology.md](d_metrics_methodology.md)
+> (audit reasoning: [d_metrics_proposal_audit.md](d_metrics_proposal_audit.md)). Key
+> planned departures there are **δ-gated** (dormant until a tolerance `delta` is frozen)
+> and therefore do **not** describe current outputs — notably: D1 becomes recall on the
+> un-thickened centerline basis, **replacing** presence-only Detection Success Rate;
+> D6 concurrence is demoted to a diagnostic (missed-marking is read as `1 − D1`); and
+> "near-field" D4 is renamed to an image-band profile. Until `delta` is frozen, the
+> numbers below are what the pipeline publishes.
+
 The core measures IoU, F1 Score, Precision, and Recall are defined in the chapter 3 model evaluation approach. **Segmentation IoU is the primary spatial-agreement measure for D3 and the related cross-factor analyses.** F1 Score, Precision, and Recall may be reported alongside IoU for additional context on overall detection quality, false detections, and missed detections.
 
 ### D1 — Detection Success Rate
@@ -614,17 +624,17 @@ The core measures IoU, F1 Score, Precision, and Recall are defined in the chapte
 
 **Interpretation and limitations:** higher values indicate stronger spatial overlap between predicted and reference lane-related outputs. Results depend on the compatibility and quality of the reference annotations and the selected evaluation representation.
 
-*Evaluation representation:* lane outputs are rendered to a binary lane mask at a fixed stroke width of 16 px, with a stroke-width tolerance of 8 px applied symmetrically to both predicted and reference masks before pixel-level TP/FP/FN are counted. The same width and tolerance are applied identically to all processors, so thin-line and dense-mask outputs are compared on geometric agreement rather than raster width.
+*Evaluation representation (as implemented in `evaluation/d_metrics.py`):* D3 is plain pixel `IoU = TP/(TP+FP+FN)` computed **after** `standardize_stroke_width` — if the predicted stroke is materially thinner than the reference stroke, the *prediction* is dilated (dilate-only, never erode) to the reference's measured effective width, applied identically to every processor. There is **no** fixed 16 px width and **no** symmetric 8 px tolerance in the live code; the standardization is adaptive to each pair's measured stroke widths. This dilation biases pixel overlap for thin outputs and is the reason the un-thickened centerline basis (**D3′**, below) was added. See [docs/evaluation_protocol.md §2](evaluation_protocol.md#2-the-two-spatial-bases-never-blended).
 
 ### D4 — Near-Field IoU
 
 **Primary inputs:** standardized processor outputs and compatible reference annotations.
 
-**Calculation:** applies the D3 IoU calculation only within a documented lower image region, such as the lower half of the image.
+**Calculation:** applies the D3 IoU calculation only within a documented **near image band** — rows **80%–95%** down the image (`NEAR_FIELD_TOP_FRACTION=0.80` to `NEAR_FIELD_BOTTOM_FRACTION=0.95`). The **bottom 5% of rows is excluded** as the assumed ego-vehicle hood region.
 
 **Expected range:** 0–1.
 
-**Interpretation and limitations:** provides a focused view of agreement in the roadway area closest to the camera within the image. **Without camera calibration, the lower image region should not be interpreted as a fixed physical distance from the vehicle.**
+**Interpretation and limitations:** provides a focused view of agreement in the roadway area closest to the camera within the image. **Without camera calibration, the near image band should not be interpreted as a fixed physical distance from the vehicle.** The 5% hood exclusion is a **fixed, uncalibrated image-region assumption applied identically to every dataset** — the hood is not truly a constant fraction across cameras, and where an image has no hood a small amount of genuine near-field road is also dropped. The near-band bounds are shared with the D3′ band profile (`marking_support.BAND_EDGES`), so the two agree. **Change note:** this near band was previously the lower **50%** of rows with no hood exclusion; the current definition moves the published D4 number.
 
 *YOLOPX support:* uses the predicted lane mask after undoing letterbox padding.
 
@@ -642,7 +652,7 @@ D5 = mean(IoU_nonoccluded) - mean(IoU_occluded)
 
 **Interpretation and limitations:** a positive value indicates lower spatial agreement for images with occluded markings. Reported only where both groups contain a sufficient number of eligible images. **Occlusion is identified using documented image-level screening tags or review criteria; dark-pixel thresholds alone should not be used to define occlusion.**
 
-See the [deviations section](#implementation-status-and-deviations) — the current code implements a dark-region intensity proxy, which this specification explicitly rules out. Both are documented pending occlusion screening tags in the manifest.
+*Live implementation:* the current `d_metrics.py` engine implements exactly this tag-based gap — `mean(D3_iou | clear) − mean(D3_iou | occluded)`, gated on `MIN_GROUP_FOR_D5 = 3` per group, using the human "Observed Marking Visibility" tags. The earlier dark-region intensity proxy has been **removed**. A broader `clear − {occluded, degraded}` variant is also reported because strictly-occluded tags are sparse. **Known defect:** the live runners read the visibility tag from the wrong manifest path, so D5 groups are currently empty on the installed manifests — see [docs/evaluation_protocol.md §7](evaluation_protocol.md#7-known-defects-open-tracked).
 
 ### D6 — Detection Gap Ratio
 
@@ -671,6 +681,18 @@ D6 = sum(FN) / sum(GT)
 *YOLOPX support:* for two-channel `ll_seg_out`, softmax over channels is applied and channel 1 is the lane probability; for one-channel output, sigmoid is used. If the channel layout is ambiguous, probability is unavailable and D7 is reported as unavailable.
 
 > **Complementarity.** These indicators provide complementary information. A processor may produce lane-related outputs for most images (high D1) but still show low spatial agreement (D3) or a high detection gap ratio (D6). Similarly, a processor may show strong overall IoU but a substantial occlusion robustness gap, indicating lower agreement for images with occluded markings.
+
+### D3′ — Marking-Support Localization (optional, un-thickened basis)
+
+**Primary inputs:** standardized processor outputs and compatible reference annotations, reduced to **centerline point clouds** (native polylines for CLRerNet, mask skeleton for YOLOPX) — **no stroke dilation**.
+
+**Calculation** (`d_metrics.compute_d3_prime`): in a resolution-free, isotropic canonical frame (each point `p̄ = (x/D, y/D)`, `D = √(W²+H²)`), nearest-neighbour precision/recall/F1 and localization error (median, p95) at a frozen tolerance `delta` (a fraction of the image diagonal). Reported per band (upper/middle/lower) as `D4p_*`, replacing the D4 image band; `D6p_unsupported_marking_ratio = 1 − recall` folds D6 onto this basis. `delta` is **frozen on a held-out calibration split** and never tuned on the evaluation set.
+
+**Gating.** D3′ is **opt-in**: `build_d_record(..., delta=None)` (the default) omits every D3′ field, so records are byte-for-byte the legacy Table-16 record and **no published number moves** until a `delta` is frozen and supplied. D3′ is reported **alongside**, never blended with, the legacy stroke-standardized D3/D4/D6.
+
+**Why it exists.** D3/D4/D6 dilate the thin prediction to the reference stroke width (§D3 above), which biases pixel overlap and drives the reported CLRerNet-over-YOLOPX ordering. D3′ measures placement without thickening. Full procedure, math, and the calibration/δ-freeze protocol: [docs/evaluation_protocol.md](evaluation_protocol.md).
+
+**Expected range:** 0–1 (F1/precision/recall) or unavailable (None); localization error is a nonnegative fraction of the image diagonal.
 
 ---
 
@@ -721,21 +743,21 @@ GT-guided only — `I5_pred` never enters C4) and D3 results.
 `evaluation/readiness_metrics.py`):
 
 1. Spearman correlation between `I5_alignment_complexity` and
-   `D3_tolerant_f1_r5` (primary), `D3_iou`, and the detected ratio
-   (`1 - D6_missed_marking_ratio`).
+   `D3_f1` (primary), `D3_iou`, and the detected ratio
+   (`1 - D6_image_missed_ratio`).
 2. A bottom-vs-top tertile performance difference with a percentile bootstrap
    95% confidence interval.
 3. The legacy median-split effect, retained for backward compatibility:
 
    ```
-   C4 = mean(D3_tolerant_f1_r5 | I5 <= median) - mean(D3_tolerant_f1_r5 | I5 > median)
+   C4 = mean(D3_f1 | I5 <= median) - mean(D3_f1 | I5 > median)
    ```
 
 4. Per-component associations (bendiness, p95 curvature, curvature variation,
-   reversal density, topology complexity) with `D3_tolerant_f1_r5`.
+   reversal density, topology complexity) with `D3_f1`.
 5. Per-model, per-dataset, and per-measurement-space stratified associations.
 6. An optional dataset/model fixed-effects-adjusted regression of
-   `D3_tolerant_f1_r5` on `I5_alignment_complexity`, `I1`, `I2`, and `I3`,
+   `D3_f1` on `I5_alignment_complexity`, `I1`, `I2`, and `I3`,
    restricted to samples sharing one measurement space (calibrated and
    image-proxy I5 values are never combined in one regression without
    stratification), gated on a minimum sample count.
@@ -746,7 +768,8 @@ reported at every level.
 
 **Expected range:** the primary Spearman correlation and legacy median-split
 `C4` scalar are −1 to +1 (`C4` stays backward compatible with the historical
-median-split scalar).
+median-split scalar). The performance key is `D3_f1` from
+`d_metrics.build_d_record` (the removed `D3_tolerant_f1_r5` no longer exists).
 
 **Interpretation and limitations:** a positive median-split effect or negative
 Spearman correlation indicates the higher-complexity group had lower mean
@@ -921,15 +944,15 @@ I1–I4 support R1; I5 is context used only by C4 (geometry-sensitivity analysis
 
 **Where this specification and the current code disagree, the specification above is authoritative and the code below is the current state.** These are open items, not alternative definitions.
 
-The canonical implementation is `evaluation/readiness_metrics.py` (`METRIC_VERSION = "readiness_metrics_v7_i4_lane_width_plausibility"`). I1 follows the RGB-based pattern/condition definition above, I4 uses the lane-width engine in `evaluation/lane_width_stability.py`, and I5 uses the classical differential-geometry engine in `evaluation/lane_geometry_complexity.py`; the remaining historical deviations are listed below.
+The canonical implementation is `evaluation/readiness_metrics.py` (`METRIC_VERSION = "readiness_metrics_v7_i4_lane_width_plausibility"`). I1 follows the RGB-based pattern/condition definition above, I4 uses the lane-width engine in `evaluation/lane_width_stability.py`, and I5 uses the classical differential-geometry engine in `evaluation/lane_geometry_complexity.py`. **The D-series (D1–D7) is computed by `evaluation/d_metrics.py` (`D_METRIC_VERSION = "d_metrics_v1_draft_table16"`)**, with an optional un-thickened centerline-localization basis (**D3′**) that activates only when a frozen tolerance `delta` is supplied; see [docs/evaluation_protocol.md](evaluation_protocol.md) for the full D procedure and calibration protocol and [docs/dataset_formats.md](dataset_formats.md) for the manifest formats. The remaining historical deviations are listed below.
 
 ### Naming and numbering
 
 The code emits **two keys per metric** — a short alias (`I1`) and a long name (`I1_pattern_continuity`). Long names encode the older algorithm, not the specification's indicator names. Any rename must move both keys together.
 
-The code also retains a **legacy wrapper layer** (`readiness_metrics.py` lines 936–1048) whose function names already track this specification closely: `compute_i4_width_stability`, `compute_i6_lane_count`, `compute_d1_detection_rate`, `compute_d2_lane_count_accuracy`, `compute_d5_occlusion_gap`, `compute_d6_detection_gap`, `compute_r1_infrastructure_score`. These wrappers currently alias the newer, divergent implementations rather than implementing the specification.
+**D-series engine (current):** the per-image D1–D7 reimplementations that formerly lived in `readiness_metrics.py` (`compute_d1_valid_detection_single`, `compute_d3_tolerant_f1_single`, `compute_d5_dark_region_iou_gap_single`, the D8 confidence numbering, etc.) have been **removed**. D1–D7 are now computed exclusively by `evaluation.d_metrics.build_d_record` (draft-Table-16-aligned), invoked once per image in `build_metric_record` ([readiness_metrics.py:895](../evaluation/readiness_metrics.py#L895)); the D-rows of the deviations table below have been updated to describe that single engine. The I-series (I1–I6), C-series, and R-series wrappers are unchanged and still described further down.
 
-**ID shift:** the code numbers Confidence Mean as **D8** (`compute_d8_confidence_mean_single`, keys `D8`, `D8_confidence_mean`, `D8_available`) and reserves **D7** for a temporal-jitter metric that has no compute function — it is hardcoded to `None` with reason `unavailable_single_frame_evaluation`. **This specification has no temporal metric; Confidence Mean is D7.** The code's total is therefore 23 IDs against the specification's 22.
+**ID numbering (now aligned):** Confidence Mean is **D7** (`build_d_record` key `D7_confidence_mean`; the old `D8`/`D8_confidence_mean` numbering is gone). There is **no** temporal D-metric in the live engine. This matches the specification's D1–D7 / 22-ID total.
 
 ### Algorithmic deviations
 
@@ -941,19 +964,19 @@ The code also retains a **legacy wrapper layer** (`readiness_metrics.py` lines 9
 | I4 | Perspective-normalized adjacent-boundary width-profile stability | `analyze_lane_width_stability` performs source-separated geometry selection, double-line collapse, adjacent pairing, orthogonal samples, and robust constant/taper/piecewise selection. The prior paint-thickness proxy remains only in `I4_legacy_*` and historical R1 |
 | I5 | Std of row-wise lane-center x ÷ image width | `analyze_lane_geometry_complexity` (`evaluation/lane_geometry_complexity.py`) performs source-separated geometry selection (reusing the I4 boundary/pairing engine), calibrated/scale-free/proxy measurement-space selection, robust local despiking + Savitzky-Golay smoothing, local (Menger) signed-curvature estimation, BIC-penalized alignment-profile classification, and a separate topology diagnostic. The prior raw quadratic proxy remains only in `I5_legacy_quadratic_proxy` and is not summed into R1 or the new I5 |
 | I6 | Missing/merged → unavailable | `compute_i6_marking_instances` (:506) — empty GT returns **0**, not unavailable |
-| D1 | Nonempty output | `compute_d1_valid_detection_single` (:539) — thresholded: tolerant recall ≥ 0.30, precision ≥ 0.30, predicted area ≥ 20 px, 5 px tolerance |
-| D2 | Exact-match rate | `compute_d2_instance_agreement_single` (:549) — graded `1 − min(\|N_pred − N_gt\| / max(N_gt,1), 1)` |
-| D3 | Plain IoU primary | Both exist (`compute_d3_iou_single` :559, `compute_d3_tolerant_f1_single` :575), but **tolerant F1 @ 5 px is treated as primary** downstream |
-| D4 | Near-field (lower region) only | `compute_d4_band_metrics_single` (:589) — three bands: near/mid/far vertical thirds |
-| D5 | Tag-based occlusion gap; dark-pixel thresholds explicitly ruled out | `compute_d5_dark_region_iou_gap_single` (:616) — **dark-region intensity proxy**, the approach this specification rules out. Blocked on occlusion screening tags reaching the manifest; both are documented per project decision |
-| D6 | Pooled `ΣFN / ΣGT` across group | `compute_d6_missed_marking_ratio_single` (:637) — per-image `1 − recall`, then averaged |
-| C1 | Pearson point-biserial, I1 ↔ binary D1 | `compute_correlations_from_records` (:846) — Spearman, I1 ↔ D3 tolerant F1 |
-| C2, C3 | Pearson | Spearman primary (both reported where possible) |
-| C4 | Median I5 split on **IoU** | `compute_c4_geometry_sensitivity_detail` — canonical-I5-only Spearman (primary: tolerant F1; also IoU and detected ratio), tertile effect with bootstrap CI, per-component and per-stratum associations, and an optional fixed-effects regression; the legacy median-split-on-tolerant-F1 scalar is retained as `C4`/`C4_detail.legacy_median_split` for backward compatibility |
-| C5 | Mean of 0–1-oriented I1, I2, I3, D1, D3, D4 differences | `compute_condition_degradation` (:810) — uses normalized R1/R2 components |
-| R1 | `100/0.95 × [0.30 I1 + 0.30 I2 + 0.20 I3 + 0.10 N(I4) + 0.05 N(I5)]` | `compute_r1_marking_readability_score` (:670) — `0.35 I1 + 0.35 I2 + 0.20 I3 + 0.10 I4`; **I5 not included**; no N() normalization |
-| R2 | `0.25 D1 + 0.20 D2 + 0.20 D3 + 0.15 D4 + 0.08 R(D5) + 0.08(1−D6) + 0.04 D7` | `compute_r2_reference_detectability_score` (:684) — `0.35 D3_tolerant_f1_r5 + 0.20 D3_iou + 0.20 D4_near + 0.20 (1−D6) + 0.05 D8`; **D1, D2, and R(D5) absent** |
-| R4 | Descriptive findings profile; fixed labels prohibited | `compute_r4_machine_readability_class` (:692) — returns `HIGH_/MODERATE_/LOW_MACHINE_READABILITY` on `R1 ≥ 80 and R2 ≥ 80` / `R1 ≥ 60 or R2 ≥ 60` / else. **These are exactly the fixed classification labels the specification prohibits** |
+| D1 | Nonempty output | `d_metrics.compute_d1_detection` — matches spec: `1[ pred pixels > 0 OR valid pred lanes > 0 ]`, presence only, no accuracy gate. (The old thresholded `compute_d1_valid_detection_single` is removed.) |
+| D2 | Exact-match rate | `d_metrics.compute_d2_lane_count` — matches spec: exact `1[ pred_count == gt_count ]`; native polyline count when available, else connected-component proxy (recorded in `D2_pred_count_source`). |
+| D3 | Plain IoU primary | `d_metrics.compute_d3_iou` — plain IoU on the **stroke-standardized** prediction (dilate-to-reference-width), P/R/F1 for context. The old tolerant-F1-@-5px path is removed; the un-thickened alternative is now **D3′** (`compute_d3_prime`, δ-gated). |
+| D4 | Near-field (lower region) only | `d_metrics.compute_d4_near_field_iou` — D3 IoU on the **near band, rows 80%–95%** (`NEAR_FIELD_TOP_FRACTION=0.80`, `NEAR_FIELD_BOTTOM_FRACTION=0.95`); bottom 5% excluded as assumed hood (an image band, not a physical near field; was lower 50% with no hood exclusion). D3′ replaces this with a 3-band `D4p_{upper,middle,lower}` profile sharing the same edges. |
+| D5 | Tag-based occlusion gap; dark-pixel thresholds explicitly ruled out | `d_metrics._gap` + `visibility_group` — matches spec: `mean(D3_iou|clear) − mean(D3_iou|occluded)`, `MIN_GROUP_FOR_D5=3`, human visibility tags. Dark-region proxy removed. **Defect:** live runners read the visibility tag from the wrong manifest path → D5 groups currently empty (see [evaluation_protocol.md §7](evaluation_protocol.md#7-known-defects-open-tracked)). |
+| D6 | Pooled `ΣFN / ΣGT` across group | `d_metrics.compute_d6_image_counts` + `summarize_d_records` — matches spec: the **group** ratio pools `Σ FN / Σ GT` (per-image `1 − recall` averaging is removed). |
+| C1 | Pearson point-biserial, I1 ↔ binary D1 | `compute_correlations_from_records` — Spearman, and now against `D3_f1` / `D6_image_missed_ratio` (from `build_d_record`), not the removed tolerant-F1 key. |
+| C2, C3 | Pearson | Spearman primary (both reported where possible). |
+| C4 | Median I5 split on **IoU** | `compute_c4_geometry_sensitivity_detail` (:1192) — canonical-I5-only Spearman against **`D3_f1`** (primary), `D3_iou`, and the detected ratio (`1 − D6_image_missed_ratio`), tertile effect with bootstrap CI, per-component/per-stratum associations, optional fixed-effects regression. Legacy median-split scalar retained as `C4`. (No longer references the removed `D3_tolerant_f1_r5`.) |
+| C5 | Mean of 0–1-oriented I1, I2, I3, D1, D3, D4 differences | `compute_condition_degradation` — uses normalized R1/R2 components. |
+| R1 | `100/0.95 × [0.30 I1 + 0.30 I2 + 0.20 I3 + 0.10 N(I4) + 0.05 N(I5)]` | `compute_r1_marking_readability_score` (:659) — `0.35 I1 + 0.35 I2 + 0.20 I3 + 0.10 I4_legacy_thickness`; **I5 not included**; no N() normalization. Unchanged. |
+| R2 | `0.25 D1 + 0.20 D2 + 0.20 D3 + 0.15 D4 + 0.08 R(D5) + 0.08(1−D6) + 0.04 D7` | `compute_r2_reference_detectability_score` (:677) — `0.35 D3_f1 + 0.20 D3_iou + 0.20 D4_near_iou + 0.20 (1−D6_image_missed_ratio) + 0.05 D7_confidence_mean`; **D1, D2, R(D5) absent**. Now reads `build_d_record` keys (`D3_f1`, `D7_confidence_mean`), not the removed `D3_tolerant_f1_r5` / `D8`. |
+| R4 | Descriptive findings profile; fixed labels prohibited | `compute_r4_machine_readability_class` (:690) — returns `HIGH_/MODERATE_/LOW_MACHINE_READABILITY` on `R1 ≥ 80 and R2 ≥ 80` / `R1 ≥ 60 or R2 ≥ 60` / else. **These are exactly the fixed classification labels the specification prohibits** (removal is Phase C, awaits go-ahead). |
 
 ### Open specification questions
 
@@ -966,9 +989,9 @@ Two internal inconsistencies in the source tables should be resolved before the 
 
 - `evaluation/readiness_metrics.py` — record dicts (:740–772), `scalar_keys` list (:910–913), R1/R2 weight dicts, `compute_r3_bottleneck` alias fallbacks (:887–898)
 - `evaluation/visualize_failures.py` — `DEFAULT_FAILURE_THRESHOLDS` (:20–31) and `DEFAULT_GOOD_THRESHOLDS` (:36–46) hardcode long-form keys, and metric keys become **on-disk directory names** (:143). Unmatched keys are dropped silently (:140), so a partial rename fails without error
-- `evaluation/run_readiness.py` — `D8_confidence_mean` (:373); CSV column headers derive from record keys
-- `tests/test_readiness_metrics_v2.py` — imports compute functions by name; pins R2 weights numerically (:109) and asserts `layer2.D7_temporal_jitter` (:171)
-- `Algorithms/*.md` — 14 files whose **filenames encode metric IDs** (`D7_temporal_jitter.md`, `D8_confidence_mean.md`, `I4_thickness_stability.md`, `D5_dark_region_iou_gap.md`, …), plus the link table in `Algorithms/README.md`
+- `evaluation/run_readiness.py` — now reads `D7_confidence_mean` (:437–438) from the `build_d_record` engine (no longer `D8_confidence_mean`); CSV column headers derive from record keys
+- `tests/test_readiness_metrics_v2.py` — imports compute functions by name; pins R2 weights numerically and asserts `layer2.D7_confidence_mean` (:183) (the old `D7_temporal_jitter` / `D8` assertions are gone)
+- `Algorithms/*.md` — **these files are stale for the D-series:** `D1_valid_detection.md`, `D2_instance_agreement.md`, `D3_iou_and_tolerant_f1.md`, `D4_band_metrics.md`, `D5_dark_region_iou_gap.md`, `D6_missed_marking_ratio.md`, `D7_temporal_jitter.md`, `D8_confidence_mean.md` describe the **removed** per-image D engine, not the live `evaluation/d_metrics.py` (Table-16 D1–D7 + optional D3′). They need rewriting/renaming to match; until then, treat `docs/evaluation_protocol.md` + `evaluation/d_metrics.py` as authoritative for the D-series. The I-series Algorithms files (`I1`–`I6`) still track the live I engine.
 - `evaluation/lane_geometry_complexity.py` — the I5 engine itself, and its reuse of `evaluation.lane_width_stability.construct_lane_centerlines`/`determine_measurement_space`
 - Existing `outputs/readiness/*_readiness.json` and sibling `.jsonl`/`.csv` artifacts become stale on any rename
 

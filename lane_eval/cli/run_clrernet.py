@@ -58,11 +58,19 @@ def _letterbox_params(orig_w: int, orig_h: int, target_w: int = 1640, target_h: 
     return scale, pad_left, pad_top
 
 
-def _clrernet_points_to_original(preds, orig_w: int, orig_h: int):
+def _clrernet_points_to_original(preds, orig_w: int, orig_h: int, scores=None):
+    """Un-letterbox CLRerNet point arrays back to the sample's original resolution.
+
+    When ``scores`` is supplied (one per input lane), it is filtered in lockstep
+    with the lanes that survive the >=2-in-bounds-points test, so the returned
+    ``scores`` stay index-aligned with the returned ``lanes``. Returns
+    ``(lanes, scores)`` with ``scores=None`` when none were supplied.
+    """
     scale, pad_left, pad_top = _letterbox_params(orig_w, orig_h)
 
     lanes = []
-    for lane in preds:
+    kept_scores = None if scores is None else []
+    for idx, lane in enumerate(preds):
         converted = []
         for x, y in lane:
             ox = (float(x) - pad_left) / scale
@@ -71,8 +79,71 @@ def _clrernet_points_to_original(preds, orig_w: int, orig_h: int):
                 converted.append({"x": ox, "y": oy})
         if len(converted) >= 2:
             lanes.append(converted)
+            if kept_scores is not None:
+                kept_scores.append(scores[idx] if idx < len(scores) else None)
 
-    return lanes
+    return lanes, kept_scores
+
+
+def infer_scored_lanes(model, image_path):
+    """Return ``(preds, scores)`` in the SAME coordinate space CLRerNet's own
+    ``inference_one_image`` produces, but WITHOUT discarding per-curve scores.
+
+    CLRerNet's ``libs.api.inference.inference_one_image`` calls the head with
+    ``as_lanes=False`` and post-processes only ``results[0]["lanes"]`` through
+    ``get_prediction`` — the parallel ``results[0]["scores"]`` tensor is dropped.
+    We mirror that function verbatim (same ``Compose`` source, same data dict,
+    same ``get_prediction(lanes, ori_h, ori_w)`` call, so the returned point
+    coordinates are identical) and additionally capture ``scores`` aligned by
+    index to ``preds``.
+
+    On any deviation from the expected result shape we fall back to the stock
+    ``inference_one_image`` (returning ``scores=None``) so the adapter never
+    fails inference merely because score capture is unavailable. This path only
+    runs on a machine with the CLRerNet checkout + checkpoint + GPU.
+    """
+    import torch  # local import: torch/mmdet only exist on the inference box
+
+    from libs.api.inference import inference_one_image, get_prediction
+
+    try:
+        from libs.datasets.pipelines import Compose
+
+        img = cv2.imread(str(image_path))
+        ori_shape = img.shape
+        data = dict(
+            filename=str(image_path),
+            sub_img_name=None,
+            img=img,
+            gt_points=[],
+            id_classes=[],
+            id_instances=[],
+            img_shape=ori_shape,
+            ori_shape=ori_shape,
+        )
+        cfg = model.cfg
+        model.bbox_head.test_cfg.as_lanes = False
+        test_pipeline = Compose(cfg.test_dataloader.dataset.pipeline)
+        data = test_pipeline(data)
+        data_ = dict(inputs=[data["inputs"]], data_samples=[data["data_samples"]])
+        with torch.no_grad():
+            results = model.test_step(data_)
+        lanes = results[0]["lanes"]
+        raw_scores = results[0].get("scores", None)
+        preds = get_prediction(lanes, ori_shape[0], ori_shape[1])
+        scores = None
+        if raw_scores is not None:
+            score_arr = (
+                raw_scores.cpu().numpy() if hasattr(raw_scores, "cpu")
+                else np.asarray(raw_scores)
+            )
+            scores = [float(s) for s in np.asarray(score_arr).reshape(-1)][: len(preds)]
+        return preds, scores
+    except Exception as exc:  # noqa: BLE001 - never fail inference over score capture
+        print(f"[run_clrernet] score-preserving path unavailable ({exc!r}); "
+              "falling back to score-less inference_one_image")
+        _src, preds = inference_one_image(model, str(image_path))
+        return preds, None
 
 
 def parse_args():
@@ -104,7 +175,6 @@ def main():
     from mmdet.apis import init_detector
     from mmengine.config import Config
 
-    from libs.api.inference import inference_one_image
     from lane_eval.manifest import ManifestDataset, PredictionManifestWriter
 
     dataset = ManifestDataset(args.manifest)
@@ -147,11 +217,12 @@ def main():
         for idx in tqdm(range(total), desc=f"Running CLRerNet on {dataset_name}"):
             sample = dataset[idx]
 
-            src, preds = inference_one_image(model, sample.image_path)
-            lanes_original = _clrernet_points_to_original(
+            preds, scores = infer_scored_lanes(model, sample.image_path)
+            lanes_original, scores_original = _clrernet_points_to_original(
                 preds,
                 sample.width,
                 sample.height,
+                scores,
             )
             pred_mask = _rasterize_lanes(
                 lanes_original,
@@ -165,7 +236,11 @@ def main():
                 sample.image_path,
                 pred_mask,
                 polylines=lanes_original,
-                prediction_meta={"coordinate_space": "original_image"},
+                scores=scores_original,
+                prediction_meta={
+                    "coordinate_space": "original_image",
+                    "score_source": "clrernet_lane_conf" if scores_original is not None else None,
+                },
             )
 
             if idx in overlay_indices and overlay_dir is not None:

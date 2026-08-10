@@ -20,6 +20,7 @@ import cv2
 import numpy as np
 
 from evaluation.d_metrics import build_d_record, summarize_d_records
+from evaluation import d3prime_config
 from lane_eval.manifest import ManifestDataset, PredictionManifestReader
 
 
@@ -85,10 +86,28 @@ def main():
     ap.add_argument("--render-panels", action="store_true",
                     help="Also write per-image RAW/PRED/D1-D6 side-by-side panels")
     ap.add_argument("--panel-max-side", type=int, default=640)
+    ap.add_argument("--d3prime-config", default=None,
+                    help="Path to a frozen D3' config (delta). Default: "
+                         f"{d3prime_config.DEFAULT_CONFIG_PATH} if it exists. "
+                         "When no config is present, D3' stays dormant and the "
+                         "legacy D3/D4/D6 record is unchanged.")
+    ap.add_argument("--delta", type=float, default=None,
+                    help="Override the frozen delta (advanced/debug). Prefer the "
+                         "frozen config so delta stays reproducible.")
     args = ap.parse_args()
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
     dataset_name = ManifestDataset(args.manifest).name
+
+    # Resolve the frozen D3' tolerance. Explicit --delta wins; else read the
+    # frozen config (default path or --d3prime-config); else None -> D3' dormant.
+    delta = args.delta
+    if delta is None:
+        delta = d3prime_config.load_frozen_delta(args.d3prime_config)
+    if delta is not None:
+        print(f"D3' active: delta = {delta:.5f} (fraction of image diagonal)")
+    else:
+        print("D3' dormant: no frozen delta; reporting legacy D3/D4/D6 only.")
 
     records = []
     render_inputs = []
@@ -102,6 +121,7 @@ def main():
             lane_prob=lane_prob,
             visibility_tag=_visibility_tag(sample),
             image_path=str(sample.image_path),
+            delta=delta,
         )
         record["dataset"] = dataset_name
         record["model"] = args.model_name
@@ -150,6 +170,16 @@ def main():
     print(f"  D5 visibility gap (proxy) : {fmt(d5v['gap'])} (clear n={d5v['n_reference']}, degraded n={d5v['n_comparison']})")
     print(f"  D6 detection gap ratio    : {fmt(summary['D6_detection_gap_ratio'])}")
     print(f"  D7 confidence mean        : {fmt(summary['D7_confidence_mean'])}")
+    if "D3_prime" in summary:
+        dp = summary["D3_prime"]
+        print(f"  --- D3' centerline localization (delta={dp['D3p_delta']}, "
+              f"n={dp['D3p_num_scored']}) ---")
+        print(f"  D3' support F1 (mean)     : {fmt(dp['D3p_support_f1_mean'])}")
+        print(f"  D3' precision / recall    : {fmt(dp['D3p_support_precision_mean'])}"
+              f" / {fmt(dp['D3p_support_recall_mean'])}")
+        print(f"  D3' loc err median / p95  : {fmt(dp['D3p_loc_err_median_mean'])}"
+              f" / {fmt(dp['D3p_loc_err_p95_mean'])}")
+        print(f"  D6' unsupported ratio     : {fmt(dp['D6p_unsupported_marking_ratio_mean'])}")
     print(f"Saved -> {args.output_dir}")
 
 
