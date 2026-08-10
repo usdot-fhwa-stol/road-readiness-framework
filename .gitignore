@@ -82,3 +82,4 @@ clrernet_paper.pdf
 __pycache__/
 *.pyc
 
+docs/i_metrics_redesign_rationale.md

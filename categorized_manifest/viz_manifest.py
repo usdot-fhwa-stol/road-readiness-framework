@@ -29,6 +29,46 @@ def load(path=DEFAULT_MANIFEST):
         return json.load(f)["samples"]
 
 
+def load_gateway(paths):
+    """Load one or more gateway `*.tags.jsonl` files (from tag_gateway.py) into
+    the same sample-dict shape the rest of this module expects.
+
+    Those files are JSON-Lines (one record per line) with tags at the TOP level
+    (`predicted_tags`), whereas the classic manifests are a single JSON object
+    with tags nested under `meta.predicted_tags`. This normalizes the former to
+    the latter, so filter/show/view all work unchanged, and keeps the per-tag
+    `reasoning` around for captions.
+
+    `paths` may be a single path or a list of paths (e.g. all four datasets).
+    """
+    if isinstance(paths, (str, os.PathLike)):
+        paths = [paths]
+    samples = []
+    for p in paths:
+        with open(p, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                d = json.loads(line)
+                pt = d.get("predicted_tags") or {}
+                samples.append({
+                    "sample_id": d.get("sample_id"),
+                    "dataset": d.get("dataset"),
+                    "split": d.get("split"),
+                    "image_path": d.get("image_path"),
+                    "source_image_path": d.get("source_image_path"),
+                    # nest under meta so _labels() finds it unchanged
+                    "meta": {"predicted_tags": pt},
+                })
+    return samples
+
+
+def reasoning(s):
+    """Per-dimension 'why' text for a sample, or {} if absent."""
+    return (s.get("meta", {}).get("predicted_tags") or {}).get("reasoning", {}) or {}
+
+
 def _labels(s):
     return (s.get("meta", {}).get("predicted_tags") or {}).get("labels", [])
 
