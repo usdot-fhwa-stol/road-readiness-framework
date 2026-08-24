@@ -10,7 +10,7 @@
 #   ./run_hybridnets.sh                 # full run, all images
 #   MAX_SAMPLES=20 ./run_hybridnets.sh  # quick smoke test
 set -euo pipefail
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 PY="${HYBRIDNETS_PY:-/shared/src/HybridNets/hybridnets/bin/python}"
 HN_REPO="${HYBRIDNETS_REPO:-}"

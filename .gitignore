@@ -85,3 +85,27 @@ __pycache__/
 docs/i_metrics_redesign_rationale.md
 .rr_audit_tmp/
 pilot_output/*
+
+# --- release cleanup: thesis/report drafts, superseded prototypes, generated
+# data untracked from git (files remain on disk, just no longer versioned) ---
+/index.html
+.ipynb_checkpoints/
+/categorized_manifest/explore_tags.ipynb
+/categorized_manifest/explore_tags_final.ipynb
+/chapter3_revision_2.txt
+/chapter3_revision_3.txt
+/chapter3_revision_4.txt
+/chapter3_revisions.txt
+/Dataset_Metadata_Audit.docx
+/task3d1.docx
+/task3draft1_report.pdf
+/task3draft1_report_2.pdf
+/TO_25-203_All_Datasets_Categorized.xlsx
+/PR_DESCRIPTION.txt
+/classify_bdd.py
+/road_classification.py
+/combined_i_and_d_metrics.csv
+/i_metrics_summary.csv
+/i_outputs/
+/file_strcture.sh
+/run_full_i1_rankings.sh

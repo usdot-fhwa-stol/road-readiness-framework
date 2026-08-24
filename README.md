@@ -166,8 +166,8 @@ Output goes to `manifests/<dataset>/` (gitignored — regenerable artifacts).
 # YOLOPX (all datasets)
 bash scripts/run_yolopx_manifest.sh
 
-# HybridNets (runs under its own venv)
-bash scripts/run_hybridnets_manifest.sh
+# HybridNets (pilot-only, runs under its own venv — see pilot_analysis/)
+bash pilot_analysis/run_hybridnets_manifest.sh
 
 # CLRerNet (runs under the CLRerNet venv)
 source /shared/src/CLRerNet/clrernet/bin/activate

@@ -34,7 +34,7 @@ import pandas as pd
 sys.path.insert(0, "scripts")
 from build_combined_tags_metrics_csv import load_tags  # noqa: E402
 
-I_METRICS_PATH = "i_metrics_summary.csv"
+I_METRICS_PATH = "pilot_analysis/i_metrics_summary.csv"
 D_METRICS_DIR = "outputs/d_metrics_full/d_metrics_v2"
 DATASETS = ["culane", "tusimple", "curvelanes", "bdd100k"]
 MODELS = ["yolopx", "clrernet"]

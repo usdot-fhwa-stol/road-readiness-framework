@@ -35,8 +35,7 @@ python3 categorized_manifest/build_categorized_manifest.py   # needs openpyxl
 ## Auto-tagging (predict the tags with a model)
 
 `tag_images.py` predicts the 43 tags for each image with a zero-shot **SigLIP2**
-model (`google/siglip2-base-patch16-224`, the same model as `classify_bdd.py`),
-and writes an *updated* manifest: every sample keeps its `image_path` /
+model (`google/siglip2-base-patch16-224`) and writes an *updated* manifest: every sample keeps its `image_path` /
 `ground_truth_path` and gains a `predicted_tags` block, so you can sort/group by
 tag. Human `tags` (when present) are preserved for evaluation.
 

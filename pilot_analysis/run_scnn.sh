@@ -3,7 +3,7 @@
 
 set -euo pipefail
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 PY="${PYTHON:-python}"
 MODEL_NAME="${MODEL_NAME:-scnn}"

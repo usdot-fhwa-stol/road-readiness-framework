@@ -16,7 +16,7 @@
 # Any config var below can be overridden via the environment.
 set -euo pipefail
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 
 # ---- config (override via env) ----------------------------------------------
 PY="${PYTHON:-python}"
