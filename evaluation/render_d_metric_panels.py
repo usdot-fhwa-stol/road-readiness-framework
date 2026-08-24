@@ -169,15 +169,22 @@ def render_sample_panels(
         color = _INSTANCE_COLORS[shown % len(_INSTANCE_COLORS)]
         pred_view = _blend(pred_view, _dilate_for_display(sel.astype(np.uint8), h), color)
         shown += 1
+    # D2_count_match is a fractional ratio in [0,1] (min/max of pred vs gt
+    # lane counts), not a strict boolean -- None only when GT count == 0.
     match = record.get("D2_count_match")
-    verdict = "match" if match == 1 else ("MISMATCH" if match == 0 else "not eligible")
+    if match is None:
+        verdict = "not eligible"
+    elif match >= 1.0:
+        verdict = "match (1.00)"
+    else:
+        verdict = f"partial match ({match:.2f})"
     _save(out_dir / f"{sid}__D2.jpg", _panel(
         gt_view, pred_view,
         [f"D2 Lane Count: GT={record.get('D2_gt_lane_count')}  pred={record.get('D2_pred_lane_count')}  -> {verdict}",
          f"pred count source: {record.get('D2_pred_count_source')}"
          + ("  (component counts are approximate)" if record.get("D2_pred_count_source") == "connected_components" else "")],
         max_side,
-        header_color=(80, 220, 80) if match == 1 else (60, 60, 255))); n += 1
+        header_color=(80, 220, 80) if (match is not None and match >= 1.0) else (60, 60, 255))); n += 1
 
     # D3 -- segmentation IoU with TP/FN/FP error map
     d3_img = _blend(_blend(_blend(base, tp_d, _TP_COLOR), fn_d, _FN_COLOR), fp_d, _FP_COLOR)

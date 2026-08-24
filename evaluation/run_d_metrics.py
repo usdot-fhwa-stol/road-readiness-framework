@@ -19,6 +19,7 @@ from pathlib import Path
 import cv2
 import numpy as np
 
+from evaluation import calibration_split
 from evaluation.d_metrics import build_d_record, summarize_d_records
 from evaluation import d3prime_config
 from lane_eval.manifest import ManifestDataset, PredictionManifestReader
@@ -73,8 +74,13 @@ def load_pairs(gt_manifest: str, pred_manifest: str):
 
 
 def _visibility_tag(sample) -> str | None:
-    tags = ((sample.meta or {}).get("tags") or {}).get("summary") or {}
-    return tags.get("Observed Marking Visibility")
+    """The manifest stores 'Observed Marking Visibility' as a list at
+    meta.predicted_tags.by_dimension[...], not at meta.tags.summary[...] (which
+    does not exist on these manifests). Reuse the already-correct extractor
+    from calibration_split.py and join to the ';'-separated string
+    d_metrics.visibility_group() expects."""
+    tags = calibration_split._sample_visibility_tags({"meta": sample.meta})
+    return "; ".join(tags) if tags else None
 
 
 def main():
@@ -109,8 +115,17 @@ def main():
     else:
         print("D3' dormant: no frozen delta; reporting legacy D3/D4/D6 only.")
 
+    # Panels are rendered per-image, inline in this loop (not buffered into a
+    # render_inputs list for the whole dataset first) -- buffering every
+    # image_rgb/gt_mask/pred_mask for a multi-thousand-image dataset risked
+    # 10+ GB of RAM before a single panel was written.
+    panel_dir = args.output_dir / "panels"
+    n_panel_files = 0
+    if args.render_panels:
+        from evaluation.d_metrics import standardize_stroke_width
+        from evaluation.render_d_metric_panels import render_sample_panels
+
     records = []
-    render_inputs = []
     for sample, image_rgb, gt_mask, pred_mask, pred_lanes, lane_prob in load_pairs(args.manifest, args.pred_manifest):
         record = build_d_record(
             sample_id=sample.image_id,
@@ -127,9 +142,15 @@ def main():
         record["model"] = args.model_name
         records.append(record)
         if args.render_panels:
-            from evaluation.d_metrics import standardize_stroke_width
             display_pred, _ = standardize_stroke_width(pred_mask, gt_mask)
-            render_inputs.append((sample, image_rgb, gt_mask, display_pred, record))
+            # group_summary is filled in after the loop (needs all records for
+            # D5 gaps etc.); panels reference only per-image fields, so a
+            # placeholder here is fine and doesn't block streaming rendering.
+            n_panel_files += render_sample_panels(
+                panel_dir, sample.image_id, image_rgb, gt_mask, display_pred, record,
+                group_summary=None, max_side=args.panel_max_side,
+                gt_lane_json=(sample.target.meta or {}).get("lane_json"),
+            )
 
     summary = summarize_d_records(records)
     summary["dataset"] = dataset_name
@@ -146,16 +167,7 @@ def main():
             f.write(json.dumps(r) + "\n")
 
     if args.render_panels:
-        from evaluation.render_d_metric_panels import render_sample_panels
-        panel_dir = args.output_dir / "panels"
-        n_files = 0
-        for sample, image_rgb, gt_mask, pred_mask, record in render_inputs:
-            n_files += render_sample_panels(
-                panel_dir, sample.image_id, image_rgb, gt_mask, pred_mask, record,
-                group_summary=summary, max_side=args.panel_max_side,
-                gt_lane_json=(sample.target.meta or {}).get("lane_json"),
-            )
-        print(f"Wrote {n_files} panel images -> {panel_dir}")
+        print(f"Wrote {n_panel_files} panel images -> {panel_dir}")
 
     print(f"\n=== D metrics: {args.model_name} / {dataset_name} "
           f"({summary['num_processed_images']} images, {summary['num_annotation_eligible']} eligible) ===")

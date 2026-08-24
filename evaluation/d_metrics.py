@@ -114,12 +114,19 @@ def compute_d2_lane_count(
     gt_mask: Any = None,
     pred_lanes: Optional[List[np.ndarray]] = None,
 ) -> dict:
-    """Draft D2: exact agreement of lane-boundary instance counts.
+    """Draft D2: fractional agreement of lane-boundary instance counts.
 
     GT count comes from the manifest lane_json instances. Predicted count uses
     native polylines when the processor provides them; otherwise it falls back
     to connected components of the merged mask, which the draft flags as
     approximate -- the fallback is recorded in D2_pred_count_source.
+
+    D2_count_match is a per-image ratio in [0, 1], not a strict exact-match
+    flag: min(pred_count, gt_count) / max(pred_count, gt_count). E.g. 3
+    predicted lanes vs 4 GT lanes -> 0.75. Symmetric: over-counting (6 pred vs
+    4 GT) is penalized the same as under-counting (4 pred vs 6 GT). 1.0 only
+    when counts match exactly; None when GT count == 0 (undefined, excluded
+    from aggregation rather than coerced to 0 or 1).
     """
     gt_count = len(lanes_from_lane_json(gt_lane_json))
     if gt_count == 0 and gt_mask is not None:
@@ -129,7 +136,11 @@ def compute_d2_lane_count(
         pred_count, source = len(native), "native_polyline"
     else:
         pred_count, source = _component_lane_count(pred_mask), "connected_components"
-    match = None if gt_count == 0 else int(pred_count == gt_count)
+    if gt_count == 0:
+        match = None
+    else:
+        denom = max(pred_count, gt_count)
+        match = (min(pred_count, gt_count) / denom) if denom else 1.0
     return {
         "D2_gt_lane_count": gt_count,
         "D2_pred_lane_count": pred_count,
