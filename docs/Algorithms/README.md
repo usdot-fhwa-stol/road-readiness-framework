@@ -2,7 +2,7 @@
 
 Algorithm definitions for the Layer 1 image-readability metrics (**I1–I6**) and the
 Layer 2 reference-processor detectability metrics (**D1–D8**), as implemented in
-[`evaluation/readiness_metrics.py`](../evaluation/readiness_metrics.py).
+[`evaluation/readiness_metrics.py`](../../evaluation/readiness_metrics.py).
 
 Each file states, for one metric: the inputs it consumes, the exact step-by-step
 computation, the output range, edge-case behaviour, and any known caveats about

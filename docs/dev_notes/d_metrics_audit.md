@@ -128,7 +128,7 @@ Exhaustive scan of all adapters, schema, converters, generators, and the four in
 ## 7. Deliverable 7 — Scientific-validity risks & unresolved decisions
 
 1. **Thick-stroke basis biases model ranking.** D3/D4/D6 dilate the prediction; the report itself attributes CLRerNet's win to stroke width/tolerance handling. The headline ordering is not reproducible against a single, stated D3 definition.
-2. **Three conflicting D3 definitions.** Live code = plain IoU on prediction-only dilation; `metrics_reference.md:617` = fixed 16 px + symmetric 8 px; `Algorithms/D3_*.md` + `metrics_reference.md:946` = distance-transform tolerant-F1 @ 5 px "primary." **Only the first is implemented.** Which produced the report's published tables is undeterminable from the repo.
+2. **Three conflicting D3 definitions.** Live code = plain IoU on prediction-only dilation; `metrics_reference.md:617` = fixed 16 px + symmetric 8 px; `Algorithms/D3_*.md` + `../metrics_reference.md:946` = distance-transform tolerant-F1 @ 5 px "primary." **Only the first is implemented.** Which produced the report's published tables is undeterminable from the repo.
 3. **Docs describe removed code.** `metrics_reference.md`/`Algorithms/*` reference `compute_d*_single`, recall/precision-gated D1, dark-pixel D5 proxy — none exist in `.py`. An auditor trusting the docs would attribute nonexistent tolerances (5 px, 0.30 gates) to live metrics.
 4. **CLRerNet is evaluated as a degraded proxy** of itself: 4 px raster → dilated → CC-counted → no confidence. Its native scored-polyline strengths are discarded before the metric code.
 5. **CULane GT conflates visible paint with occlusion-extrapolated annotation** (all categories → 1, no visibility flag), directly against the visible-marking constraint.

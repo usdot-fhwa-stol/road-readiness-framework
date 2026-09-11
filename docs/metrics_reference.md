@@ -557,7 +557,7 @@ distance, the image horizon, occlusion, work zones, and detector errors
 (directly affecting `I5_pred`) all limit usable support and confidence. This is
 not a roadway design-compliance metric, not a safety score, and does not
 establish causal ADS performance effects. See
-[`Algorithms/I5_geometry_complexity.md`](../Algorithms/I5_geometry_complexity.md)
+[`Algorithms/I5_geometry_complexity.md`](Algorithms/I5_geometry_complexity.md)
 for the full algorithm.
 
 ### I6 — Lane Count (GT)
