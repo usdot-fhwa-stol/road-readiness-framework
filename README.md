@@ -244,8 +244,16 @@ run prints which metric families were added vs. absent.
 
 ## Results
 
-All models, scored by the **shared** mask-style segmentation metrics (mask IoU / F1 /
-precision / recall) on every dataset:
+> **Full pilot-analysis results:** [`results/Pilot_Analysis_Results.csv`](results/Pilot_Analysis_Results.csv)
+> — one row per image (9,298 images across all 4 datasets) with I1–I6, the 43
+> scenario/condition tags, per-model (YOLOPX/CLRerNet) D-metrics, and the R1/R2
+> composite scores. This is the table behind the pilot-analysis presentation
+> (see `pilot_analysis/` for the model-comparison scripts that led to selecting
+> YOLOPX + CLRerNet, and `docs/metrics_reference.md` for what each metric means).
+
+The table below predates that full pilot run — it's the original **shared**
+mask-style segmentation metrics (mask IoU / F1 / precision / recall) used to
+choose which models to standardize on:
 
 | Model | Dataset | Split | Images | IoU | F1 | Precision | Recall |
 |---|---|---|--:|--:|--:|--:|--:|
