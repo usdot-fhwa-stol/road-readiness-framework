@@ -579,8 +579,8 @@ for the full algorithm.
 This group evaluates the quality and usability of the standardized processor outputs. **D1 is calculated across all applicable processed images; D2 through D6 are calculated only where compatible reference annotations and processor outputs are available.** Images without compatible annotations may be retained for visual review and qualitative reporting but are excluded from annotation-based quantitative measures.
 
 > **This section documents the live Table-16 engine as it runs today.** The audited,
-> construct-valid successor methodology is [d_metrics_methodology.md](d_metrics_methodology.md)
-> (audit reasoning: [d_metrics_proposal_audit.md](d_metrics_proposal_audit.md)). Key
+> construct-valid successor methodology is [d_metrics_methodology.md](dev_notes/d_metrics_methodology.md)
+> (audit reasoning: [d_metrics_proposal_audit.md](dev_notes/d_metrics_proposal_audit.md)). Key
 > planned departures there are **δ-gated** (dormant until a tolerance `delta` is frozen)
 > and therefore do **not** describe current outputs — notably: D1 becomes recall on the
 > un-thickened centerline basis, **replacing** presence-only Detection Success Rate;

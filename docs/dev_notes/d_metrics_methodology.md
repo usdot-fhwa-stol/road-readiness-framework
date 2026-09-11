@@ -7,8 +7,8 @@ construct, (b) dataset semantics, (c) actual YOLOPX / CLRerNet outputs, (d) rele
 standards, (e) peer-reviewed lane-eval literature. It **supersedes the scratch
 proposal** as the design target. The audit reasoning behind every verdict lives in
 [d_metrics_proposal_audit.md](d_metrics_proposal_audit.md); the live-engine behaviour
-it revises is documented in [metrics_reference.md](metrics_reference.md) and
-[evaluation_protocol.md](evaluation_protocol.md).
+it revises is documented in [metrics_reference.md](../metrics_reference.md) and
+[evaluation_protocol.md](../evaluation_protocol.md).
 
 **What this is NOT.** It does not describe numbers the pipeline publishes today. The
 live engine faithfully implements the v2-report Table 16 (presence-based D1,
@@ -100,7 +100,7 @@ it *deflates* recall/D1 (penalizes not detecting inferred paint) and *inflates*
 precision/D2 (predictions over occluded-but-annotated paint count as supported). A
 true fix needs a per-pixel visibility mask that does not exist → **DEFER**; the caveat
 is not deferred and must accompany any CULane D-number. (See
-[dataset_formats.md](dataset_formats.md) and audit cross-cutting finding 1.)
+[dataset_formats.md](../dataset_formats.md) and audit cross-cutting finding 1.)
 
 ## 2. Canonical coordinate system — **REVISE → `(x/D, y/D)` · LIVE**
 
@@ -114,7 +114,7 @@ exactly the axis per-axis normalization makes most lenient, and inconsistently s
 The diagonal form gives a resolution-free **circle**, invariant under uniform scaling,
 and matches all standard benchmark tolerances. `delta` is a **dimensionless fraction
 of the diagonal**, taken as an explicit argument, never chosen internally.
-Implemented in [marking_support.py](../evaluation/marking_support.py)
+Implemented in [marking_support.py](../../evaluation/marking_support.py)
 (`to_canonical`, `diagonal`); this section documents what the code already does.
 
 ## 3. Common marking-support representation — **REVISE · mixed**
@@ -128,7 +128,7 @@ Implemented in [marking_support.py](../evaluation/marking_support.py)
 - **Sᵢᵞ(τ_Y)** = YOLOPX support = **skeletonized** binary mask to 1 px. Skeleton at the
   *fixed* stored operating point works now; a **tunable τ_Y is DEFERred** — the
   per-pixel probability is discarded at manifest write (`pred_mask > 0`; verified in
-  [prediction_writer.py](../evaluation/prediction_writer.py)), so no τ_Y sweep is
+  [prediction_writer.py](../../evaluation/prediction_writer.py)), so no τ_Y sweep is
   possible from cache.
 - **Sᵢᶜ(τ_C)** = CLRerNet support = union of native polylines with per-curve
   confidence ≥ τ_C. The `scores` are preserved end-to-end → **τ_C-GATED** (thread
@@ -198,7 +198,7 @@ band is a road region rather than sheet metal:
 | lower / near | `[0.80, 0.95)` | 15% |
 | **hood — excluded** | `[0.95, 1.00]` | 5% (covered by no band) |
 
-Defined once in [marking_support.py](../evaluation/marking_support.py) (`BAND_EDGES`,
+Defined once in [marking_support.py](../../evaluation/marking_support.py) (`BAND_EDGES`,
 `HOOD_IGNORE_FRACTION`, `NEAR_BAND_FRACTION`); the legacy near-field D4
 (`compute_d4_near_field_iou`) derives the **same** near band `[0.80, 0.95)` from those
 constants, so both bases agree. **Hood caveat (required):** the 5% hood exclusion is a
@@ -251,10 +251,10 @@ persists YOLOPX per-pixel probability.
 ## 12. Calibration protocol — **REVISE · mixed**
 
 Distinct calibration / final partitions;
-[calibration_split.py](../evaluation/calibration_split.py) →
+[calibration_split.py](../../evaluation/calibration_split.py) →
 `dataset/calibration/calibration_split.json`. Freeze on the **calibration partition
 only**, record in output metadata:
-- **δ — freezable now** ([delta_calibration.py](../evaluation/delta_calibration.py) +
+- **δ — freezable now** ([delta_calibration.py](../../evaluation/delta_calibration.py) +
   `run_delta_calibration.py` → `dataset/calibration/d3prime_frozen.json`; knee
   selection + bootstrap stability gate).
 - **τ_C — freezable once wired** (τ_C-GATED).

@@ -10,7 +10,7 @@ This document describes the **live code** in
 [evaluation/d_metrics.py](../evaluation/d_metrics.py) and its calibration
 harness. Where it differs from the report specification, that is recorded in
 [docs/metrics_reference.md](metrics_reference.md#implementation-status-and-deviations)
-and the audit in [docs/d_metrics_audit.md](d_metrics_audit.md). For the meaning
+and the audit in [docs/dev_notes/d_metrics_audit.md](dev_notes/d_metrics_audit.md). For the meaning
 of every field the metric writes, see the metrics reference; this file is the
 *procedure*, not the field dictionary.
 
