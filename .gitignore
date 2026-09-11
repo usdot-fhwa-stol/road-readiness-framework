@@ -111,3 +111,8 @@ pilot_output/*
 /run_full_i1_rankings.sh
 
 /README_lane_eval_template.md
+
+# --- develop merge: PR #10 resurrected the pre-cleanup copies of files this
+# branch already moved/superseded; untracked here rather than re-deleting ---
+/Algorithms/
+/categorized_manifest/
