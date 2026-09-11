@@ -1,0 +1,333 @@
+<title>Inside Two Lane Detectors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root{
+  --ground:#f1f2f5; --surface:#ffffff; --surface-2:#fafbfc;
+  --ink:#161a20; --ink-2:#3a414c; --muted:#646b78; --rule:#dcdfe6;
+  --yolopx:#1f6b64; --yolopx-soft:#e2efed;
+  --clrernet:#a94e28; --clrernet-soft:#f8e9e1;
+  --shadow:0 1px 2px rgba(20,26,34,.06), 0 12px 32px rgba(20,26,34,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0d1015; --surface:#151920; --surface-2:#1b2028;
+    --ink:#e8eaee; --ink-2:#c2c7d0; --muted:#8f97a5; --rule:#242a34;
+    --yolopx:#63b8b0; --yolopx-soft:#16302e;
+    --clrernet:#e28c60; --clrernet-soft:#33211a;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 16px 40px rgba(0,0,0,.45);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0d1015; --surface:#151920; --surface-2:#1b2028;
+  --ink:#e8eaee; --ink-2:#c2c7d0; --muted:#8f97a5; --rule:#242a34;
+  --yolopx:#63b8b0; --yolopx-soft:#16302e;
+  --clrernet:#e28c60; --clrernet-soft:#33211a;
+  --shadow:0 1px 2px rgba(0,0,0,.5), 0 16px 40px rgba(0,0,0,.45);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"Source Serif 4",Georgia,serif; font-size:16px; line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.ui{font-family:Archivo,"Helvetica Neue",Arial,sans-serif}
+.mono{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace}
+
+/* ---------------------------------------------------------------- deck ---- */
+#deck{height:100vh; overflow-y:auto; scroll-snap-type:y mandatory; scroll-behavior:smooth}
+.slide{
+  min-height:100vh; scroll-snap-align:start; scroll-snap-stop:always;
+  display:flex; flex-direction:column; gap:18px;
+  padding:34px clamp(20px,4vw,56px) 30px calc(clamp(20px,4vw,56px) + 46px);
+}
+@media (max-width:800px){ .slide{padding-left:clamp(16px,4vw,56px)} }
+
+.head{display:flex; align-items:flex-start; justify-content:space-between; gap:28px; flex-wrap:wrap}
+.head-l{max-width:min(74ch,100%)}
+.eyebrow{display:flex; align-items:center; gap:10px; margin-bottom:10px}
+.chip{
+  font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase; padding:4px 9px; border-radius:3px;
+  background:var(--yolopx-soft); color:var(--yolopx);
+}
+.chip.clrernet{background:var(--clrernet-soft); color:var(--clrernet)}
+.chip.plain{background:transparent; color:var(--muted); border:1px solid var(--rule)}
+.num{font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--muted); letter-spacing:.14em}
+h2{
+  margin:0; font-size:clamp(22px,2.5vw,32px); font-weight:600; letter-spacing:-.018em;
+  line-height:1.14; text-wrap:balance;
+}
+.lede{margin:9px 0 0; color:var(--ink-2); font-size:clamp(14.5px,1.15vw,17px); max-width:68ch}
+
+/* scene switcher */
+.scenes{display:flex; gap:0; border:1px solid var(--rule); border-radius:4px; overflow:hidden; background:var(--surface); flex-shrink:0}
+.scenes button{
+  font-family:Archivo,sans-serif; font-size:12px; font-weight:600; letter-spacing:.01em;
+  padding:8px 14px; border:0; border-right:1px solid var(--rule); background:transparent;
+  color:var(--muted); cursor:pointer; white-space:nowrap;
+}
+.scenes button:last-child{border-right:0}
+.scenes button[aria-pressed="true"]{background:var(--ink); color:var(--ground)}
+.scenes button:focus-visible{outline:2px solid var(--yolopx); outline-offset:-2px}
+
+/* figure */
+.figwrap{
+  flex:1; min-height:0; display:flex; align-items:center; justify-content:center;
+  background:var(--surface); border:1px solid var(--rule); border-radius:6px;
+  box-shadow:var(--shadow); padding:14px; cursor:zoom-in; position:relative;
+}
+.figwrap img{max-width:100%; max-height:100%; object-fit:contain; display:block}
+.figwrap .hint{
+  position:absolute; right:12px; bottom:10px; font-family:"JetBrains Mono",monospace;
+  font-size:10px; letter-spacing:.08em; color:var(--muted); opacity:.75;
+  text-transform:uppercase; pointer-events:none;
+}
+.missing{color:var(--muted); font-size:14px; padding:40px; text-align:center}
+
+/* notes */
+.notes{display:grid; grid-template-columns:repeat(3,1fr); gap:0 26px; flex-shrink:0}
+@media (max-width:860px){ .notes{grid-template-columns:1fr; gap:12px} }
+.note{padding-top:12px; border-top:2px solid var(--rule); font-size:14px; color:var(--ink-2); line-height:1.45}
+.note b{
+  display:block; font-family:"JetBrains Mono",monospace; font-size:10px; font-weight:700;
+  letter-spacing:.14em; color:var(--muted); margin-bottom:6px;
+}
+
+/* ------------------------------------------------------------ title slide -- */
+.title-slide{justify-content:center; gap:0}
+.title-slide .kicker{
+  font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:22px;
+}
+.title-slide h1{
+  margin:0; font-size:clamp(38px,6.4vw,84px); font-weight:700; letter-spacing:-.035em;
+  line-height:.98; max-width:16ch; text-wrap:balance;
+}
+.title-slide h1 em{font-style:normal; color:var(--yolopx)}
+.title-slide h1 em.b{color:var(--clrernet)}
+.title-slide .sub{margin:22px 0 0; font-size:clamp(16px,1.5vw,20px); color:var(--ink-2); max-width:60ch}
+.meta{display:flex; flex-wrap:wrap; gap:0 34px; margin-top:38px; padding-top:20px; border-top:1px solid var(--rule)}
+.meta div{font-size:13px; color:var(--ink-2)}
+.meta span{
+  display:block; font-family:"JetBrains Mono",monospace; font-size:10px;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:4px;
+}
+.scenecards{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:34px}
+@media (max-width:860px){ .scenecards{grid-template-columns:1fr} }
+.scenecard{background:var(--surface); border:1px solid var(--rule); border-radius:5px; padding:14px 16px}
+.scenecard h3{margin:0 0 5px; font-size:14px; font-weight:600; letter-spacing:-.005em}
+.scenecard p{margin:0; font-size:12.5px; color:var(--muted); line-height:1.4}
+
+/* --------------------------------------------------------- table + cards -- */
+.cmp{width:100%; border-collapse:collapse; font-size:14.5px}
+.cmp th,.cmp td{text-align:left; padding:13px 16px; border-bottom:1px solid var(--rule); vertical-align:top}
+.cmp thead th{
+  font-family:Archivo,sans-serif; font-size:11px; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted); border-bottom:2px solid var(--rule);
+}
+.cmp thead th.y{color:var(--yolopx)} .cmp thead th.c{color:var(--clrernet)}
+.cmp td:first-child{
+  font-family:Archivo,sans-serif; font-weight:600; font-size:13px; color:var(--ink);
+  width:20%; white-space:nowrap;
+}
+.cmp tbody tr:last-child td{border-bottom:0}
+.scroller{overflow-x:auto; background:var(--surface); border:1px solid var(--rule); border-radius:6px; box-shadow:var(--shadow)}
+
+.takeaways{display:grid; grid-template-columns:repeat(2,1fr); gap:18px; margin-top:6px}
+@media (max-width:900px){ .takeaways{grid-template-columns:1fr} }
+.tk{background:var(--surface); border:1px solid var(--rule); border-left:3px solid var(--yolopx); border-radius:5px; padding:18px 20px}
+.tk:nth-child(even){border-left-color:var(--clrernet)}
+.tk h3{margin:0 0 8px; font-size:16px; font-weight:600; letter-spacing:-.01em; line-height:1.25}
+.tk p{margin:0; font-size:14px; color:var(--ink-2); line-height:1.5}
+
+/* ---------------------------------------------------------------- rail ---- */
+#rail{
+  position:fixed; left:0; top:0; bottom:0; width:46px; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:7px; z-index:20; background:transparent;
+}
+@media (max-width:800px){ #rail{display:none} }
+#rail button{
+  width:20px; height:11px; padding:0; border:0; background:transparent; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+}
+#rail button i{display:block; width:12px; height:2px; background:var(--rule); transition:all .18s}
+#rail button[data-model="yolopx"] i{background:color-mix(in srgb,var(--yolopx) 34%,transparent)}
+#rail button[data-model="clrernet"] i{background:color-mix(in srgb,var(--clrernet) 34%,transparent)}
+#rail button[aria-current="true"] i{width:20px; height:3px; background:var(--ink)}
+#rail button:focus-visible{outline:1px solid var(--muted); outline-offset:2px}
+
+#counter{
+  position:fixed; right:16px; bottom:14px; z-index:20;
+  font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.1em;
+  color:var(--muted); background:var(--surface); border:1px solid var(--rule);
+  border-radius:4px; padding:5px 10px;
+}
+
+/* ------------------------------------------------------------- lightbox --- */
+#lb{
+  position:fixed; inset:0; z-index:60; display:none; align-items:center; justify-content:center;
+  background:rgba(8,10,14,.92); padding:22px; cursor:zoom-out; overflow:auto;
+}
+#lb.on{display:flex}
+#lb img{max-width:100%; height:auto; border-radius:4px; background:#fff}
+#lb .close{
+  position:fixed; top:14px; right:18px; font-family:"JetBrains Mono",monospace; font-size:11px;
+  letter-spacing:.12em; color:#cfd4dc; border:1px solid #3a424e; border-radius:4px;
+  padding:6px 11px; background:rgba(20,24,30,.85);
+}
+@media (prefers-reduced-motion:reduce){ #deck{scroll-behavior:auto} *{transition:none!important} }
+</style>
+
+<div id="deck"></div>
+<nav id="rail" aria-label="Slides"></nav>
+<div id="counter" class="mono">1 / 1</div>
+<div id="lb" role="dialog" aria-modal="true" aria-label="Full-size figure">
+  <span class="close mono">ESC</span><img alt="">
+</div>
+
+<script>
+const DATA = /*__DATA__*/;
+const esc = s => String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+let scene = DATA.scenes[0][0];
+
+function sceneBar(){
+  return '<div class="scenes ui" role="group" aria-label="TuSimple frame">' +
+    DATA.scenes.map(([id,label]) =>
+      `<button type="button" data-scene="${id}" aria-pressed="${id===scene}">${esc(label)}</button>`
+    ).join('') + '</div>';
+}
+
+function figureSlide(s, i){
+  const key = `${scene}_${s.suffix}.png`;
+  const src = DATA.images[key];
+  const body = src
+    ? `<img src="${src}" alt="${esc(s.title)}"><span class="hint">click to enlarge</span>`
+    : `<p class="missing mono">figure not generated yet<br>${esc(key)}</p>`;
+  return `
+  <section class="slide" id="s${i}">
+    <div class="head">
+      <div class="head-l">
+        <div class="eyebrow">
+          <span class="chip ${s.model==='clrernet'?'clrernet':''}">${esc(s.section)}</span>
+          <span class="num">${esc(s.n)}</span>
+        </div>
+        <h2>${esc(s.title)}</h2>
+        <p class="lede">${esc(s.lede)}</p>
+      </div>
+      ${sceneBar()}
+    </div>
+    <div class="figwrap" data-fig="${key}">${body}</div>
+    <div class="notes">
+      ${s.notes.map((n,k)=>`<div class="note"><b>${String(k+1).padStart(2,'0')}</b>${esc(n)}</div>`).join('')}
+    </div>
+  </section>`;
+}
+
+function titleSlide(i){
+  return `
+  <section class="slide title-slide" id="s${i}">
+    <div class="kicker">Road-readiness framework &nbsp;&middot;&nbsp; feature study &nbsp;&middot;&nbsp; TuSimple test split</div>
+    <h1>Inside <em>YOLOPX</em> and <em class="b">CLRerNet</em></h1>
+    <p class="sub">Intermediate activations, channel rankings, attention and attribution
+      maps taken straight out of both networks on the same three TuSimple frames &mdash;
+      showing where in each architecture a lane line actually becomes a lane line.</p>
+    <div class="scenecards">
+      ${DATA.scenes.map(([id,label,desc])=>`
+        <div class="scenecard"><h3>${esc(label)}</h3><p class="mono">${esc(desc)}</p></div>`).join('')}
+    </div>
+    <div class="meta">
+      <div><span>YOLOPX</span>epoch-195, BDD100K-trained, 384 &times; 640</div>
+      <div><span>CLRerNet</span>DLA-34 + EMA, CULane-trained, 800 &times; 320</div>
+      <div><span>Navigate</span>arrow keys, or scroll</div>
+    </div>
+  </section>`;
+}
+
+function textSlide(s, i){
+  let body = '';
+  if (s.body === 'compare'){
+    body = `<div class="scroller"><table class="cmp">
+      <thead><tr><th></th><th class="y">YOLOPX</th><th class="c">CLRerNet</th></tr></thead>
+      <tbody>${DATA.compare.map(r=>`<tr><td>${esc(r[0])}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</tbody>
+    </table></div>`;
+  } else {
+    body = `<div class="takeaways">${DATA.takeaways.map(t=>
+      `<div class="tk"><h3>${esc(t[0])}</h3><p>${esc(t[1])}</p></div>`).join('')}</div>`;
+  }
+  return `
+  <section class="slide" id="s${i}">
+    <div class="head"><div class="head-l">
+      <div class="eyebrow"><span class="chip plain">${esc(s.section)}</span><span class="num">${esc(s.n)}</span></div>
+      <h2>${esc(s.title)}</h2>
+      <p class="lede">${esc(s.lede)}</p>
+    </div></div>
+    ${body}
+  </section>`;
+}
+
+function render(){
+  const deck = document.getElementById('deck');
+  const y = deck.scrollTop;
+  deck.innerHTML = DATA.slides.map((s,i) =>
+    s.kind === 'title' ? titleSlide(i) :
+    s.kind === 'text'  ? textSlide(s,i) : figureSlide(s,i)).join('');
+  deck.scrollTop = y;
+
+  document.getElementById('rail').innerHTML = DATA.slides.map((s,i)=>
+    `<button type="button" data-i="${i}" data-model="${s.model||''}"
+       aria-label="Slide ${i+1}"><i></i></button>`).join('');
+  mark();
+}
+
+function slides(){ return [...document.querySelectorAll('.slide')]; }
+function current(){
+  const deck = document.getElementById('deck');
+  return Math.round(deck.scrollTop / deck.clientHeight);
+}
+function mark(){
+  const i = current();
+  document.querySelectorAll('#rail button').forEach((b,k)=>
+    b.setAttribute('aria-current', k===i ? 'true' : 'false'));
+  document.getElementById('counter').textContent =
+    `${Math.min(i+1, DATA.slides.length)} / ${DATA.slides.length}`;
+}
+function go(i){
+  const s = slides()[Math.max(0, Math.min(i, slides().length-1))];
+  if (s) s.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+document.addEventListener('click', e => {
+  const sc = e.target.closest('.scenes button');
+  if (sc){ scene = sc.dataset.scene; render(); return; }
+  const rb = e.target.closest('#rail button');
+  if (rb){ go(+rb.dataset.i); return; }
+  const lb = document.getElementById('lb');
+  if (e.target.closest('#lb')){ lb.classList.remove('on'); return; }
+  const fw = e.target.closest('.figwrap');
+  if (fw && DATA.images[fw.dataset.fig]){
+    lb.querySelector('img').src = DATA.images[fw.dataset.fig];
+    lb.classList.add('on');
+  }
+});
+
+document.addEventListener('keydown', e => {
+  const lb = document.getElementById('lb');
+  if (e.key === 'Escape'){ lb.classList.remove('on'); return; }
+  if (lb.classList.contains('on')) return;
+  if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'PageDown'){
+    e.preventDefault(); go(current()+1);
+  } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp'){
+    e.preventDefault(); go(current()-1);
+  } else if (e.key === 'Home'){ e.preventDefault(); go(0); }
+  else if (e.key === 'End'){ e.preventDefault(); go(DATA.slides.length-1); }
+});
+
+document.getElementById('deck').addEventListener('scroll', () => {
+  clearTimeout(window._t); window._t = setTimeout(mark, 60);
+});
+
+render();
+</script>

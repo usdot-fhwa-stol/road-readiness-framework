@@ -84,6 +84,16 @@ via the `--manifest` flag.
           "h_samples": [10, 20, 30, "...", 710],
           "lanes": [[-2, -2, "...", 632, 625, "..."], "..."]
         }
+      },
+      "meta": {
+        "camera_model": {
+          "image_to_road_homography": [["...", "...", "..."], ["...", "...", "..."], ["...", "...", "..."]]
+        },
+        "calibration_meta": {
+          "homography_source": "surveyed_camera_calibration",
+          "metric_scale_available": true,
+          "units": "m"
+        }
       }
     }
   ]
@@ -97,6 +107,36 @@ via the `--manifest` flag.
   (`lanes` for polyline datasets, `mask` for mask-only datasets).
 - Every sample carries **both** a `mask_path` and a `lane_json`, so any evaluator
   (mask-based or lane-point-based) can be used.
+- Sample `meta.camera_model`, `meta.image_to_road_homography`, and
+  `meta.calibration_meta` are optional. When present, readiness I4 **and I5**
+  share the same sensor calibration for both canonical and operational
+  geometry (I5's calibrated bird's-eye-view curvature is only reported when
+  `metric_scale_available: true` is explicitly set alongside `units: "m"` —
+  merely setting `units` is not treated as an implicit metric-scale
+  declaration). Old manifests without calibration remain valid and use the
+  projective-normalized fallback (I5 reports this as `normalized_image_proxy`,
+  with no metric curvature units).
+
+Prediction manifests retain the same legacy fields and may additionally carry
+native geometry:
+
+```json
+{
+  "prediction": {
+    "mask_path": "masks/sample.png",
+    "lane_json": {"h_samples": [10, 20], "lanes": [[320, 321]]},
+    "polylines": [[{"x": 319.75, "y": 10.5}, {"x": 321.25, "y": 20.5}]],
+    "geometry_source": "native_polyline",
+    "meta": {"coordinate_space": "original_image"}
+  }
+}
+```
+
+`polylines` and `meta` are optional. `geometry_source` is
+`native_polyline`, `lane_json`, or `mask_derived`. Old prediction
+manifests without these fields remain readable, and the original
+`PredictionManifestWriter.add(sample_id, image_path, pred_mask)` call remains
+valid.
 
 ## Datasets
 
@@ -126,8 +166,8 @@ Output goes to `manifests/<dataset>/` (gitignored — regenerable artifacts).
 # YOLOPX (all datasets)
 bash scripts/run_yolopx_manifest.sh
 
-# HybridNets (runs under its own venv)
-bash scripts/run_hybridnets_manifest.sh
+# HybridNets (pilot-only, runs under its own venv — see pilot_analysis/)
+bash pilot_analysis/run_hybridnets_manifest.sh
 
 # CLRerNet (runs under the CLRerNet venv)
 source /shared/src/CLRerNet/clrernet/bin/activate
@@ -143,6 +183,25 @@ python -m lane_eval.cli.run_lane_eval \
 ```
 Results are written to `outputs/results/<model>_<dataset>.json`.
 
+Prediction-guided operational I1 can be emitted directly from matching GT and
+prediction manifests without rerunning inference:
+
+```bash
+python -m evaluation.run_readiness \
+    --manifest manifests/tusimple/manifest_tusimple.json \
+    --pred-manifest outputs/pred/clrernet_tusimple_pred.json \
+    --model-name clrernet \
+    --output outputs/readiness/clrernet_tusimple.json \
+    --per-image-output outputs/readiness/clrernet_tusimple.jsonl
+```
+
+Per-image records contain canonical GT-guided `I1*` fields and operational
+`I1_pred*` fields. Both use the original RGB image as paint evidence.
+Prediction geometry only selects the operational sampling corridor, and
+`I1_pred` is not included in R1. When no visible paint exists along the corridor
+(for example a pitch-dark night frame), I1 returns `None` with an explicit
+unavailable reason rather than a fabricated near-zero continuity.
+
 ### 3. Score with native lane-point metrics
 ```bash
 python -m lane_eval.cli.eval_manifest \
@@ -150,10 +209,51 @@ python -m lane_eval.cli.eval_manifest \
     --pred-manifest outputs/pred/yolopx_tusimple_pred.json
 ```
 
+### 4. Build an evaluation output manifest (per-sample metrics + CSV + images)
+
+Turn an evaluation run into an **output manifest** — the input manifest with each
+sample's computed metric values attached, plus a flat CSV and per-sample overlay
+images. Metric families:
+
+- **core** — primary detection scalars (`D3` IoU / F1 / precision / recall)
+- **D** — detection metrics `D1..D8`
+- **I** — intrinsic image metrics `I1..I6`
+- **R** — readability / detectability `R1..R4` (R1/R2 per-sample; R3/R4 aggregate)
+- **C** — `C1..C5` correlations, **dataset-level only** (→ `metadata.evaluation.correlations_C`)
+
+Integrated into a run (also saves pred-vs-GT overlays):
+
+```bash
+python -m evaluation.run_readiness --manifest <gt> --pred-manifest <pred> \
+    --output-manifest outputs/readiness/output_manifest
+```
+
+Or merge an existing per-image JSONL back onto any manifest:
+
+```bash
+python3 -m evaluation.eval_output_manifest \
+    --in-manifest dataset/manifests/manifest_all.json \
+    --per-image outputs/readiness/per_image.jsonl \
+    --report outputs/readiness/report.json \
+    --out-dir outputs/readiness/output_manifest --copy-images
+```
+
+Writes `output_manifest.json` (each sample gains `metrics.{core,D,I,R}` +
+`overlay_image`), `output_metrics.csv` (one row per sample), and `images/`. Every
+run prints which metric families were added vs. absent.
+
 ## Results
 
-All models, scored by the **shared** mask-style segmentation metrics (mask IoU / F1 /
-precision / recall) on every dataset:
+> **Full pilot-analysis results:** [`results/Pilot_Analysis_Results.csv`](results/Pilot_Analysis_Results.csv)
+> — one row per image (9,298 images across all 4 datasets) with I1–I6, the 43
+> scenario/condition tags, per-model (YOLOPX/CLRerNet) D-metrics, and the R1/R2
+> composite scores. This is the table behind the pilot-analysis presentation
+> (see `pilot_analysis/` for the model-comparison scripts that led to selecting
+> YOLOPX + CLRerNet, and `docs/metrics_reference.md` for what each metric means).
+
+The table below predates that full pilot run — it's the original **shared**
+mask-style segmentation metrics (mask IoU / F1 / precision / recall) used to
+choose which models to standardize on:
 
 | Model | Dataset | Split | Images | IoU | F1 | Precision | Recall |
 |---|---|---|--:|--:|--:|--:|--:|
@@ -183,9 +283,11 @@ precision / recall) on every dataset:
 
 CLRerNet is integrated through the same universal manifest and prediction-writer
 path as the other models. The adapter reads `ManifestDataset`, runs CLRerNet
-inference, rasterizes predicted lane polylines into binary masks, writes
-prediction manifests through `PredictionManifestWriter`, and can save random
-overlay images for visual QA.
+inference, preserves its original-image float polylines as the primary geometry,
+also rasterizes them into binary masks for segmentation evaluation, writes both
+representations through `PredictionManifestWriter`, and can save random overlay
+images for visual QA. Rasterized masks and compatible lane_json remain available
+to existing evaluators.
 
 The CLRerNet results above should be interpreted as mask-style segmentation
 scores. CLRerNet naturally predicts sparse lane polylines, while the shared
@@ -214,11 +316,18 @@ lane_eval/
   evaluators/    lane_segmentation (mask IoU/F1), tusimple_native, culane_native
   cli/           build_manifest, run_lane_eval (YOLOPX), run_clrernet, eval_manifest
   schema/        LaneSample / LaneTarget / LanePrediction
-evaluation/      run_hybridnets, per_image_metrics, build_model_table, save_predictions
-scripts/         build_manifests.sh, run_{yolopx,hybridnets}_manifest.sh
+evaluation/      readiness_metrics/d_metrics (I/D/R engine), run_hybridnets,
+                 per_image_metrics, build_model_table, save_predictions
+tagging/         VLM-based scenario/condition tagging (43-tag taxonomy)
+scripts/         build_manifests.sh, run_yolopx_manifest.sh, eval_yolopx_*.sh,
+                 figure/panel renderers
 configs/         dataset + model + eval configs
 manifests/       generated manifests + masks (gitignored, regenerable)
 outputs/         results JSON, per-image metrics, comparison table
+docs/            dataset/evaluation/metrics reference docs, Algorithms/ (I/D
+                 metric definitions), dev_notes/ (audit trail, not the spec)
+pilot_analysis/  historical 4-model (YOLOPX/HybridNets/CLRerNet/SCNN) comparison
+tests/           pytest suite (adapters, metrics, calibration)
 ```
 
 ## Design notes

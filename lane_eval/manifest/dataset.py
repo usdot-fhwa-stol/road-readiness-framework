@@ -11,12 +11,23 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Optional
 
 import cv2
 import numpy as np
 
 from ..schema.sample import LaneSample
-from ..schema.lane import LaneTarget
+from ..schema.lane import LanePrediction, LaneTarget
+
+
+_PATTERN_FIELDS = {
+    "style",
+    "pattern",
+    "lane_style",
+    "line_style",
+    "marking_type",
+    "line_type",
+}
 
 
 class ManifestDataset:
@@ -57,6 +68,17 @@ class ManifestDataset:
                 if m is not None:
                     mask = (m > 0).astype(np.uint8)
 
+        target_meta = {
+            "lane_json": gt.get("lane_json"),
+            "natural_gt": gt.get("natural_gt"),
+        }
+        explicit_meta = gt.get("meta") if isinstance(gt.get("meta"), dict) else {}
+        for key in _PATTERN_FIELDS:
+            if key in gt:
+                target_meta[key] = gt[key]
+            elif key in explicit_meta:
+                target_meta[key] = explicit_meta[key]
+
         return LaneSample(
             image_id=s["sample_id"],
             image_path=s["image_path"],
@@ -65,7 +87,7 @@ class ManifestDataset:
             target=LaneTarget(
                 mask=mask,
                 mask_path=str(resolved_mask_path) if resolved_mask_path else mask_path,
-                meta={"lane_json": gt.get("lane_json"), "natural_gt": gt.get("natural_gt")},
+                meta=target_meta,
             ),
             meta=s.get("meta", {}),
         )
@@ -73,3 +95,109 @@ class ManifestDataset:
     def iter_samples(self):
         for i in range(len(self)):
             yield self[i]
+
+
+class PredictionManifestReader:
+    """Backward-compatible reader for old and extended prediction manifests."""
+
+    def __init__(self, manifest_path: str):
+        self.manifest_path = Path(manifest_path)
+        with open(self.manifest_path) as f:
+            data = json.load(f)
+        self.metadata = data.get("metadata", {})
+        self._samples = data.get("samples", [])
+        self._by_id = {str(sample.get("sample_id")): sample for sample in self._samples}
+
+    def __len__(self) -> int:
+        return len(self._samples)
+
+    @staticmethod
+    def _native_polylines(
+        prediction: dict,
+    ) -> tuple[list[np.ndarray], Optional[list[Optional[float]]]]:
+        """Read native polylines and their per-curve scores, kept index-aligned.
+
+        A lane with fewer than two finite points is skipped, and its score is
+        skipped in lockstep, so the returned ``scores`` (when present) line up
+        with the returned ``lanes``. ``scores`` is ``None`` when the manifest
+        carries no ``scores`` field.
+        """
+        raw_scores = prediction.get("scores")
+        has_scores = isinstance(raw_scores, (list, tuple))
+        lanes: list[np.ndarray] = []
+        scores: Optional[list[Optional[float]]] = [] if has_scores else None
+        for idx, lane in enumerate(prediction.get("polylines", []) or []):
+            points = []
+            for point in lane:
+                if isinstance(point, dict):
+                    x, y = point.get("x"), point.get("y")
+                else:
+                    try:
+                        x, y = point[:2]
+                    except (TypeError, ValueError):
+                        continue
+                try:
+                    x_float, y_float = float(x), float(y)
+                except (TypeError, ValueError):
+                    continue
+                if np.isfinite(x_float) and np.isfinite(y_float):
+                    points.append([x_float, y_float])
+            if len(points) >= 2:
+                lanes.append(np.asarray(points, dtype=np.float64))
+                if scores is not None:
+                    raw = raw_scores[idx] if idx < len(raw_scores) else None
+                    try:
+                        val = float(raw)
+                    except (TypeError, ValueError):
+                        val = None
+                    scores.append(val if (val is not None and np.isfinite(val)) else None)
+        return lanes, scores
+
+    def _read_entry(self, entry: dict) -> LanePrediction:
+        prediction = entry.get("prediction", {})
+        mask = None
+        mask_path = prediction.get("mask_path")
+        resolved_mask_path = None
+        if mask_path:
+            path = Path(mask_path)
+            resolved_mask_path = path if path.is_absolute() else self.manifest_path.parent / path
+            if resolved_mask_path.exists():
+                loaded = cv2.imread(str(resolved_mask_path), cv2.IMREAD_GRAYSCALE)
+                if loaded is not None:
+                    mask = (loaded > 0).astype(np.uint8)
+        lanes, scores = self._native_polylines(prediction)
+        geometry_source = prediction.get("geometry_source")
+        if geometry_source is None:
+            if lanes:
+                geometry_source = "native_polyline"
+            elif prediction.get("lane_json") is not None:
+                geometry_source = "lane_json"
+            elif mask is not None:
+                geometry_source = "mask_derived"
+            else:
+                geometry_source = "unavailable"
+        meta = dict(prediction.get("meta") or {})
+        meta.update(
+            {
+                "lane_json": prediction.get("lane_json"),
+                "geometry_source": geometry_source,
+                "mask_path": str(resolved_mask_path) if resolved_mask_path else mask_path,
+            }
+        )
+        pred_scores = None
+        if scores is not None and lanes and any(s is not None for s in scores):
+            pred_scores = np.asarray(
+                [np.nan if s is None else s for s in scores], dtype=np.float64
+            )
+        return LanePrediction(
+            mask=mask, lanes=lanes or None, scores=pred_scores, meta=meta
+        )
+
+    def __getitem__(self, index: int) -> LanePrediction:
+        return self._read_entry(self._samples[index])
+
+    def get(self, sample_id: str) -> Optional[LanePrediction]:
+        """Return a prediction by sample id, or None when it is absent."""
+
+        entry = self._by_id.get(str(sample_id))
+        return None if entry is None else self._read_entry(entry)
