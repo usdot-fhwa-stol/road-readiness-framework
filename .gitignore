@@ -109,3 +109,5 @@ pilot_output/*
 /i_outputs/
 /file_strcture.sh
 /run_full_i1_rankings.sh
+
+/README_lane_eval_template.md

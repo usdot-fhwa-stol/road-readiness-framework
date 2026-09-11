@@ -31,7 +31,7 @@ never a safety margin.
 | Tag | Meaning |
 |---|---|
 | **LIVE** | Already computed by `evaluation/d_metrics.py` today. |
-| **δ-GATED** | Computed only once a tolerance `delta` is frozen on the calibration split; dormant (`None`) until then. The number differs from the current published value → a **number move**, gated behind δ-freeze (see [evaluation_protocol.md §5](evaluation_protocol.md)). |
+| **δ-GATED** | Computed only once a tolerance `delta` is frozen on the calibration split; dormant (`None`) until then. The number differs from the current published value → a **number move**, gated behind δ-freeze (see [evaluation_protocol.md §5](../evaluation_protocol.md)). |
 | **τ_C-GATED** | Needs the CLRerNet per-curve `scores` threaded into `build_d_record` (small code change; scores are preserved end-to-end). |
 | **DEFER** | Not computable on the current data/cache; blocked with a stated unblock condition. |
 | **DIAGNOSTIC** | Reported for interpretation only; never a headline D metric, never entered into any composite. |
@@ -128,7 +128,7 @@ Implemented in [marking_support.py](../../evaluation/marking_support.py)
 - **Sᵢᵞ(τ_Y)** = YOLOPX support = **skeletonized** binary mask to 1 px. Skeleton at the
   *fixed* stored operating point works now; a **tunable τ_Y is DEFERred** — the
   per-pixel probability is discarded at manifest write (`pred_mask > 0`; verified in
-  [prediction_writer.py](../../evaluation/prediction_writer.py)), so no τ_Y sweep is
+  [prediction_writer.py](../../lane_eval/manifest/prediction_writer.py)), so no τ_Y sweep is
   possible from cache.
 - **Sᵢᶜ(τ_C)** = CLRerNet support = union of native polylines with per-curve
   confidence ≥ τ_C. The `scores` are preserved end-to-end → **τ_C-GATED** (thread

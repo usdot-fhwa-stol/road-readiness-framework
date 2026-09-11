@@ -10,7 +10,7 @@ are ignored).
 ## Run
 
 ```bash
-python3 tagging/build_tagging.py   # needs openpyxl
+python3 tagging/build_categorized_manifest.py   # needs openpyxl
 ```
 
 ## Outputs (`output/`)

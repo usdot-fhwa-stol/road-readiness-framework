@@ -308,11 +308,18 @@ lane_eval/
   evaluators/    lane_segmentation (mask IoU/F1), tusimple_native, culane_native
   cli/           build_manifest, run_lane_eval (YOLOPX), run_clrernet, eval_manifest
   schema/        LaneSample / LaneTarget / LanePrediction
-evaluation/      run_hybridnets, per_image_metrics, build_model_table, save_predictions
-scripts/         build_manifests.sh, run_{yolopx,hybridnets}_manifest.sh
+evaluation/      readiness_metrics/d_metrics (I/D/R engine), run_hybridnets,
+                 per_image_metrics, build_model_table, save_predictions
+tagging/         VLM-based scenario/condition tagging (43-tag taxonomy)
+scripts/         build_manifests.sh, run_yolopx_manifest.sh, eval_yolopx_*.sh,
+                 figure/panel renderers
 configs/         dataset + model + eval configs
 manifests/       generated manifests + masks (gitignored, regenerable)
 outputs/         results JSON, per-image metrics, comparison table
+docs/            dataset/evaluation/metrics reference docs, Algorithms/ (I/D
+                 metric definitions), dev_notes/ (audit trail, not the spec)
+pilot_analysis/  historical 4-model (YOLOPX/HybridNets/CLRerNet/SCNN) comparison
+tests/           pytest suite (adapters, metrics, calibration)
 ```
 
 ## Design notes
