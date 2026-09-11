@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Run I1/I4/I5 (full readiness pipeline) on the human-tagged CurveLane +
-# CULane subset (categorized_manifest/). TuSimple and BDD100K are skipped:
+# CULane subset (tagging/). TuSimple and BDD100K are skipped:
 # TuSimple's tagged rows are unresolvable (no id->clip mapping) and
 # BDD100K's are test-split with no lane GT in this dataset copy.
 #
@@ -45,14 +45,14 @@ mkdir -p "$OUT_ROOT/pred" "$OUT_ROOT/readiness" "$OUT_ROOT/overlays"
 echo "=================================================================="
 echo ">>> 1/6  Building tagged-subset GT manifests (CurveLane + CULane)"
 echo "=================================================================="
-"$PY" categorized_manifest/build_tagged_subset_manifests.py
+"$PY" tagging/build_tagged_subset_manifests.py
 
 echo ""
 echo "=================================================================="
 echo ">>> 2/6  Building CULane prediction manifests from EXISTING results"
 echo "         (no new inference -- reuses the full-dataset run's masks)"
 echo "=================================================================="
-"$PY" categorized_manifest/build_culane_tagged_pred_manifests.py \
+"$PY" tagging/build_culane_tagged_pred_manifests.py \
     --full-root "$FULL_ROOT" --output-dir "$OUT_ROOT/pred"
 
 echo ""
@@ -62,7 +62,7 @@ echo "=================================================================="
 "$PY" -m lane_eval.cli.run_lane_eval \
     --yolopx-repo "$YOLOPX_REPO" --weights "$YOLOPX_WEIGHTS" --model-name yolopx \
     --device "$DEVICE" \
-    --manifest categorized_manifest/output/universal_manifest_curvelane_tagged.json --split train \
+    --manifest tagging/output/universal_manifest_curvelane_tagged.json --split train \
     --pred-manifest "$OUT_ROOT/pred/yolopx_curvelane_tagged_pred.json" \
     --output "$OUT_ROOT/readiness/yolopx_curvelane_tagged_lane_eval.json" --per-image \
     --save-pred-dir "$OUT_ROOT/overlays" --overlay-sample 40
@@ -73,7 +73,7 @@ echo ">>> 4/6  CLRerNet inference on the 40 CurveLane (train) tagged images"
 echo "=================================================================="
 # CLRerNet needs its own venv (mmcv/mmdet) -- NOT the main env's python.
 "$CLRERNET_PYTHON" -m lane_eval.cli.run_clrernet \
-    --manifest categorized_manifest/output/universal_manifest_curvelane_tagged.json \
+    --manifest tagging/output/universal_manifest_curvelane_tagged.json \
     --pred-manifest "$OUT_ROOT/pred/clrernet_curvelane_tagged_pred.json" \
     --clrernet-root "$CLRERNET_ROOT" --checkpoint "$CLRERNET_CKPT" \
     --model-name clrernet --dataset curvelane_tagged --device "$DEVICE" \
@@ -84,8 +84,8 @@ echo "=================================================================="
 echo ">>> 5/6  I1/I4/I5 (full readiness pipeline) for all 4 combinations"
 echo "=================================================================="
 declare -A GT_MANIFEST=(
-  [curvelane]="categorized_manifest/output/universal_manifest_curvelane_tagged.json"
-  [culane]="categorized_manifest/output/universal_manifest_culane_tagged.json"
+  [curvelane]="tagging/output/universal_manifest_curvelane_tagged.json"
+  [culane]="tagging/output/universal_manifest_culane_tagged.json"
 )
 for ds in curvelane culane; do
   for model in yolopx clrernet; do

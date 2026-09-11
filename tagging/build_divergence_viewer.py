@@ -8,7 +8,7 @@ ranks images by total disagreement, and renders each as a card: the image
 model's tags + "why" reasoning side by side, disagreeing dimensions highlighted.
 
 Usage:
-  python3 categorized_manifest/build_divergence_viewer.py \
+  python3 tagging/build_divergence_viewer.py \
       --a dataset/gateway_tags        --a-name mini \
       --b dataset/gateway_tags_sonnet --b-name sonnet \
       --image-root dataset --out dataset/divergence_viewer.html --top 120

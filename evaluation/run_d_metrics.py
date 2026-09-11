@@ -4,7 +4,7 @@ subset (GT manifest + cached prediction manifest -- no model inference).
 
 Usage:
     python -m evaluation.run_d_metrics \
-        --manifest categorized_manifest/output/universal_manifest_culane_tagged.json \
+        --manifest tagging/output/universal_manifest_culane_tagged.json \
         --pred-manifest outputs/tagged_subset_eval_v1/pred/yolopx_culane_tagged_pred.json \
         --model-name yolopx --output-dir outputs/d_metrics_tagged/yolopx_culane \
         [--render-panels]

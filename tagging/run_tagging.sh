@@ -51,7 +51,7 @@ for DS in $DATASETS; do
   IN="output/manifest_${DS}.json"
   OUT="output/manifest_${DS}.${BACKEND}${TAG}.json"
   if [ ! -f "$IN" ]; then
-    echo "!! missing $IN (run build_categorized_manifest.py first) -- skipping $DS" >&2
+    echo "!! missing $IN (run build_tagging.py first) -- skipping $DS" >&2
     continue
   fi
   echo "=================== $DS ==================="

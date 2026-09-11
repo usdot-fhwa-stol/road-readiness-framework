@@ -15,8 +15,8 @@ Matching is by sample_id (verified 1:1). manifest_all.json is rebuilt by
 concatenating the per-dataset gateway files.
 
 Usage:
-  python3 categorized_manifest/apply_gateway_tags.py            # do it
-  python3 categorized_manifest/apply_gateway_tags.py --dry-run  # report only
+  python3 tagging/apply_gateway_tags.py            # do it
+  python3 tagging/apply_gateway_tags.py --dry-run  # report only
 """
 from __future__ import annotations
 

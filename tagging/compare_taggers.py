@@ -13,7 +13,7 @@ Reports, per dimension:
   - per-image tag deltas : which tags one model added that the other didn't
 
 Usage:
-  python3 categorized_manifest/compare_taggers.py \
+  python3 tagging/compare_taggers.py \
       --a dataset/gateway_tags        --a-name mini \
       --b dataset/gateway_tags_sonnet --b-name sonnet
 """

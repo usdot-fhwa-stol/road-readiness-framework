@@ -1,6 +1,6 @@
 """Side-by-side visualization: image | dataset/name/tags text panel.
 
-Reads records from categorized_manifest/full_tags/<dataset>.tags.jsonl
+Reads records from tagging/full_tags/<dataset>.tags.jsonl
 (one JSON object per line, produced by tag_all.py) and renders, for each
 sampled image:
 
@@ -16,12 +16,12 @@ for D5 grouping. Every resolved conflict is written to
 <out-dir>/tag_conflicts.jsonl for review.
 
 Usage:
-    python3 categorized_manifest/render_tag_panels.py --dataset bdd100k --limit 12
-    python3 categorized_manifest/render_tag_panels.py --dataset all --limit 20 --seed 7
+    python3 tagging/render_tag_panels.py --dataset bdd100k --limit 12
+    python3 tagging/render_tag_panels.py --dataset all --limit 20 --seed 7
 
     # or point straight at any tagged manifest (jsonl, or {"samples": [...]} json)
-    python3 categorized_manifest/render_tag_panels.py \\
-        --dataset categorized_manifest/output/pilot_manifest.tagged.json --limit 12
+    python3 tagging/render_tag_panels.py \\
+        --dataset tagging/output/pilot_manifest.tagged.json --limit 12
 """
 from __future__ import annotations
 
@@ -207,7 +207,7 @@ def main() -> None:
                           "or a direct path to a tagged manifest (.jsonl or .json)")
     ap.add_argument("--limit", type=int, default=12, help="number of images to sample")
     ap.add_argument("--seed", type=int, default=0)
-    ap.add_argument("--out-dir", default="categorized_manifest/output/tag_panels")
+    ap.add_argument("--out-dir", default="tagging/output/tag_panels")
     ap.add_argument("--no-gallery", action="store_true", help="skip the stacked gallery.png")
     args = ap.parse_args()
 

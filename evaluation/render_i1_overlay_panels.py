@@ -7,7 +7,7 @@ this script only adds visualization on top, no new metric logic.
 
 Usage:
     python -m evaluation.render_i1_overlay_panels \\
-        --manifest categorized_manifest/output/universal_manifest_curvelane_tagged.json \\
+        --manifest tagging/output/universal_manifest_curvelane_tagged.json \\
         --pred-manifest outputs/tagged_subset_eval/pred/yolopx_curvelane_tagged_pred.json \\
         --model-name yolopx --dataset curvelane_tagged \\
         --output-dir outputs/tagged_subset_eval/i1_panels/yolopx_curvelane_tagged

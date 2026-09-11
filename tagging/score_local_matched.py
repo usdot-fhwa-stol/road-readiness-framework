@@ -10,12 +10,12 @@ images are disjoint (confirmed: 0 overlap across all 4 datasets). It only
 removes the dimension-count (6 vs 3) and metric-formula mismatch, using
 predictions/ground truth that already exist on disk (no model rerun).
 
-Ground truth here = the human tags baked into categorized_manifest/output/
+Ground truth here = the human tags baked into tagging/output/
 manifest_<ds>.<model>.json (tags.labels), NOT the gateway's adjudication
 verdicts file (which does not exist on this machine).
 
 Usage:
-  python3 categorized_manifest/score_local_matched.py
+  python3 tagging/score_local_matched.py
 """
 import glob
 import json

@@ -5,7 +5,7 @@ Reports per-dimension micro precision/recall/F1 over samples that have both
 human `tags.labels` and `predicted_tags.labels`.
 
 Usage:
-  python3 categorized_manifest/eval_tagger.py categorized_manifest/output/manifest_bdd100k.tagged.json
+  python3 tagging/eval_tagger.py tagging/output/manifest_bdd100k.tagged.json
 """
 import json
 import sys
@@ -55,4 +55,4 @@ def main(path):
 
 if __name__ == "__main__":
     main(sys.argv[1] if len(sys.argv) > 1 else
-         "categorized_manifest/output/manifest_bdd100k.tagged.json")
+         "tagging/output/manifest_bdd100k.tagged.json")

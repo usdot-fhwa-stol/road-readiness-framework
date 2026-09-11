@@ -5,7 +5,7 @@ earlier full CULane yolopx/clrernet runs already wrote to disk; only
 `build_tagged_subset_manifests.py`'s GT manifest needs to exist first.
 
 Usage:
-    python3 categorized_manifest/build_culane_tagged_pred_manifests.py \\
+    python3 tagging/build_culane_tagged_pred_manifests.py \\
         --full-root outputs/full_model_rankings \\
         --output-dir outputs/tagged_subset_eval/pred
 """
@@ -40,7 +40,7 @@ def main():
     args = ap.parse_args()
 
     repo_root = Path(__file__).resolve().parent.parent
-    sample_ids = json.loads((repo_root / "categorized_manifest/output/_culane_tagged_sample_ids.json").read_text())
+    sample_ids = json.loads((repo_root / "tagging/output/_culane_tagged_sample_ids.json").read_text())
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
     # yolopx: existing per-image json + mask files under <full_root>/predictions/yolopx/culane/masks/

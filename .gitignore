@@ -73,9 +73,9 @@ Dataset/*
 
 # --- sampled-dataset build: data & large outputs (only CODE goes to git) ---
 dataset/
-categorized_manifest/full_tags/
-categorized_manifest/output/
-categorized_manifest/pilot_27b/
+tagging/full_tags/
+tagging/output/
+tagging/pilot_27b/
 *.selected.jsonl
 tagged.xlsx
 clrernet_paper.pdf
@@ -90,8 +90,8 @@ pilot_output/*
 # data untracked from git (files remain on disk, just no longer versioned) ---
 /index.html
 .ipynb_checkpoints/
-/categorized_manifest/explore_tags.ipynb
-/categorized_manifest/explore_tags_final.ipynb
+/tagging/explore_tags.ipynb
+/tagging/explore_tags_final.ipynb
 /chapter3_revision_2.txt
 /chapter3_revision_3.txt
 /chapter3_revision_4.txt

@@ -28,13 +28,13 @@ Each line:
 
 Usage:
   # smoke test: 3 images from one dataset
-  python3 categorized_manifest/tag_gateway.py --dataset bdd100k --limit 3
+  python3 tagging/tag_gateway.py --dataset bdd100k --limit 3
 
   # full run, default model (gpt-5-4-mini-public), 8 concurrent requests
-  python3 categorized_manifest/tag_gateway.py --dataset all
+  python3 tagging/tag_gateway.py --dataset all
 
   # higher-quality pass on a subset
-  python3 categorized_manifest/tag_gateway.py --dataset culane --limit 100 \
+  python3 tagging/tag_gateway.py --dataset culane --limit 100 \
       --model gpt-5-4-public
 """
 from __future__ import annotations
@@ -62,7 +62,7 @@ from taxonomy import TAXONOMY  # noqa: E402
 DEFAULT_MODEL = "gpt-5-4-mini-public"
 DEFAULT_BASE = "https://lmg.leadai.leidos.com"
 
-# repo root = parent of categorized_manifest/
+# repo root = parent of tagging/
 REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_MANIFEST_DIR = REPO_ROOT / "dataset" / "manifests"
 DEFAULT_IMAGE_ROOT = REPO_ROOT / "dataset"

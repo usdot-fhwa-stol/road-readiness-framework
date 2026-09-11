@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build universal-manifest-format GT manifests for the human-tagged subset.
 
-Only CurveLane and CULane are usable (see categorized_manifest/README.md):
+Only CurveLane and CULane are usable (see tagging/README.md):
 TuSimple's tagged rows are unresolvable (bare numeric ids, no clip mapping)
 and BDD100K's tagged rows are test-split with no lane GT in this dataset
 copy.
@@ -23,7 +23,7 @@ Each output sample's `meta` carries the human `tags` (and `predicted_tags`
 when present) so they can be used for stratification later.
 
 Usage:
-    python3 categorized_manifest/build_tagged_subset_manifests.py
+    python3 tagging/build_tagged_subset_manifests.py
 """
 from __future__ import annotations
 
@@ -73,7 +73,7 @@ def build_curvelane_subset_manifest() -> Path:
 
     manifest = {
         "metadata": {"dataset": "curvelanes", "split": "train", "num_samples": len(entries),
-                     "note": "human-tagged subset (categorized_manifest); train split, not in the "
+                     "note": "human-tagged subset (tagging); train split, not in the "
                              "existing full valid-split model-comparison run"},
         "samples": entries,
     }
@@ -111,7 +111,7 @@ def build_culane_subset_manifest() -> Path:
 
     manifest = {
         "metadata": {"dataset": "culane", "split": "test", "num_samples": len(entries),
-                     "note": "human-tagged subset (categorized_manifest); one representative frame "
+                     "note": "human-tagged subset (tagging); one representative frame "
                              "per tagged segment, reusing the existing standard test-split GT"},
         "samples": entries,
     }

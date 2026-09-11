@@ -38,8 +38,8 @@ DEMOS = {
     "fffe1d98bbd73bec32507b7ebeffa5a6": ("i5_high_curved", "i5"),
 }
 MANIFESTS = (
-    "categorized_manifest/output/universal_manifest_culane_tagged.json",
-    "categorized_manifest/output/universal_manifest_curvelane_tagged.json",
+    "tagging/output/universal_manifest_culane_tagged.json",
+    "tagging/output/universal_manifest_curvelane_tagged.json",
 )
 
 

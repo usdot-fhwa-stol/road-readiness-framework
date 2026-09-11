@@ -8,7 +8,7 @@ ground truth the metric is meant to reproduce.
 
 Usage:
     python -m evaluation.run_lane_wear \
-        --manifest categorized_manifest/output/universal_manifest_culane_tagged.json \
+        --manifest tagging/output/universal_manifest_culane_tagged.json \
         --output-dir outputs/lane_wear/culane_tagged
 """
 from __future__ import annotations

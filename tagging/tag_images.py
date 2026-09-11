@@ -3,7 +3,7 @@
 the resolved image / ground-truth locations and the predicted tags, so results
 can be sorted/grouped by tag.
 
-Input  : a manifest from build_categorized_manifest.py (samples have
+Input  : a manifest from build_tagging.py (samples have
          `image_path`, `ground_truth_path`, and optional human `tags`).
 Output : the same manifest with `predicted_tags` added to every sample:
              {"by_dimension": {...}, "labels": [...], "scores": {...}}
@@ -16,9 +16,9 @@ Backends (--backend):
            (stronger on the semantic dimensions; slower, needs GPU).
 
 Usage:
-  python3 categorized_manifest/tag_images.py --backend vlm \
-      --in-manifest  categorized_manifest/output/manifest_bdd100k.json \
-      --out-manifest categorized_manifest/output/manifest_bdd100k.vlm.json
+  python3 tagging/tag_images.py --backend vlm \
+      --in-manifest  tagging/output/manifest_bdd100k.json \
+      --out-manifest tagging/output/manifest_bdd100k.vlm.json
   # optional: --limit N, --model <hf id>, --device cuda|cpu
 """
 from __future__ import annotations

@@ -14,7 +14,7 @@ Images are embedded as base64 so the file is portable (open by double-click; no
 server, no path issues on OneDrive).
 
 Usage:
-  python3 categorized_manifest/build_adjudication_tool.py \
+  python3 tagging/build_adjudication_tool.py \
       --a dataset/gateway_tags_v3_mini --a-name mini \
       --b dataset/gateway_tags_v2_sonnet --b-name sonnet \
       --image-root dataset --out dataset/adjudicate.html \

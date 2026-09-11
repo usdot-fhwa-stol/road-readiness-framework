@@ -10,7 +10,7 @@ Reports, per dimension and overall, for each run:
   exact% (whole tag-set matches human), mean Jaccard, and micro tag-level P/R/F1.
 
 Usage:
-  python3 categorized_manifest/score_vs_human.py \
+  python3 tagging/score_vs_human.py \
       --verdicts dataset/adjudication_verdicts.json \
       --run mini_v4=dataset/gateway_tags_v4_mini \
       --run sonnet_v4=dataset/gateway_tags_v4_sonnet \
